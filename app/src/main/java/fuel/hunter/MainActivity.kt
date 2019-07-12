@@ -1,7 +1,9 @@
 package fuel.hunter
 
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         priceList.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = PriceListAdapter(dummyData)
+            addItemDecoration(BackgroundItemDecoration())
         }
     }
 }
@@ -90,5 +93,29 @@ class PriceItemHolder(private val view: View) : RecyclerView.ViewHolder(view) {
                 view.findViewById<TextView>(R.id.header).text = item.name
             }
         }
+    }
+}
+
+class BackgroundItemDecoration : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+//        val shadow = ViewUtils.generateBackgroundWithShadow(
+//            view,
+//            android.R.color.white,
+//            24,
+//            R.color.colorHighlight,
+//            6,
+//            Gravity.CENTER
+//            )
+//        view.background = shadow
+////        view.outlineProvider = object : ViewOutlineProvider() {
+//            override fun getOutline(view: View, outline: Outline) {
+//                outline.setRoundRect(0, 0, view.width, view.height, 0f)
+//            }
+//        }
     }
 }
