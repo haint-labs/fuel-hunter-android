@@ -3,7 +3,6 @@ package fuel.hunter
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,19 +102,6 @@ class BackgroundItemDecoration : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-//        val shadow = ViewUtils.generateBackgroundWithShadow(
-//            view,
-//            android.R.color.white,
-//            24,
-//            R.color.colorHighlight,
-//            6,
-//            Gravity.CENTER
-//            )
-//        view.background = shadow
-////        view.outlineProvider = object : ViewOutlineProvider() {
-//            override fun getOutline(view: View, outline: Outline) {
-//                outline.setRoundRect(0, 0, view.width, view.height, 0f)
-//            }
-//        }
+
     }
 }
