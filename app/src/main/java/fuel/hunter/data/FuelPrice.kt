@@ -2,7 +2,13 @@ package fuel.hunter.data
 
 import fuel.hunter.R
 
-sealed class Item(val typeId: Int)
+const val category = -1
+const val header = 0
+const val middle = 1
+const val footer = 2
+const val single = 3
+
+sealed class Item(var typeId: Int)
 
 data class FuelPrice(
     val title: String,
@@ -44,4 +50,29 @@ internal val dummyData = mapOf(
             R.drawable.logo_circlek
         )
     )
-).flatMap { listOf(it.key) + it.value }
+).flatMap {
+    val cat = it.key
+    cat.typeId = category
+    listOf(cat)
+
+    if (it.value.size == 1) {
+        val item = it.value.first()
+        item.typeId = single
+        return@flatMap listOf(cat, item)
+    }
+
+    return@flatMap listOf(cat) + it.value.mapIndexed { index, item ->
+        if (index == 0) {
+            item.typeId = header
+            return@mapIndexed item
+        }
+
+        if (index == it.value.size - 1) {
+            item.typeId = footer
+            return@mapIndexed item
+        }
+
+        item.typeId = middle
+        return@mapIndexed item
+    }
+}

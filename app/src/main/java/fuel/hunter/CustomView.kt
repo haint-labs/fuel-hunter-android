@@ -3,9 +3,12 @@ package fuel.hunter
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import kotlin.properties.Delegates
+import kotlin.properties.Delegates.observable
 
-private fun <T> T.dp(value: Int) where T : View = value * context.resources.displayMetrics.density
+fun <T> T.dp(value: Int) where T : View = value * context.resources.displayMetrics.density
 
 class CustomView @JvmOverloads constructor(
     context: Context,
@@ -13,10 +16,17 @@ class CustomView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val radius = dp(8)
-    private val margin = radius
+    enum class Style {
+        TOP,
+        MIDDLE,
+        BOTTOM,
+        SINGLE
+    }
 
-    private val shadowColor = Color.argb(102, 66, 93, 146)
+    var style = Style.SINGLE
+    var shadowColor = Color.argb(102, 66, 93, 146)
+
+    var radius = dp(4)
 
     private val shadowPaint = Paint().apply {
         color = shadowColor
@@ -24,11 +34,7 @@ class CustomView @JvmOverloads constructor(
         maskFilter = BlurMaskFilter(radius, BlurMaskFilter.Blur.OUTER)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        setMeasuredDimension(measuredWidth, measuredHeight)
-    }
+    private val path = Path()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -36,12 +42,27 @@ class CustomView @JvmOverloads constructor(
         val height = height.toFloat()
         val width = width.toFloat()
 
-        val path = Path()
+        path.reset()
 
-        path.addRoundRect(margin, margin, width - radius, height, radius, radius, Path.Direction.CCW)
-        path.addRect(margin, margin, width - 2 * radius, height, Path.Direction.CCW)
-        path.addRect(margin, margin + radius, width - radius, height, Path.Direction.CCW)
+        when (style) {
+            Style.TOP -> {
+                path.addRoundRect(radius, radius, width - radius, height, radius, radius, Path.Direction.CCW)
+                path.addRect(radius, radius, width - 2 * radius, height, Path.Direction.CCW)
+                path.addRect(radius, radius + radius, width - radius, height, Path.Direction.CCW)
+            }
+            Style.MIDDLE -> {
+                path.addRect(radius, 0f, width - radius, height, Path.Direction.CCW)
+            }
+            Style.BOTTOM -> {
+                path.addRoundRect(radius, radius, width - radius, height - radius, radius, radius, Path.Direction.CCW)
+                path.addRect(radius, 0f, width - radius, height - 2 * radius, Path.Direction.CCW)
+            }
+            Style.SINGLE -> {
+                path.addRoundRect(radius, radius, width - radius, height - radius, radius, radius, Path.Direction.CCW)
+            }
+        }
 
         canvas.drawPath(path, shadowPaint)
     }
 }
+
