@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = PriceListAdapter(dummyData)
 
-            addItemDecoration(Separator())
+            addItemDecoration(Separator(data = dummyData))
             addItemDecoration(BackgroundItemDecoration(dummyData))
         }
     }
@@ -101,7 +101,8 @@ class PriceItemHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
 class Separator(
     private val height: Int = 2,
-    private val margin: Int = 11
+    private val margin: Int = 11,
+    private val data: List<Item>
 ) : RecyclerView.ItemDecoration() {
 
     private val paint = Paint().apply {
@@ -113,15 +114,19 @@ class Separator(
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
 
-        parent.children.forEach {
-            parent.getDecoratedBoundsWithMargins(it, bounds)
+        parent.children.forEachIndexed { index, view ->
+            val type = data[index].typeId
 
-            val top = bounds.bottom - height
-            val left = bounds.left + margin
-            val right = bounds.right - margin
-            val rect = Rect(left, top, right, bounds.bottom)
+            if (type == header || type == middle) {
+                parent.getDecoratedBoundsWithMargins(view, bounds)
 
-            c.drawRect(rect, paint)
+                val top = bounds.bottom - height
+                val left = bounds.left + margin
+                val right = bounds.right - margin
+                val rect = Rect(left, top, right, bounds.bottom)
+
+                c.drawRect(rect, paint)
+            }
         }
     }
 }
@@ -136,8 +141,6 @@ class BackgroundItemDecoration(private val data: List<Item>) : RecyclerView.Item
         val offset = parent.getChildAdapterPosition(view)
 
         val item = data[offset]
-
-        Log.d("ITEM", item.typeId.toString())
 
         val style = when (item.typeId) {
             header -> CustomView.Style.TOP
