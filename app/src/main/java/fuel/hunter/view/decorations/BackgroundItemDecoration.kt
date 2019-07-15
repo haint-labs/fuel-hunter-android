@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import fuel.hunter.CustomView
+import fuel.hunter.view.shadow.ShadowView
 import fuel.hunter.R
 import fuel.hunter.data.*
 
@@ -20,14 +20,14 @@ class BackgroundItemDecoration(private val data: List<Item>) : RecyclerView.Item
         val item = data[offset]
 
         val style = when (item.typeId) {
-            header -> CustomView.Style.TOP
-            middle -> CustomView.Style.MIDDLE
-            footer -> CustomView.Style.BOTTOM
-            single -> CustomView.Style.SINGLE
-            else -> CustomView.Style.SINGLE
+            header -> ShadowView.Style.TOP
+            middle -> ShadowView.Style.MIDDLE
+            footer -> ShadowView.Style.BOTTOM
+            single -> ShadowView.Style.SINGLE
+            else -> ShadowView.Style.SINGLE
         }
 
-        val target = view.findViewById<CustomView?>(R.id.shadow)
+        val target = view.findViewById<ShadowView?>(R.id.shadow)
         target?.let {
             Log.d("ITEM", "yay")
             it.style = style

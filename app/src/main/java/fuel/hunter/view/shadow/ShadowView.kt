@@ -1,16 +1,13 @@
-package fuel.hunter
+package fuel.hunter.view.shadow
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import kotlin.properties.Delegates
-import kotlin.properties.Delegates.observable
 
 fun <T> T.dp(value: Int) where T : View = value * context.resources.displayMetrics.density
 
-class CustomView @JvmOverloads constructor(
+class ShadowView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
