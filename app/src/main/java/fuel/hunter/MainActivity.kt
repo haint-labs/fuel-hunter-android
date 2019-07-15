@@ -1,22 +1,18 @@
 package fuel.hunter
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.data.*
+import fuel.hunter.view.decorations.BackgroundItemDecoration
+import fuel.hunter.view.decorations.Separator
 
 class MainActivity : AppCompatActivity() {
 
@@ -95,65 +91,6 @@ class PriceItemHolder(private val view: View) : RecyclerView.ViewHolder(view) {
             is FuelCategory -> {
                 view.findViewById<TextView>(R.id.header).text = item.name
             }
-        }
-    }
-}
-
-class Separator(
-    private val height: Int = 2,
-    private val margin: Int = 11,
-    private val data: List<Item>
-) : RecyclerView.ItemDecoration() {
-
-    private val paint = Paint().apply {
-        color = Color.rgb(215, 221, 232)
-    }
-
-    private val bounds = Rect()
-
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        super.onDraw(c, parent, state)
-
-        parent.children.forEachIndexed { index, view ->
-            val type = data[index].typeId
-
-            if (type == header || type == middle) {
-                parent.getDecoratedBoundsWithMargins(view, bounds)
-
-                val top = bounds.bottom - height
-                val left = bounds.left + margin
-                val right = bounds.right - margin
-                val rect = Rect(left, top, right, bounds.bottom)
-
-                c.drawRect(rect, paint)
-            }
-        }
-    }
-}
-
-class BackgroundItemDecoration(private val data: List<Item>) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State
-    ) {
-        val offset = parent.getChildAdapterPosition(view)
-
-        val item = data[offset]
-
-        val style = when (item.typeId) {
-            header -> CustomView.Style.TOP
-            middle -> CustomView.Style.MIDDLE
-            footer -> CustomView.Style.BOTTOM
-            single -> CustomView.Style.SINGLE
-            else -> CustomView.Style.SINGLE
-        }
-
-        val target = view.findViewById<CustomView?>(R.id.shadow)
-        target?.let {
-            Log.d("ITEM", "yay")
-            it.style = style
         }
     }
 }
