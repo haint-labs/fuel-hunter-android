@@ -1,12 +1,7 @@
 package fuel.hunter.data
 
 import fuel.hunter.R
-
-const val category = -1
-const val header = 0
-const val middle = 1
-const val footer = 2
-const val single = 3
+import fuel.hunter.extensions.*
 
 sealed class Item(var typeId: Int)
 
@@ -52,27 +47,27 @@ internal val dummyData = mapOf(
     )
 ).flatMap {
     val cat = it.key
-    cat.typeId = category
+    cat.typeId = ITEM_TYPE_CATEGORY
     listOf(cat)
 
     if (it.value.size == 1) {
         val item = it.value.first()
-        item.typeId = single
+        item.typeId = ITEM_TYPE_SINGLE
         return@flatMap listOf(cat, item)
     }
 
     return@flatMap listOf(cat) + it.value.mapIndexed { index, item ->
         if (index == 0) {
-            item.typeId = header
+            item.typeId = ITEM_TYPE_HEADER
             return@mapIndexed item
         }
 
         if (index == it.value.size - 1) {
-            item.typeId = footer
+            item.typeId = ITEM_TYPE_FOOTER
             return@mapIndexed item
         }
 
-        item.typeId = middle
+        item.typeId = ITEM_TYPE_MIDDLE
         return@mapIndexed item
     }
 }
