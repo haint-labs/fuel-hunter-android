@@ -17,24 +17,58 @@ data class FuelCategory(
 ) : Item(2)
 
 internal val dummyData = mapOf(
+    FuelCategory("95 | Benzīns") to listOf(
+        FuelPrice(
+            "Kool",
+            "Rīga - Senču iela 2b",
+            1.125f,
+            R.drawable.logo_kool
+        ),
+        FuelPrice(
+            "Kool",
+            "Rīga - Senču iela 2b",
+            1.125f,
+            R.drawable.logo_kool
+        ),
+        FuelPrice(
+            "Viada",
+            "Rīga - Senču iela 2b, Brīvības iela 82a",
+            1.125f,
+            R.drawable.logo_viada
+        ),
+        FuelPrice(
+            "Dinaz",
+            "Rīga - Senču iela 2b, Brīvības iela 82a",
+            1.125f,
+            R.drawable.logo_dinaz
+        )
+    ),
+    FuelCategory("98 | Benzīns") to listOf(
+        FuelPrice(
+            "Kool",
+            "Rīga - Senču iela 2b",
+            1.125f,
+            R.drawable.logo_kool
+        )
+    ),
     FuelCategory("DD | Dīzeļdegviela") to listOf(
         FuelPrice(
-            "Neste",
+            "Virši",
             "Rīga - Senču iela 2b, Katoļu 4, Kurzemes prospekts 4, Lugažu 6, Brīvības iela 82a",
             1.125f,
-            R.drawable.logo_neste
+            R.drawable.logo_virshi
         ),
         FuelPrice(
             "AStarte",
-            "Rīga - Jūrkalnes iela 6",
+            "Rīga - Jūrkalnes iela 6, Lugažu 6, Brīvības iela 82a",
             1.012f,
             R.drawable.logo_astarte
         ),
         FuelPrice(
-            "Circle K",
-            "Rīga - Jūrkalnes iela 6, Lugažu 6, Brīvības iela 82a",
+            "Latvijas nafta",
+            "Rīga - Senču iela 2b, Katoļu 4, Kurzemes prospekts 4, Lugažu 6, Brīvības iela 82a",
             2.301f,
-            R.drawable.logo_circlek
+            R.drawable.logo_ln
         )
     ),
     FuelCategory("98 | Benzīns") to listOf(
