@@ -54,9 +54,61 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/notification"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/notes"
             android:id="@+id/priceList"
             android:layout_width="0dp"
             android:layout_height="0dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/notes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+                android:id="@+id/ic_savings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_savings"/>
+
+        <ImageView
+                android:id="@+id/ic_precision"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/ic_savings"
+                app:layout_constraintLeft_toLeftOf="@id/ic_savings"
+                android:src="@drawable/ic_note"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@id/ic_savings"
+                app:layout_constraintBottom_toBottomOf="@id/ic_savings"
+                app:layout_constraintLeft_toRightOf="@id/ic_savings"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="16dp"
+                style="@style/CategoryText"
+                android:text="Ietaupījums"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@id/ic_precision"
+                app:layout_constraintBottom_toBottomOf="@id/ic_precision"
+                app:layout_constraintLeft_toRightOf="@id/ic_precision"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginStart="16dp"
+                style="@style/CategoryText"
+                android:text="Degvielas cenu precizitāte"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
