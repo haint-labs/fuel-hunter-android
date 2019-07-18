@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="listItemRadius">8dp</dimen>
+    <dimen name="listItemMargin">16dp</dimen>
+    <dimen name="listItemShadowRadius">2dp</dimen>
+</resources>
