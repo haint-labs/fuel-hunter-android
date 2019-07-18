@@ -9,7 +9,7 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.extensions.ITEM_TYPE_HEADER
 import fuel.hunter.extensions.ITEM_TYPE_MIDDLE
-import fuel.hunter.extensions.getItemViewType
+import fuel.hunter.extensions.getItemType
 
 class SeparatorItemDecoration(
     @ColorInt color: Int,
@@ -27,8 +27,8 @@ class SeparatorItemDecoration(
         canvas: Canvas,
         parent: RecyclerView,
         state: RecyclerView.State
-    ) = parent.children.forEachIndexed { index, view ->
-        when (parent.getItemViewType(index)) {
+    ) = parent.children.forEach { view ->
+        when (parent.getItemType(view)) {
             ITEM_TYPE_HEADER, ITEM_TYPE_MIDDLE -> {
                 parent.getDecoratedBoundsWithMargins(view, bounds)
 
