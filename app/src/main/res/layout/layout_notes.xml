@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       xmlns:tools="http://schemas.android.com/tools"
+       tools:showIn="@layout/activity_main">
+
+    <ImageView
+            android:id="@+id/ic_savings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/ic_precision"
+            app:layout_constraintLeft_toLeftOf="@id/ic_precision"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:src="@drawable/ic_savings"/>
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/ic_savings"
+            app:layout_constraintBottom_toBottomOf="@id/ic_savings"
+            app:layout_constraintLeft_toRightOf="@id/ic_savings"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="16dp"
+            style="@style/CategoryText"
+            android:text="Ietaupījums"/>
+
+    <ImageView
+            android:id="@+id/ic_precision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_note"/>
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/ic_precision"
+            app:layout_constraintBottom_toBottomOf="@id/ic_precision"
+            app:layout_constraintLeft_toRightOf="@id/ic_precision"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="16dp"
+            style="@style/CategoryText"
+            android:text="Degvielas cenu precizitāte"/>
+
+    <Space
+            android:id="@+id/notesSpace"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ic_savings"
+            android:layout_marginBottom="3dp"/>
+
+    <fuel.hunter.view.shadow.ShadowView
+            android:id="@+id/notesShadow"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/notesSpace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:offsetTop="3dp"
+            app:shadowRadius="3dp"
+            app:shadowColor="@color/colorPrimary"
+            app:shadowAlpha="153"
+            app:cornerRadius="0dp"
+            app:style="top"/>
+
+</merge>
