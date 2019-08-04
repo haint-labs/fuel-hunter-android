@@ -5,6 +5,7 @@
         <attr name="shadowRadius" format="dimension"/>
         <attr name="shadowColor" format="color"/>
         <attr name="shadowAlpha" format="integer"/>
+        <attr name="offsetTop" format="dimension"/>
         <attr name="style" format="enum">
             <enum name="single" value="0"/>
             <enum name="top" value="1"/>
