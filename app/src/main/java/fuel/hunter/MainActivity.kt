@@ -59,12 +59,12 @@ class MainActivity : AppCompatActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val alpha = with(recyclerView) {
                     val offset = computeVerticalScrollOffset()
-                    val max = dp(50).toInt()
+                    val max = dp(50)
 
-                    offset.coerceIn(0, max) / max
+                    offset.coerceIn(0, max.toInt()) / max
                 }
 
-                toolbarShadow.alpha = alpha.toFloat()
+                toolbarShadow.alpha = alpha
             }
         })
 
@@ -75,12 +75,12 @@ class MainActivity : AppCompatActivity() {
                     val extent = computeVerticalScrollExtent()
                     val range = computeVerticalScrollRange()
 
-                    val max = dp(50).toInt()
+                    val max = dp(50)
 
-                    (range - extent - offset).coerceIn(0, max) / max
+                    (range - extent - offset).coerceIn(0, max.toInt()) / max
                 }
 
-                notesShadow.alpha = alpha.toFloat()
+                notesShadow.alpha = alpha
             }
         })
     }
