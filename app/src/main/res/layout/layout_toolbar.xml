@@ -17,6 +17,7 @@
         app:contentInsetStart="0dp">
 
     <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/settingsIcon"
             android:src="@drawable/ic_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

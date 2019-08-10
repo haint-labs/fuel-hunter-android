@@ -1,10 +1,15 @@
 package fuel.hunter
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupTransition()
         setContentView(R.layout.activity_main)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -39,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupPriceList()
+        setupNavigationHandlers()
     }
 
     private fun setupPriceList() {
@@ -83,6 +90,31 @@ class MainActivity : AppCompatActivity() {
                 notesShadow.alpha = alpha
             }
         })
+    }
+
+    private fun setupTransition() {
+        val slide = Slide(Gravity.START).apply {
+            duration = 300
+            interpolator = DecelerateInterpolator()
+        }
+
+        with(window) {
+            exitTransition = slide
+            enterTransition = slide
+        }
+    }
+
+    private fun setupNavigationHandlers() {
+        findViewById<View>(R.id.settingsIcon)
+            .setOnClickListener {
+                val transitionBundle = ActivityOptions
+                    .makeSceneTransitionAnimation(this)
+                    .toBundle()
+
+                val intent = Intent(this, Settings::class.java)
+
+                startActivity(intent, transitionBundle)
+            }
     }
 }
 
