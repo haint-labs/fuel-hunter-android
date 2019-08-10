@@ -20,6 +20,7 @@ import fuel.hunter.view.decorations.SeparatorItemDecoration
 class MainActivity : AppCompatActivity() {
 
     private val priceList by lazy { findViewById<RecyclerView>(R.id.priceList) }
+    private val toolbarShadow by lazy { findViewById<View>(R.id.toolbarShadow) }
     private val notesShadow by lazy { findViewById<View>(R.id.notesShadow) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +54,19 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
+
+        priceList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val alpha = with(recyclerView) {
+                    val offset = computeVerticalScrollOffset()
+                    val max = dp(50).toInt()
+
+                    offset.coerceIn(0, max) / max
+                }
+
+                toolbarShadow.alpha = alpha.toFloat()
+            }
+        })
 
         priceList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

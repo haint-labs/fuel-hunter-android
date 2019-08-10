@@ -25,6 +25,7 @@ class ShadowView @JvmOverloads constructor(
     var shadowAlpha = 255
 
     var offsetTop = dp(0)
+    var offsetBottom = dp(0)
 
     init {
         val attributes = context
@@ -37,6 +38,7 @@ class ShadowView @JvmOverloads constructor(
         shadowRadius = attributes.getDimension(R.styleable.ShadowView_shadowRadius, shadowRadius)
         shadowAlpha = attributes.getInt(R.styleable.ShadowView_shadowAlpha, shadowAlpha).coerceIn(0, 255)
         offsetTop = attributes.getDimension(R.styleable.ShadowView_offsetTop, offsetTop)
+        offsetBottom = attributes.getDimension(R.styleable.ShadowView_offsetBottom, offsetBottom)
 
         attributes.recycle()
     }
@@ -69,8 +71,8 @@ class ShadowView @JvmOverloads constructor(
                 path.addRect(cR, 0f, w - cR, h, Path.Direction.CCW)
             }
             BOTTOM -> {
-                path.addRoundRect(cR, cR, w - cR, h - cR, cR, cR, Path.Direction.CCW)
-                path.addRect(cR, 0f, w - cR, h - 2 * cR, Path.Direction.CCW)
+                path.addRoundRect(cR, cR, w - cR, h - cR - offsetBottom, cR, cR, Path.Direction.CCW)
+                path.addRect(cR, 0f, w - cR, h - 2 * cR - offsetBottom, Path.Direction.CCW)
             }
             SINGLE -> {
                 path.addRoundRect(cR, cR, w - cR, h - cR, cR, cR, Path.Direction.CCW)
