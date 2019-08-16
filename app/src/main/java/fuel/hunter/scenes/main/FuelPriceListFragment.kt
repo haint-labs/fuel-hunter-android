@@ -16,10 +16,12 @@ import kotlinx.android.synthetic.main.fragment_main_fuel_prices.*
 import kotlinx.android.synthetic.main.layout_notes.*
 import kotlinx.android.synthetic.main.layout_toolbar_shadow.*
 
-class FuelPriceListFragment : Fragment() {
+class FuelPriceListFragment(
+    private val switcher: ScreenSwitcher
+) : Fragment() {
 
     companion object {
-        fun create() = FuelPriceListFragment()
+        fun create(switcher: ScreenSwitcher) = FuelPriceListFragment(switcher)
     }
 
     override fun onCreateView(
@@ -30,6 +32,8 @@ class FuelPriceListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupPriceList()
+
+        handleSavingsTap()
     }
 
     private fun setupPriceList() {
@@ -75,5 +79,9 @@ class FuelPriceListFragment : Fragment() {
                 notesShadow.alpha = alpha
             }
         })
+    }
+
+    private fun handleSavingsTap() {
+        ic_savings.setOnClickListener { switcher.switch(Screen.Savings) }
     }
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:scrollbars="none">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="17dp"
+            android:paddingEnd="17dp"
+            tools:context=".scenes.main.SavingsFragment">
+
+        <TextView
+                android:layout_marginBottom="10dp"
+                android:drawableStart="@drawable/ic_bag"
+                android:drawablePadding="17dp"
+                android:text="@string/savings_bag_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+
+        <TextView
+                android:layout_marginBottom="10dp"
+                android:drawableStart="@drawable/ic_map"
+                android:drawablePadding="17dp"
+                android:text="@string/savings_map_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+
+        <TextView
+                android:layout_marginBottom="10dp"
+                android:drawableStart="@drawable/ic_bell"
+                android:drawablePadding="17dp"
+                android:text="@string/savings_bell_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+
+        <TextView
+                android:layout_marginBottom="10dp"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="17dp"
+                android:text="@string/savings_star_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+
+        <View
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+        <TextView
+                android:text="@string/savings_example"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+</ScrollView>

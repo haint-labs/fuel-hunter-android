@@ -1,7 +1,5 @@
 package fuel.hunter.scenes.main
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.transition.Slide
@@ -19,9 +17,18 @@ import fuel.hunter.data.FuelCategory
 import fuel.hunter.data.FuelPrice
 import fuel.hunter.data.Item
 import fuel.hunter.extensions.*
-import fuel.hunter.scenes.settings.Settings
 
-class MainActivity : AppCompatActivity() {
+sealed class Screen {
+    object Main : Screen()
+    object Savings : Screen()
+    object Another : Screen()
+}
+
+interface ScreenSwitcher {
+    fun switch(screen: Screen)
+}
+
+class MainActivity : AppCompatActivity(), ScreenSwitcher {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +49,23 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.root, FuelPriceListFragment.create())
+                .replace(R.id.root, FuelPriceListFragment.create(this))
                 .commit()
         }
+    }
 
-        setupNavigationHandlers()
+    override fun switch(screen: Screen) {
+        val fragment = when (screen) {
+            is Screen.Savings -> SavingsFragment.create(this)
+            is Screen.Main -> FuelPriceListFragment.create(this)
+            else -> throw IllegalStateException()
+        }
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.root, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun setupTransition() {
@@ -59,19 +78,6 @@ class MainActivity : AppCompatActivity() {
             exitTransition = slide
             enterTransition = slide
         }
-    }
-
-    private fun setupNavigationHandlers() {
-        findViewById<View>(R.id.settingsIcon)
-            .setOnClickListener {
-                val transitionBundle = ActivityOptions
-                    .makeSceneTransitionAnimation(this)
-                    .toBundle()
-
-                val intent = Intent(this, Settings::class.java)
-
-                startActivity(intent, transitionBundle)
-            }
     }
 }
 
