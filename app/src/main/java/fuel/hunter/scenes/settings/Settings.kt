@@ -1,7 +1,8 @@
-package fuel.hunter
+package fuel.hunter.scenes.settings
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import fuel.hunter.R
 
 class Settings : AppCompatActivity() {
 

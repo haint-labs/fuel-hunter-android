@@ -1,4 +1,4 @@
-package fuel.hunter
+package fuel.hunter.scenes.main
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -13,20 +13,15 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import fuel.hunter.R
 import fuel.hunter.data.FuelCategory
 import fuel.hunter.data.FuelPrice
 import fuel.hunter.data.Item
-import fuel.hunter.data.dummyData
 import fuel.hunter.extensions.*
-import fuel.hunter.view.decorations.SeparatorItemDecoration
+import fuel.hunter.scenes.settings.Settings
 
 class MainActivity : AppCompatActivity() {
-
-    private val priceList by lazy { findViewById<RecyclerView>(R.id.priceList) }
-    private val toolbarShadow by lazy { findViewById<View>(R.id.toolbarShadow) }
-    private val notesShadow by lazy { findViewById<View>(R.id.notesShadow) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,52 +39,14 @@ class MainActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        setupPriceList()
-        setupNavigationHandlers()
-    }
-
-    private fun setupPriceList() {
-        priceList.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = PriceListAdapter(dummyData)
-
-            addItemDecoration(
-                SeparatorItemDecoration(
-                    color = color(R.color.itemSeparator),
-                    height = dp(1),
-                    margin = dp(8)
-                )
-            )
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.root, FuelPriceListFragment.create())
+                .commit()
         }
 
-        priceList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val alpha = with(recyclerView) {
-                    val offset = computeVerticalScrollOffset()
-                    val max = dp(50)
-
-                    offset.coerceIn(0, max.toInt()) / max
-                }
-
-                toolbarShadow.alpha = alpha
-            }
-        })
-
-        priceList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val alpha = with(recyclerView) {
-                    val offset = computeVerticalScrollOffset()
-                    val extent = computeVerticalScrollExtent()
-                    val range = computeVerticalScrollRange()
-
-                    val max = dp(50)
-
-                    (range - extent - offset).coerceIn(0, max.toInt()) / max
-                }
-
-                notesShadow.alpha = alpha
-            }
-        })
+        setupNavigationHandlers()
     }
 
     private fun setupTransition() {
