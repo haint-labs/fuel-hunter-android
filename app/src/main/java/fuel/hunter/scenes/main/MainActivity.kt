@@ -17,18 +17,11 @@ import fuel.hunter.data.FuelCategory
 import fuel.hunter.data.FuelPrice
 import fuel.hunter.data.Item
 import fuel.hunter.extensions.*
+import fuel.hunter.router.Screen
+import fuel.hunter.router.Router
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
-sealed class Screen {
-    object Main : Screen()
-    object Savings : Screen()
-    object Another : Screen()
-}
-
-interface ScreenSwitcher {
-    fun switch(screen: Screen)
-}
-
-class MainActivity : AppCompatActivity(), ScreenSwitcher {
+class MainActivity : AppCompatActivity(), Router {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +33,7 @@ class MainActivity : AppCompatActivity(), ScreenSwitcher {
             window.statusBarColor = resources.getColor(android.R.color.white, null)
         }
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayShowHomeEnabled(false)
             setDisplayShowTitleEnabled(false)
@@ -54,11 +47,10 @@ class MainActivity : AppCompatActivity(), ScreenSwitcher {
         }
     }
 
-    override fun switch(screen: Screen) {
+    override fun goTo(screen: Screen) {
         val fragment = when (screen) {
             is Screen.Savings -> SavingsFragment.create(this)
             is Screen.Main -> FuelPriceListFragment.create(this)
-            else -> throw IllegalStateException()
         }
 
         supportFragmentManager

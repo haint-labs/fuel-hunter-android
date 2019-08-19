@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import fuel.hunter.R
+import fuel.hunter.router.Router
 
-class SavingsFragment(private val switcher: ScreenSwitcher) : Fragment() {
+class SavingsFragment(private val router: Router) : Fragment() {
 
     companion object {
-        fun create(switcher: ScreenSwitcher) = SavingsFragment(switcher)
+        fun create(router: Router) = SavingsFragment(router)
     }
 
     override fun onCreateView(

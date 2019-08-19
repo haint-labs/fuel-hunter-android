@@ -11,17 +11,19 @@ import fuel.hunter.R
 import fuel.hunter.data.dummyData
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
+import fuel.hunter.router.Screen
+import fuel.hunter.router.Router
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import kotlinx.android.synthetic.main.fragment_main_fuel_prices.*
 import kotlinx.android.synthetic.main.layout_notes.*
 import kotlinx.android.synthetic.main.layout_toolbar_shadow.*
 
 class FuelPriceListFragment(
-    private val switcher: ScreenSwitcher
+    private val router: Router
 ) : Fragment() {
 
     companion object {
-        fun create(switcher: ScreenSwitcher) = FuelPriceListFragment(switcher)
+        fun create(router: Router) = FuelPriceListFragment(router)
     }
 
     override fun onCreateView(
@@ -82,6 +84,6 @@ class FuelPriceListFragment(
     }
 
     private fun handleSavingsTap() {
-        ic_savings.setOnClickListener { switcher.switch(Screen.Savings) }
+        ic_savings.setOnClickListener { router.goTo(Screen.Savings) }
     }
 }
