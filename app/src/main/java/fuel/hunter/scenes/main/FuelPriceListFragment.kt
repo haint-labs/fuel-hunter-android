@@ -5,26 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.data.dummyData
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
-import fuel.hunter.router.Screen
-import fuel.hunter.router.Router
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import kotlinx.android.synthetic.main.fragment_main_fuel_prices.*
 import kotlinx.android.synthetic.main.layout_notes.*
 import kotlinx.android.synthetic.main.layout_toolbar_shadow.*
 
-class FuelPriceListFragment(
-    private val router: Router
-) : Fragment() {
+class FuelPriceListFragment : Fragment() {
 
-    companion object {
-        fun create(router: Router) = FuelPriceListFragment(router)
-    }
+    private val router by lazy { findNavController(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +79,6 @@ class FuelPriceListFragment(
     }
 
     private fun handleSavingsTap() {
-        ic_savings.setOnClickListener { router.goTo(Screen.Savings) }
+        ic_savings.setOnClickListener { router.navigate(R.id.main_to_savings) }
     }
 }

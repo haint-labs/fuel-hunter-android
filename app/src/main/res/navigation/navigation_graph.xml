@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation_graph"
+            app:startDestination="@id/main">
+
+    <fragment android:id="@+id/main"
+              android:label="@string/app_name"
+              android:name="fuel.hunter.scenes.main.FuelPriceListFragment"
+              tools:layout="@layout/fragment_main_fuel_prices">
+
+        <action android:id="@+id/main_to_savings"
+                app:destination="@id/savings"/>
+    </fragment>
+
+    <fragment android:id="@+id/savings"
+              android:label="@string/app_name"
+              android:name="fuel.hunter.scenes.main.SavingsFragment"
+              tools:layout="@layout/fragment_main_savings"/>
+
+</navigation>

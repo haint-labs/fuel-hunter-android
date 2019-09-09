@@ -11,17 +11,18 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.data.FuelCategory
 import fuel.hunter.data.FuelPrice
 import fuel.hunter.data.Item
 import fuel.hunter.extensions.*
-import fuel.hunter.router.Screen
-import fuel.hunter.router.Router
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
-class MainActivity : AppCompatActivity(), Router {
+class MainActivity : AppCompatActivity() {
+
+    private val router by lazy { findNavController(R.id.navigationHost) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,27 +39,9 @@ class MainActivity : AppCompatActivity(), Router {
             setDisplayShowHomeEnabled(false)
             setDisplayShowTitleEnabled(false)
         }
-
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.root, FuelPriceListFragment.create(this))
-                .commit()
-        }
     }
 
-    override fun goTo(screen: Screen) {
-        val fragment = when (screen) {
-            is Screen.Savings -> SavingsFragment.create(this)
-            is Screen.Main -> FuelPriceListFragment.create(this)
-        }
-
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.root, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
+    override fun onSupportNavigateUp() = router.navigateUp()
 
     private fun setupTransition() {
         val slide = Slide(Gravity.START).apply {

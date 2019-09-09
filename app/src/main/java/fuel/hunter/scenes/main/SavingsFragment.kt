@@ -6,13 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import fuel.hunter.R
-import fuel.hunter.router.Router
 
-class SavingsFragment(private val router: Router) : Fragment() {
-
-    companion object {
-        fun create(router: Router) = SavingsFragment(router)
-    }
+class SavingsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
