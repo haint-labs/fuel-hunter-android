@@ -1,4 +1,4 @@
-package fuel.hunter.scenes.main
+package fuel.hunter.scenes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import fuel.hunter.PriceListAdapter
 import fuel.hunter.R
 import fuel.hunter.data.dummyData
+import fuel.hunter.databinding.FragmentPricesBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
-import kotlinx.android.synthetic.main.fragment_main_fuel_prices.*
+import kotlinx.android.synthetic.main.fragment_prices.*
 import kotlinx.android.synthetic.main.layout_notes.*
 import kotlinx.android.synthetic.main.layout_toolbar_shadow.*
 
-class FuelPriceListFragment : Fragment() {
+class PricesFragment : Fragment() {
 
     private val router by lazy { findNavController(this) }
 
@@ -25,7 +27,7 @@ class FuelPriceListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_main_fuel_prices, container, false)
+    ): View? = FragmentPricesBinding.inflate(inflater, container, false).root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupPriceList()

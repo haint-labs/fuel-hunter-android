@@ -6,8 +6,8 @@
 
     <fragment android:id="@+id/main"
               android:label="@string/app_name"
-              android:name="fuel.hunter.scenes.main.FuelPriceListFragment"
-              tools:layout="@layout/fragment_main_fuel_prices">
+              android:name="fuel.hunter.scenes.PricesFragment"
+              tools:layout="@layout/fragment_prices">
 
         <action android:id="@+id/main_to_savings"
                 app:destination="@id/savings"/>
@@ -15,7 +15,7 @@
 
     <fragment android:id="@+id/savings"
               android:label="@string/app_name"
-              android:name="fuel.hunter.scenes.main.SavingsFragment"
-              tools:layout="@layout/fragment_main_savings"/>
+              android:name="fuel.hunter.scenes.SavingsFragment"
+              tools:layout="@layout/fragment_savings"/>
 
 </navigation>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include
+                layout="@layout/layout_toolbar"
+                bind:title="@{@string/fuel_hunter}"
+                bind:icon="@{@drawable/ic_settings}"/>
+
+        <fuel.hunter.view.notification.NotificationView
+                android:id="@+id/notification"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/priceList"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:overScrollMode="never"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                app:layout_constraintBottom_toTopOf="@id/ic_savings"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/notification" />
+
+        <include layout="@layout/layout_notes" />
+
+        <FrameLayout
+                android:id="@+id/content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <include layout="@layout/layout_toolbar_shadow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

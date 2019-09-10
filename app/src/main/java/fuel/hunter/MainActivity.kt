@@ -1,4 +1,4 @@
-package fuel.hunter.scenes.main
+package fuel.hunter
 
 import android.os.Build
 import android.os.Bundle
@@ -11,18 +11,13 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import fuel.hunter.R
 import fuel.hunter.data.FuelCategory
 import fuel.hunter.data.FuelPrice
 import fuel.hunter.data.Item
 import fuel.hunter.extensions.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val router by lazy { findNavController(R.id.navigationHost) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +28,7 @@ class MainActivity : AppCompatActivity() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = resources.getColor(android.R.color.white, null)
         }
-
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayShowHomeEnabled(false)
-            setDisplayShowTitleEnabled(false)
-        }
     }
-
-    override fun onSupportNavigateUp() = router.navigateUp()
 
     private fun setupTransition() {
         val slide = Slide(Gravity.START).apply {
