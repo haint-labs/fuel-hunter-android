@@ -17,7 +17,7 @@ import fuel.hunter.extensions.dp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import kotlinx.android.synthetic.main.fragment_prices.*
 import kotlinx.android.synthetic.main.layout_notes.*
-import kotlinx.android.synthetic.main.layout_toolbar_shadow.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
 class PricesFragment : Fragment() {
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,26 +13,52 @@
                 type="android.graphics.drawable.Drawable" />
     </data>
 
-    <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@{icon}">
+    <merge>
 
-        <TextView
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@{title}"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp" />
+                android:minHeight="?attr/actionBarSize"
+                app:layout_constraintLeft_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@{icon}">
 
-    </androidx.appcompat.widget.Toolbar>
+            <TextView
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{title}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <Space
+                android:id="@+id/toolbarSpace"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="3dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <fuel.hunter.view.shadow.ShadowView
+                android:id="@+id/toolbarShadow"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:cornerRadius="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/toolbarSpace"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:offsetBottom="3dp"
+                app:shadowAlpha="153"
+                app:shadowColor="@color/colorPrimary"
+                app:shadowRadius="3dp"
+                app:style="bottom" />
+    </merge>
 </layout>
