@@ -82,5 +82,6 @@ class PricesFragment : Fragment() {
 
     private fun handleSavingsTap() {
         ic_savings.setOnClickListener { router.navigate(R.id.main_to_savings) }
+        ic_precision.setOnClickListener { router.navigate(R.id.main_to_precision) }
     }
 }
