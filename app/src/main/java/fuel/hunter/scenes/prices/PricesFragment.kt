@@ -1,4 +1,4 @@
-package fuel.hunter.scenes
+package fuel.hunter.scenes.prices
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import fuel.hunter.PriceListAdapter
 import fuel.hunter.R
 import fuel.hunter.data.dummyData
 import fuel.hunter.databinding.FragmentPricesBinding
