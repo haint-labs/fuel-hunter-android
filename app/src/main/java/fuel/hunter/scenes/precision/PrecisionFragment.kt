@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
@@ -104,6 +105,8 @@ class PrecisionFragment : Fragment() {
     ): View? = FragmentPrecisionBinding.inflate(inflater, container, false).root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?): Unit = with(view) {
+        toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+
         precisionInfoList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = PrecisionInfoAdapter(precisionInfo)
