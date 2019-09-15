@@ -3,13 +3,13 @@ package fuel.hunter.scenes.prices
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.data.Fuel
 import fuel.hunter.extensions.TypedItem
 import fuel.hunter.tools.mapper
+import kotlinx.android.synthetic.main.layout_price_category.view.*
+import kotlinx.android.synthetic.main.layout_price_item_content.view.*
 
 internal const val ITEM_TYPE_SINGLE = 0
 internal const val ITEM_TYPE_HEADER = 1
@@ -75,13 +75,13 @@ class PricesViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
     fun bind(item: Fuel) {
         when (item) {
             is Fuel.Price -> {
-                view.findViewById<TextView>(R.id.title).text = item.title
-                view.findViewById<TextView>(R.id.address).text = item.address
-                view.findViewById<TextView>(R.id.price).text = item.price.toString()
-                view.findViewById<ImageView>(R.id.icon).setImageResource(item.logo)
+                view.title.text = item.title
+                view.address.text = item.address
+                view.price.text = item.price.toString()
+                view.icon.setImageResource(item.logo)
             }
             is Fuel.Category -> {
-                view.findViewById<TextView>(R.id.header).text = item.name
+                view.header.text = item.name
             }
         }
     }
