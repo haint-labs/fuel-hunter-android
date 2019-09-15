@@ -7,30 +7,30 @@ import android.graphics.RectF
 import androidx.annotation.ColorInt
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
-import fuel.hunter.extensions.ITEM_TYPE_HEADER
-import fuel.hunter.extensions.ITEM_TYPE_MIDDLE
-import fuel.hunter.extensions.getItemType
+import fuel.hunter.extensions.getItemViewType
 
 class SeparatorItemDecoration(
     @ColorInt color: Int,
     private val height: Float,
-    private val margin: Float
+    private val margin: Float,
+    private val predicate: (Int) -> Boolean
 ) : RecyclerView.ItemDecoration() {
+
+    private val bounds = Rect()
 
     private val paint = Paint().also {
         it.color = color
     }
 
-    private val bounds = Rect()
-
     override fun onDraw(
         canvas: Canvas,
         parent: RecyclerView,
         state: RecyclerView.State
-    ) = parent.children.forEach { view ->
-        when (parent.getItemType(view)) {
-            ITEM_TYPE_HEADER, ITEM_TYPE_MIDDLE -> {
-                parent.getDecoratedBoundsWithMargins(view, bounds)
+    ) {
+        parent.children
+            .filter { predicate(parent.getItemViewType(it)) }
+            .forEach {
+                parent.getDecoratedBoundsWithMargins(it, bounds)
 
                 val top = bounds.bottom - height
                 val left = bounds.left + margin
@@ -39,6 +39,5 @@ class SeparatorItemDecoration(
 
                 canvas.drawRect(rect, paint)
             }
-        }
     }
 }
