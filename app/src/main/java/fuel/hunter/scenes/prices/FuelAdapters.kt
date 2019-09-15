@@ -76,8 +76,8 @@ class PricesViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         when (item) {
             is Fuel.Price -> {
                 view.title.text = item.title
-                view.address.text = item.address
-                view.price.text = item.price.toString()
+                view.text.text = item.address
+                view.accent.text = item.price.toString()
                 view.icon.setImageResource(item.logo)
             }
             is Fuel.Category -> {

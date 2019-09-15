@@ -22,13 +22,13 @@
 
     <fragment
             android:id="@+id/savings"
-            android:name="fuel.hunter.scenes.SavingsFragment"
+            android:name="fuel.hunter.scenes.savings.SavingsFragment"
             android:label="@string/app_name"
             tools:layout="@layout/fragment_savings" />
 
     <fragment
             android:id="@+id/precision"
-            android:name="fuel.hunter.scenes.PrecisionFragment"
+            android:name="fuel.hunter.scenes.precision.PrecisionFragment"
             android:label="@string/app_name"
             tools:layout="@layout/fragment_precision" />
 

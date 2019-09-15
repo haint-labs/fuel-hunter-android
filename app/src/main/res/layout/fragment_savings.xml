@@ -28,7 +28,7 @@
                     android:orientation="vertical"
                     android:paddingStart="17dp"
                     android:paddingEnd="17dp"
-                    tools:context=".scenes.SavingsFragment">
+                    tools:context=".scenes.savings.SavingsFragment">
 
                 <TextView
                         android:layout_width="match_parent"
