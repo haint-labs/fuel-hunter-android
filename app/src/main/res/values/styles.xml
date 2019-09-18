@@ -15,4 +15,17 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="ItemTitle">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">0dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="ItemSubTitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/itemSubTitle</item>
+    </style>
+
 </resources>

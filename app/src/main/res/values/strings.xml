@@ -3,6 +3,7 @@
     <string name="fuel_hunter">Fuel Hunter</string>
     <string name="title_savings">Ietaupījums</string>
     <string name="title_precision">Degvielas cenu precizitāte</string>
+    <string name="title_settings">Iestatījumi</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

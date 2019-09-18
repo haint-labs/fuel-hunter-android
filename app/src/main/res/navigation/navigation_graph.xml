@@ -18,6 +18,10 @@
         <action
                 android:id="@+id/main_to_precision"
                 app:destination="@id/precision" />
+
+        <action
+                android:id="@+id/main_to_settings"
+                app:destination="@id/settings" />
     </fragment>
 
     <fragment
@@ -31,5 +35,11 @@
             android:name="fuel.hunter.scenes.precision.PrecisionFragment"
             android:label="@string/app_name"
             tools:layout="@layout/fragment_precision" />
+
+    <fragment
+            android:id="@+id/settings"
+            android:name="fuel.hunter.scenes.settings.SettingsFragment"
+            android:label="@string/app_name"
+            tools:layout="@layout/fragment_settings" />
 
 </navigation>

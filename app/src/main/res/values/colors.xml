@@ -5,7 +5,7 @@
     <color name="colorPrimaryDark">#425D92</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="priceAddress">#8F949F</color>
+    <color name="itemSubTitle">#8F949F</color>
 
     <color name="itemSeparator">#D7DDE8</color>
     <color name="itemShadow">@color/colorPrimary</color>

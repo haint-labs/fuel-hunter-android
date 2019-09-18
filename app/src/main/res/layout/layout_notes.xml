@@ -5,11 +5,11 @@
        tools:showIn="@layout/activity_main">
 
     <ImageView
-            android:id="@+id/ic_savings"
+            android:id="@+id/goToSavings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/ic_precision"
-            app:layout_constraintLeft_toLeftOf="@id/ic_precision"
+            app:layout_constraintBottom_toTopOf="@id/goToPrecision"
+            app:layout_constraintLeft_toLeftOf="@id/goToPrecision"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:src="@drawable/ic_savings"/>
@@ -17,16 +17,16 @@
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/ic_savings"
-            app:layout_constraintBottom_toBottomOf="@id/ic_savings"
-            app:layout_constraintLeft_toRightOf="@id/ic_savings"
+            app:layout_constraintTop_toTopOf="@id/goToSavings"
+            app:layout_constraintBottom_toBottomOf="@id/goToSavings"
+            app:layout_constraintLeft_toRightOf="@id/goToSavings"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginStart="16dp"
             style="@style/CategoryText"
             android:text="Ietaupījums"/>
 
     <ImageView
-            android:id="@+id/ic_precision"
+            android:id="@+id/goToPrecision"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,9 +39,9 @@
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/ic_precision"
-            app:layout_constraintBottom_toBottomOf="@id/ic_precision"
-            app:layout_constraintLeft_toRightOf="@id/ic_precision"
+            app:layout_constraintTop_toTopOf="@id/goToPrecision"
+            app:layout_constraintBottom_toBottomOf="@id/goToPrecision"
+            app:layout_constraintLeft_toRightOf="@id/goToPrecision"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginStart="16dp"
             style="@style/CategoryText"
@@ -53,7 +53,7 @@
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/ic_savings"
+            app:layout_constraintBottom_toTopOf="@id/goToSavings"
             android:layout_marginBottom="3dp"/>
 
     <fuel.hunter.view.shadow.ShadowView
