@@ -6,18 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.extensions.TypedItem
-import fuel.hunter.tools.mapper
+import fuel.hunter.tools.ui.wrapInShadow
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.layout_price_item_content.view.*
 
-internal const val ITEM_TYPE_TEXT = 0
-internal const val ITEM_TYPE_HEADER = 1
-internal const val ITEM_TYPE_MIDDLE = 2
-internal const val ITEM_TYPE_FOOTER = 3
+internal const val ITEM_TYPE_TEXT = -1
 
-internal val separableItemTypes = listOf(
-    ITEM_TYPE_HEADER,
-    ITEM_TYPE_MIDDLE
-)
+internal val separableItemTypes = listOf(SHADOW_TOP, SHADOW_MIDDLE)
 
 internal sealed class PrecisionInfo {
     object Summary : PrecisionInfo()
@@ -34,21 +30,23 @@ internal typealias PrecisionTypedItem = TypedItem<Int, PrecisionInfo>
 internal class PrecisionInfoAdapter(
     private val items: List<PrecisionTypedItem>
 ) : RecyclerView.Adapter<PrecisionInfoViewHolder>() {
-
-    private val itemTypeLayoutMapper = mapper(
-        ITEM_TYPE_TEXT to R.layout.layout_precision_disclaimer,
-        ITEM_TYPE_HEADER to R.layout.layout_price_item_top,
-        ITEM_TYPE_MIDDLE to R.layout.layout_price_item_middle,
-        ITEM_TYPE_FOOTER to R.layout.layout_price_item_bottom
-    )
-
     override fun getItemCount() = items.size
-
     override fun getItemViewType(position: Int) = items[position].type
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrecisionInfoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(itemTypeLayoutMapper.valueFor(viewType), parent, false)
+        val isItem = viewType != ITEM_TYPE_TEXT
+        val layout =
+            if (isItem) R.layout.layout_price_item_content else R.layout.layout_precision_disclaimer
+
+        var view = LayoutInflater.from(parent.context)
+            .inflate(layout, parent, false)
+            .apply {
+                if (id == View.NO_ID) {
+                    id = View.generateViewId()
+                }
+            }
+
+        if (isItem) view = wrapInShadow(parent.context, view, viewType)
 
         return PrecisionInfoViewHolder(view)
     }

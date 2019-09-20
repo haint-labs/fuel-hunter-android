@@ -13,8 +13,10 @@ import fuel.hunter.databinding.FragmentPrecisionBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.fragment_precision.view.*
-import kotlinx.android.synthetic.main.layout_notes.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
 
 internal val precisionInfo = listOf(
@@ -23,7 +25,7 @@ internal val precisionInfo = listOf(
         PrecisionInfo.Summary
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_HEADER,
+        SHADOW_TOP,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_neste,
             "Neste",
@@ -31,7 +33,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_circlek,
             "Circle K",
@@ -39,7 +41,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_kool,
             "Kool",
@@ -47,7 +49,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_ln,
             "Latvijas Nafta",
@@ -55,7 +57,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_viada,
             "Viada",
@@ -63,7 +65,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_virshi,
             "Virši",
@@ -71,7 +73,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_gotika,
             "Gotika Auto",
@@ -79,7 +81,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_MIDDLE,
+        SHADOW_MIDDLE,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_astarte,
             "ASTARTE",
@@ -87,7 +89,7 @@ internal val precisionInfo = listOf(
         )
     ),
     PrecisionTypedItem(
-        ITEM_TYPE_FOOTER,
+        SHADOW_BOTTOM,
         PrecisionInfo.FuelProvider(
             R.drawable.logo_dinaz,
             "DINAZ",
