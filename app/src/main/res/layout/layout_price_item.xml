@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/icon"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@id/icon"
+            app:layout_constraintRight_toLeftOf="@id/accent"
+            app:layout_constraintTop_toTopOf="@id/icon" />
+
+    <TextView
+            android:id="@+id/text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Rīga - Senču iela 2b,\nKatoļu 4, Kurzemes prospekts 4, \nLugažu 6, Brīvības iela 82a"
+            android:textColor="@color/itemSubTitle"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/title"
+            app:layout_constraintLeft_toRightOf="@id/icon"
+            app:layout_constraintRight_toLeftOf="@id/accent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+            android:id="@+id/accent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical|end"
+            android:textColor="@color/colorPrimary"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".25" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

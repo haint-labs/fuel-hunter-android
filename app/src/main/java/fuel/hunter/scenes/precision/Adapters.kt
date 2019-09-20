@@ -9,7 +9,7 @@ import fuel.hunter.extensions.TypedItem
 import fuel.hunter.tools.ui.wrapInShadow
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
-import kotlinx.android.synthetic.main.layout_price_item_content.view.*
+import kotlinx.android.synthetic.main.layout_price_item.view.*
 
 internal const val ITEM_TYPE_TEXT = -1
 
@@ -36,7 +36,7 @@ internal class PrecisionInfoAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrecisionInfoViewHolder {
         val isItem = viewType != ITEM_TYPE_TEXT
         val layout =
-            if (isItem) R.layout.layout_price_item_content else R.layout.layout_precision_disclaimer
+            if (isItem) R.layout.layout_price_item else R.layout.layout_precision_disclaimer
 
         var view = LayoutInflater.from(parent.context)
             .inflate(layout, parent, false)

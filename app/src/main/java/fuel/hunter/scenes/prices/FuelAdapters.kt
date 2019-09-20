@@ -13,7 +13,7 @@ import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_SINGLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.layout_price_category.view.*
-import kotlinx.android.synthetic.main.layout_price_item_content.view.*
+import kotlinx.android.synthetic.main.layout_price_item.view.*
 
 internal typealias FuelTypedItem = TypedItem<Int, Fuel>
 
@@ -55,7 +55,7 @@ class PricesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PricesViewHolder {
         val isItem = viewType in wrappables
         val layout =
-            if (isItem) R.layout.layout_price_item_content else R.layout.layout_price_category
+            if (isItem) R.layout.layout_price_item else R.layout.layout_price_category
 
         var view = LayoutInflater.from(parent.context)
             .inflate(layout, parent, false)
