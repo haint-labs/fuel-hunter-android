@@ -7,35 +7,38 @@ import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.data.Fuel
 import fuel.hunter.extensions.TypedItem
-import fuel.hunter.tools.mapper
+import fuel.hunter.tools.ui.wrapInShadow
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_SINGLE
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.layout_price_category.view.*
 import kotlinx.android.synthetic.main.layout_price_item_content.view.*
 
-internal const val ITEM_TYPE_SINGLE = 0
-internal const val ITEM_TYPE_HEADER = 1
-internal const val ITEM_TYPE_MIDDLE = 2
-internal const val ITEM_TYPE_FOOTER = 3
-internal const val ITEM_TYPE_CATEGORY = 4
-
-internal val separableItemTypes = listOf(ITEM_TYPE_HEADER, ITEM_TYPE_MIDDLE)
-
 internal typealias FuelTypedItem = TypedItem<Int, Fuel>
 
-internal fun flattenFuelTypes(data: Map<Fuel.Category, List<Fuel.Price>>): List<FuelTypedItem> {
+internal const val ITEM_TYPE_CATEGORY = -1
+internal val separableItemTypes = listOf(SHADOW_TOP, SHADOW_MIDDLE)
+
+private val wrappables = arrayOf(SHADOW_TOP, SHADOW_MIDDLE, SHADOW_BOTTOM, SHADOW_SINGLE)
+
+internal fun flattenFuelTypes(
+    data: Map<Fuel.Category, List<Fuel.Price>>
+): List<FuelTypedItem> {
     return data.entries.flatMap { (category, prices) ->
         val result = mutableListOf(
             FuelTypedItem(ITEM_TYPE_CATEGORY, category)
         )
 
         if (prices.size == 1) {
-            return@flatMap result + FuelTypedItem(ITEM_TYPE_SINGLE, prices.first())
+            return@flatMap result + FuelTypedItem(SHADOW_SINGLE, prices.first())
         }
 
         return@flatMap result + prices.mapIndexed { index, item ->
             val type = when (index) {
-                0 -> ITEM_TYPE_HEADER
-                prices.lastIndex -> ITEM_TYPE_FOOTER
-                else -> ITEM_TYPE_MIDDLE
+                0 -> SHADOW_TOP
+                prices.lastIndex -> SHADOW_BOTTOM
+                else -> SHADOW_MIDDLE
             }
 
             FuelTypedItem(type, item)
@@ -46,22 +49,23 @@ internal fun flattenFuelTypes(data: Map<Fuel.Category, List<Fuel.Price>>): List<
 class PricesAdapter(
     private val items: List<FuelTypedItem>
 ) : RecyclerView.Adapter<PricesViewHolder>() {
-
-    private val itemTypeLayoutMapper = mapper(
-        ITEM_TYPE_HEADER to R.layout.layout_price_item_top,
-        ITEM_TYPE_MIDDLE to R.layout.layout_price_item_middle,
-        ITEM_TYPE_FOOTER to R.layout.layout_price_item_bottom,
-        ITEM_TYPE_SINGLE to R.layout.layout_price_item_single,
-        ITEM_TYPE_CATEGORY to R.layout.layout_price_category
-    )
-
     override fun getItemCount() = items.size
-
     override fun getItemViewType(position: Int) = items[position].type
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PricesViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(itemTypeLayoutMapper.valueFor(viewType), parent, false)
+        val isItem = viewType in wrappables
+        val layout =
+            if (isItem) R.layout.layout_price_item_content else R.layout.layout_price_category
+
+        var view = LayoutInflater.from(parent.context)
+            .inflate(layout, parent, false)
+            .apply {
+                if (id == View.NO_ID) {
+                    id = View.generateViewId()
+                }
+            }
+
+        if (isItem) view = wrapInShadow(parent.context, view, viewType)
 
         return PricesViewHolder(view)
     }
