@@ -13,8 +13,27 @@ import fuel.hunter.databinding.FragmentSettingsBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+
+internal val settingsItems = listOf(
+    SettingsItem.Revealable("NESTE", "Atzīmē, kuras uzpildes kompānijas vēlies redzēt sarakstā"),
+    SettingsItem.Revealable("DD", "Aktuālais degvielas veids"),
+    SettingsItem.Checkbox(
+        "GPS",
+        "Izmantot GPS, lai attēlotu lētākās cenas Tavas lokācijas tuvumā",
+        true
+    ),
+    SettingsItem.Checkbox(
+        "Paziņojumi",
+        "Saņemt paziņojumu telefonā, kad samazinās degvielas cena par 1 centu",
+        true
+    ),
+    SettingsItem.Revealable("Aplikācijas valoda", "Izmaini aplikācijas valodu"),
+    SettingsItem.Revealable("Par aplikāciju", "Kā tas strādā")
+)
 
 class SettingsFragment : Fragment() {
 
@@ -29,13 +48,14 @@ class SettingsFragment : Fragment() {
 
         settingsList.apply {
             layoutManager = LinearLayoutManager(activity)
+            adapter = SettingsAdapter(settingsItems)
 
             addItemDecoration(
                 SeparatorItemDecoration(
                     color = color(R.color.itemSeparator),
                     height = dp(1),
                     margin = dp(8),
-                    predicate = { false }
+                    predicate = { it == SHADOW_TOP || it == SHADOW_MIDDLE }
                 )
             )
 
