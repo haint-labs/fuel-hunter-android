@@ -27,19 +27,25 @@
     <fragment
             android:id="@+id/savings"
             android:name="fuel.hunter.scenes.savings.SavingsFragment"
-            android:label="@string/app_name"
             tools:layout="@layout/fragment_savings" />
 
     <fragment
             android:id="@+id/precision"
             android:name="fuel.hunter.scenes.precision.PrecisionFragment"
-            android:label="@string/app_name"
             tools:layout="@layout/fragment_precision" />
 
     <fragment
             android:id="@+id/settings"
-            android:name="fuel.hunter.scenes.settings.SettingsFragment"
-            android:label="@string/app_name"
-            tools:layout="@layout/fragment_settings" />
+            android:name="fuel.hunter.scenes.settings.SettingsFragment">
+
+        <action
+                android:id="@+id/settings_to_language"
+                app:destination="@id/settings_language" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/settings_language"
+            android:name="fuel.hunter.scenes.settings.LanguageFragment"
+            android:label="@string/app_name" />
 
 </navigation>

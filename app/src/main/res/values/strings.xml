@@ -4,6 +4,7 @@
     <string name="title_savings">Ietaupījums</string>
     <string name="title_precision">Degvielas cenu precizitāte</string>
     <string name="title_settings">Iestatījumi</string>
+    <string name="title_language">Aplikācija valoda</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

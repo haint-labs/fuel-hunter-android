@@ -1,77 +1,75 @@
 package fuel.hunter.scenes.settings
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
-import fuel.hunter.databinding.FragmentSettingsBinding
-import fuel.hunter.extensions.color
-import fuel.hunter.extensions.dp
-import fuel.hunter.view.decorations.SeparatorItemDecoration
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
-import kotlinx.android.synthetic.main.fragment_settings.view.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import fuel.hunter.scenes.base.BaseFragment
+import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
-internal val settingsItems = listOf(
-    SettingsItem.Revealable("NESTE", "Atzīmē, kuras uzpildes kompānijas vēlies redzēt sarakstā"),
-    SettingsItem.Revealable("DD", "Aktuālais degvielas veids"),
+sealed class SettingsItem(
+    open val name: String,
+    open val description: String
+) {
+    class Revealable(
+        override val name: String,
+        override val description: String
+    ) : SettingsItem(name, description)
+
+    class Checkbox(
+        override val name: String,
+        override val description: String,
+        val isChecked: Boolean
+    ) : SettingsItem(name, description)
+}
+
+val settingsItems = mapOf(
+    SettingsItem.Revealable(
+        "NESTE",
+        "Atzīmē, kuras uzpildes kompānijas vēlies redzēt sarakstā"
+    ) to -1,
+    SettingsItem.Revealable("DD", "Aktuālais degvielas veids") to -1,
     SettingsItem.Checkbox(
         "GPS",
         "Izmantot GPS, lai attēlotu lētākās cenas Tavas lokācijas tuvumā",
         true
-    ),
+    ) to -1,
     SettingsItem.Checkbox(
         "Paziņojumi",
         "Saņemt paziņojumu telefonā, kad samazinās degvielas cena par 1 centu",
         true
-    ),
-    SettingsItem.Revealable("Aplikācijas valoda", "Izmaini aplikācijas valodu"),
-    SettingsItem.Revealable("Par aplikāciju", "Kā tas strādā")
+    ) to -1,
+    SettingsItem.Revealable(
+        "Aplikācijas valoda",
+        "Izmaini aplikācijas valodu"
+    ) to R.id.settings_to_language,
+    SettingsItem.Revealable("Par aplikāciju", "Kā tas strādā") to -1
 )
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment<SettingsItem>() {
+    override val title = R.string.title_settings
+    override val items = settingsItems.keys.toList()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = FragmentSettingsBinding.inflate(inflater, container, false).root
+    override val layoutProvider = { _: Int ->
+        R.layout.layout_setting_item
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?): Unit = with(view) {
-        toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+    override val binder = { view: View, item: SettingsItem ->
+        with(view) {
+            settingTitle.text = item.name
+            settingsDescription.text = item.description
 
-        settingsList.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = SettingsAdapter(settingsItems)
+            when (item) {
+                is SettingsItem.Revealable -> settingToggle.visibility = View.INVISIBLE
+                is SettingsItem.Checkbox -> settingToggle.isChecked = item.isChecked
+            }
+        }
+    }
 
-            addItemDecoration(
-                SeparatorItemDecoration(
-                    color = color(R.color.itemSeparator),
-                    height = dp(1),
-                    margin = dp(8),
-                    predicate = { it == SHADOW_TOP || it == SHADOW_MIDDLE }
-                )
-            )
+    override var onClick = { item: SettingsItem ->
+        val destination = settingsItems[item] ?: -1
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val alpha = with(recyclerView) {
-                        val offset = computeVerticalScrollOffset()
-                        val max = dp(50)
-
-                        offset.coerceIn(0, max.toInt()) / max
-                    }
-
-                    // TODO: that's bad
-                    activity?.toolbarShadow?.alpha = alpha
-                }
-            })
+        if (destination != -1) {
+            findNavController().navigate(destination)
         }
     }
 }
