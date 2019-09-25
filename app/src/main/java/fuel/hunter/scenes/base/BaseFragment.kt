@@ -26,7 +26,7 @@ abstract class BaseFragment<T> : Fragment() {
     abstract val binder: ViewHolderBinder<T>
     abstract val layoutProvider: ViewLayoutProvider
 
-    var viewTypeDetector: ViewTypeDetector = defaultTypeDetector
+    open var viewTypeDetector: ViewTypeDetector = defaultTypeDetector
 
     abstract val onClick: ItemClickListener<T>
 

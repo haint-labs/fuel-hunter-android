@@ -41,11 +41,20 @@
         <action
                 android:id="@+id/settings_to_language"
                 app:destination="@id/settings_language" />
+
+        <action
+                android:id="@+id/settings_to_companies"
+                app:destination="@id/settings_companies" />
+
     </fragment>
 
     <fragment
             android:id="@+id/settings_language"
-            android:name="fuel.hunter.scenes.settings.LanguageFragment"
-            android:label="@string/app_name" />
+            android:name="fuel.hunter.scenes.settings.LanguageFragment" />
+
+
+    <fragment
+            android:id="@+id/settings_companies"
+            android:name="fuel.hunter.scenes.settings.CompaniesFragment" />
 
 </navigation>

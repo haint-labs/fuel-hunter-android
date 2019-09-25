@@ -26,7 +26,7 @@ val settingsItems = mapOf(
     SettingsItem.Revealable(
         "NESTE",
         "Atzīmē, kuras uzpildes kompānijas vēlies redzēt sarakstā"
-    ) to -1,
+    ) to R.id.settings_to_companies,
     SettingsItem.Revealable("DD", "Aktuālais degvielas veids") to -1,
     SettingsItem.Checkbox(
         "GPS",

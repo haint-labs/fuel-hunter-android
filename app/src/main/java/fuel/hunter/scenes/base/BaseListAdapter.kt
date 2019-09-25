@@ -7,6 +7,8 @@ import androidx.core.view.ViewCompat.generateViewId
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.tools.ui.wrapInShadow
 import fuel.hunter.view.shadow.ShadowView
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
+import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_SINGLE
 
 typealias ViewTypeDetector = (index: Int, total: Int) -> Int
 typealias ViewLayoutProvider = (viewType: Int) -> Int
@@ -51,7 +53,9 @@ class BaseListAdapter<T>(
             .inflate(layoutId, parent, false)
             .apply { id = generateViewId() }
 
-        view = wrapInShadow(parent.context, view, viewType)
+        if (viewType in SHADOW_SINGLE..SHADOW_BOTTOM) {
+            view = wrapInShadow(parent.context, view, viewType)
+        }
 
         return BaseViewHolder(view, binder)
     }

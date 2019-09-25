@@ -4,13 +4,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+    <ImageView
+            android:id="@+id/settingsIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="6dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/settingTitle"
+            app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
             android:id="@+id/settingTitle"
             style="@style/ItemTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/settingsDescription"
             app:layout_constraintEnd_toStartOf="@id/settingToggle"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/settingsIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
