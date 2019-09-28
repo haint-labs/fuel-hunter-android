@@ -1,9 +1,10 @@
 package fuel.hunter.scenes.settings
 
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
+import fuel.hunter.scenes.base.ItemClickListener
+import fuel.hunter.tools.navigateTo
 import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
 sealed class SettingsItem(
@@ -65,11 +66,7 @@ class SettingsFragment : BaseFragment<SettingsItem>() {
         }
     }
 
-    override var onClick = { item: SettingsItem ->
-        val destination = settingsItems[item] ?: -1
-
-        if (destination != -1) {
-            findNavController().navigate(destination)
-        }
+    override var onClick: ItemClickListener<SettingsItem> = { item: SettingsItem ->
+        settingsItems[item]?.let { navigateTo(it) }
     }
 }

@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.databinding.FragmentPrecisionBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
+import fuel.hunter.tools.navigateUp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
@@ -107,7 +107,7 @@ class PrecisionFragment : Fragment() {
     ): View? = FragmentPrecisionBinding.inflate(inflater, container, false).root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?): Unit = with(view) {
-        toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        toolbar.setNavigationOnClickListener { navigateUp() }
 
         precisionInfoList.apply {
             layoutManager = LinearLayoutManager(activity)
