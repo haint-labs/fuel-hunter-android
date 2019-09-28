@@ -28,22 +28,22 @@ val settingsItems = mapOf(
         "NESTE",
         "Atzīmē, kuras uzpildes kompānijas vēlies redzēt sarakstā"
     ) to R.id.settings_to_companies,
-    SettingsItem.Revealable("DD", "Aktuālais degvielas veids") to -1,
+    SettingsItem.Revealable("DD", "Aktuālais degvielas veids") to null,
     SettingsItem.Checkbox(
         "GPS",
         "Izmantot GPS, lai attēlotu lētākās cenas Tavas lokācijas tuvumā",
         true
-    ) to -1,
+    ) to null,
     SettingsItem.Checkbox(
         "Paziņojumi",
         "Saņemt paziņojumu telefonā, kad samazinās degvielas cena par 1 centu",
         true
-    ) to -1,
+    ) to null,
     SettingsItem.Revealable(
         "Aplikācijas valoda",
         "Izmaini aplikācijas valodu"
     ) to R.id.settings_to_language,
-    SettingsItem.Revealable("Par aplikāciju", "Kā tas strādā") to -1
+    SettingsItem.Revealable("Par aplikāciju", "Kā tas strādā") to null
 )
 
 class SettingsFragment : BaseFragment<SettingsItem>() {
