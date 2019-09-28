@@ -6,6 +6,7 @@
     <string name="title_settings">Iestatījumi</string>
     <string name="title_language">Aplikācija valoda</string>
     <string name="title_companies">Uzpildes kompānijas</string>
+    <string name="title_fuel_type">Degvielas veids</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

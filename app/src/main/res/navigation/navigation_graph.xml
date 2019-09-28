@@ -46,6 +46,10 @@
                 android:id="@+id/settings_to_companies"
                 app:destination="@id/settings_companies" />
 
+        <action
+                android:id="@+id/settings_to_fuel_types"
+                app:destination="@id/settings_fuel_types" />
+
     </fragment>
 
     <fragment
@@ -56,5 +60,10 @@
     <fragment
             android:id="@+id/settings_companies"
             android:name="fuel.hunter.scenes.settings.CompaniesFragment" />
+
+
+    <fragment
+            android:id="@+id/settings_fuel_types"
+            android:name="fuel.hunter.scenes.settings.FuelTypeFragment" />
 
 </navigation>
