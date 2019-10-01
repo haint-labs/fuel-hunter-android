@@ -15,11 +15,8 @@ import fuel.hunter.view.decorations.SeparatorItemDecoration
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.coroutines.channels.BroadcastChannel
 
 abstract class BaseFragment<T> : Fragment() {
-    private val _channel = BroadcastChannel<T>(1)
-
     abstract val title: Int
     abstract val items: List<T>
     abstract val layoutProvider: ViewLayoutProvider
