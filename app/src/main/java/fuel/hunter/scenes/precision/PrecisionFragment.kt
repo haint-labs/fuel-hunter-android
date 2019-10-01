@@ -3,91 +3,58 @@ package fuel.hunter.scenes.precision
 import android.view.View
 import fuel.hunter.R
 import fuel.hunter.scenes.base.*
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.layout_price_item.view.*
 
 internal val precisionInfo = listOf(
-    PrecisionTypedItem(
-        ITEM_TYPE_TEXT,
-        PrecisionInfo.Summary
+    PrecisionInfo.Summary,
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_neste,
+        "Neste",
+        "Lētākā degviela Rīgā."
     ),
-    PrecisionTypedItem(
-        SHADOW_TOP,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_neste,
-            "Neste",
-            "Lētākā degviela Rīgā."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_circlek,
+        "Circle K",
+        "Lētākā degviela Rīgā."
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_circlek,
-            "Circle K",
-            "Lētākā degviela Rīgā."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_kool,
+        "Kool",
+        "Lētākā degviela Rīgā."
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_kool,
-            "Kool",
-            "Lētākā degviela Rīgā."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_ln,
+        "Latvijas Nafta",
+        "Zemākās cenas DUS tīklā Latvijā, pa reģioniem (Rīgas rajons, Liepājas rajons, Ventspils rajons, Zemgale, Vidzeme, Latgale)"
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_ln,
-            "Latvijas Nafta",
-            "Zemākās cenas DUS tīklā Latvijā, pa reģioniem (Rīgas rajons, Liepājas rajons, Ventspils rajons, Zemgale, Vidzeme, Latgale)"
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_viada,
+        "Viada",
+        "Patreiz nav pieejamas cenas."
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_viada,
-            "Viada",
-            "Patreiz nav pieejamas cenas."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_virshi,
+        "Virši",
+        "Lētākā degviela Rīgā un Pierīgā."
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_virshi,
-            "Virši",
-            "Lētākā degviela Rīgā un Pierīgā."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_gotika,
+        "Gotika Auto",
+        "Zemākās cenas DUS tīklā Latvijā."
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_gotika,
-            "Gotika Auto",
-            "Zemākās cenas DUS tīklā Latvijā."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_astarte,
+        "ASTARTE",
+        "Patreiz nav pieejamas cenas."
     ),
-    PrecisionTypedItem(
-        SHADOW_MIDDLE,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_astarte,
-            "ASTARTE",
-            "Patreiz nav pieejamas cenas."
-        )
-    ),
-    PrecisionTypedItem(
-        SHADOW_BOTTOM,
-        PrecisionInfo.FuelProvider(
-            R.drawable.logo_dinaz,
-            "DINAZ",
-            "Patreiz nav pieejamas cenas."
-        )
+    PrecisionInfo.FuelProvider(
+        R.drawable.logo_dinaz,
+        "DINAZ",
+        "Patreiz nav pieejamas cenas."
     )
 )
 
-internal class PrecisionFragment : BaseFragment<PrecisionTypedItem>() {
+internal class PrecisionFragment : BaseFragment<PrecisionInfo>() {
     override val title: Int get() = R.string.title_precision
     override val items = precisionInfo
 
@@ -100,11 +67,9 @@ internal class PrecisionFragment : BaseFragment<PrecisionTypedItem>() {
         }
     }
 
-    override val binder: ViewHolderBinder<PrecisionTypedItem> = { view, typedItem ->
-        when (typedItem.item) {
+    override val binder: ViewHolderBinder<PrecisionInfo> = { view, item ->
+        when (item) {
             is PrecisionInfo.FuelProvider -> {
-                val item = typedItem.item
-
                 view.apply {
                     icon.setImageResource(item.logo)
                     title.text = item.name
