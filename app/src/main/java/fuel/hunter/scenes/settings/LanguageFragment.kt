@@ -8,12 +8,6 @@ import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
 typealias LanguageItem = Pair<String, String>
 
-internal val languageItems = listOf(
-    "Latviski" to "Latviski",
-    "English" to "Angliski",
-    "Русский" to "Krieviski"
-)
-
 class LanguageFragment : BaseFragment<LanguageItem>() {
     override val title = R.string.title_language
     override val items = languageItems
@@ -30,3 +24,9 @@ class LanguageFragment : BaseFragment<LanguageItem>() {
         }
     }
 }
+
+private val languageItems = listOf(
+    "Latviski" to "Latviski",
+    "English" to "Angliski",
+    "Русский" to "Krieviski"
+)
