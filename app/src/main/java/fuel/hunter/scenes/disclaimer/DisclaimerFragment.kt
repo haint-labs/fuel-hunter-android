@@ -21,8 +21,8 @@ internal class DisclaimerFragment : BaseFragment<Disclaimer>() {
 
     override var viewTypeDetector = ViewTypeDetectors.Category
 
-    override val layoutProvider: ViewLayoutProvider = { viewType ->
-        when (viewType) {
+    override val layoutProvider: ViewLayoutProvider = {
+        when (it) {
             VIEW_TYPE_CATEGORY -> R.layout.disclaimer_header
             else -> R.layout.layout_price_item
         }
