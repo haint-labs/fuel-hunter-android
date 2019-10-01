@@ -1,23 +1,12 @@
 package fuel.hunter.scenes.precision
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
-import fuel.hunter.databinding.FragmentPrecisionBinding
-import fuel.hunter.extensions.color
-import fuel.hunter.extensions.dp
-import fuel.hunter.tools.navigateUp
-import fuel.hunter.view.decorations.SeparatorItemDecoration
+import fuel.hunter.scenes.base.*
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
-import kotlinx.android.synthetic.main.fragment_precision.view.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.android.synthetic.main.layout_price_item.view.*
 
 internal val precisionInfo = listOf(
     PrecisionTypedItem(
@@ -98,43 +87,31 @@ internal val precisionInfo = listOf(
     )
 )
 
-class PrecisionFragment : Fragment() {
+internal class PrecisionFragment : BaseFragment<PrecisionTypedItem>() {
+    override val title: Int get() = R.string.title_precision
+    override val items = precisionInfo
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = FragmentPrecisionBinding.inflate(inflater, container, false).root
+    override var viewTypeDetector = ViewTypeDetectors.Category
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?): Unit = with(view) {
-        toolbar.setNavigationOnClickListener { navigateUp() }
+    override val layoutProvider: ViewLayoutProvider = { viewType ->
+        when (viewType) {
+            VIEW_TYPE_CATEGORY -> R.layout.layout_precision_disclaimer
+            else -> R.layout.layout_price_item
+        }
+    }
 
-        precisionInfoList.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = PrecisionInfoAdapter(precisionInfo)
+    override val binder: ViewHolderBinder<PrecisionTypedItem> = { view, typedItem ->
+        when (typedItem.item) {
+            is PrecisionInfo.FuelProvider -> {
+                val item = typedItem.item
 
-            addItemDecoration(
-                SeparatorItemDecoration(
-                    color = color(R.color.itemSeparator),
-                    height = dp(1),
-                    margin = dp(8),
-                    predicate = { separableItemTypes.contains(it) }
-                )
-            )
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val alpha = with(recyclerView) {
-                        val offset = computeVerticalScrollOffset()
-                        val max = dp(50)
-
-                        offset.coerceIn(0, max.toInt()) / max
-                    }
-
-                    // TODO: that's bad
-                    activity?.toolbarShadow?.alpha = alpha
+                view.apply {
+                    icon.setImageResource(item.logo)
+                    title.text = item.name
+                    text.text = item.description
+                    accent.visibility = View.GONE
                 }
-            })
+            }
         }
     }
 }

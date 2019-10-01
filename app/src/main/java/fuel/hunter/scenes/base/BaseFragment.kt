@@ -26,7 +26,7 @@ abstract class BaseFragment<T> : Fragment() {
     abstract val binder: ViewHolderBinder<T>
 
     open var navIcon: Int = R.drawable.ic_back_arrow
-    open var viewTypeDetector: ViewTypeDetector = ViewTypeDetectors.Default
+    open var viewTypeDetector = ViewTypeDetectors.Default
 
     val adapter by lazy { BaseListAdapter(items, layoutProvider, binder, viewTypeDetector) }
 

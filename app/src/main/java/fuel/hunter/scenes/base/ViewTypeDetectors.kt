@@ -6,6 +6,8 @@ import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 
 typealias ViewTypeDetector = (index: Int, total: Int) -> Int
 
+const val VIEW_TYPE_CATEGORY = -1
+
 object ViewTypeDetectors {
     val Default: ViewTypeDetector = { index, total ->
         when (index) {

@@ -33,7 +33,7 @@ class CompaniesFragment : BaseFragment<Fuel>() {
     override val title = R.string.title_companies
     override val items = fuelCompanies
 
-    override var viewTypeDetector: ViewTypeDetector = ViewTypeDetectors.Category
+    override var viewTypeDetector = ViewTypeDetectors.Category
 
     override val layoutProvider = { viewType: Int ->
         when (viewType) {
