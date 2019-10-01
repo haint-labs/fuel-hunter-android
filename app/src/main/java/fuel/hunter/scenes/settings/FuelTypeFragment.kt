@@ -6,9 +6,7 @@ import androidx.core.view.isGone
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.ViewTypeDetector
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
-import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
+import fuel.hunter.scenes.base.ViewTypeDetectors
 import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
 sealed class FuelTypes {
@@ -29,12 +27,7 @@ class FuelTypeFragment : BaseFragment<FuelTypes>() {
     override val title = R.string.title_fuel_type
     override val items = fuelTypes
 
-    override var viewTypeDetector: ViewTypeDetector = type@{ index: Int, total: Int ->
-        if (index == 0) return@type -1
-        if (index == 1) return@type SHADOW_TOP
-        if (index == total) return@type SHADOW_BOTTOM
-        SHADOW_MIDDLE
-    }
+    override var viewTypeDetector: ViewTypeDetector = ViewTypeDetectors.Category
 
     override val layoutProvider = { viewType: Int ->
         when (viewType) {
