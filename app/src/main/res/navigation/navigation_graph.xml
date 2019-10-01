@@ -36,7 +36,7 @@
 
     <fragment
             android:id="@+id/settings"
-            android:name="fuel.hunter.scenes.settings.SettingsFragment">
+            android:name="fuel.hunter.scenes.settings.PreferencesFragment">
 
         <action
                 android:id="@+id/settings_to_language"
