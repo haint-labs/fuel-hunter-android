@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.asFlow
 typealias ViewTypeDetector = (index: Int, total: Int) -> Int
 typealias ViewLayoutProvider = (viewType: Int) -> Int
 typealias ViewHolderBinder<T> = (View, T) -> Unit
-typealias ItemClickListener<T> = (item: T) -> Unit
 
 val defaultTypeDetector: ViewTypeDetector = { index, total ->
     when (index) {
