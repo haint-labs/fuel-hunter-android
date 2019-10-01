@@ -10,21 +10,9 @@ import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.scenes.base.ViewTypeDetectors
 import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
-sealed class Fuel {
-    object Description : Fuel()
-
-    data class Cheapest(val isChecked: Boolean) : Fuel()
-
-    data class Company(
-        val logo: Int,
-        val name: String,
-        val isChecked: Boolean
-    ) : Fuel()
-}
-
 class CompaniesFragment : BaseFragment<Fuel>() {
     override val title = R.string.title_companies
-    override val items = fuelCompanies
+    override val items = fuelItems
 
     override var viewTypeDetector = ViewTypeDetectors.Category
 
@@ -38,7 +26,7 @@ class CompaniesFragment : BaseFragment<Fuel>() {
     override val binder = { view: View, item: Fuel ->
         with(view) {
             when (item) {
-                is Fuel.Description -> {
+                is Fuel.Header -> {
                     if (view !is TextView) {
                         return@with
                     }
@@ -63,8 +51,8 @@ class CompaniesFragment : BaseFragment<Fuel>() {
     }
 }
 
-private val fuelCompanies = listOf(
-    Fuel.Description,
+private val fuelItems = listOf(
+    Fuel.Header,
     Fuel.Cheapest(false),
     Fuel.Company(R.drawable.logo_neste, "NESTE", true),
     Fuel.Company(R.drawable.logo_circlek, "Circle K", true),

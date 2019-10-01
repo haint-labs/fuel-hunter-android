@@ -5,48 +5,35 @@ import android.widget.TextView
 import androidx.core.view.isGone
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
-import fuel.hunter.scenes.base.ViewTypeDetector
+import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
+import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.scenes.base.ViewTypeDetectors
 import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
-sealed class FuelTypes {
-    object Header : FuelTypes()
-    data class FuelType(val name: String, val isChecked: Boolean = false) : FuelTypes()
-}
-
-private val fuelTypes = listOf(
-    FuelTypes.Header,
-    FuelTypes.FuelType("DD | Dīzeļdegviela"),
-    FuelTypes.FuelType("DD | Pro Dīzeļdegviela"),
-    FuelTypes.FuelType("95 | Benzīns"),
-    FuelTypes.FuelType("98 | Benzīns"),
-    FuelTypes.FuelType("Auto gāze")
-)
-
-class FuelTypeFragment : BaseFragment<FuelTypes>() {
+class FuelTypeFragment : BaseFragment<Fuel>() {
     override val title = R.string.title_fuel_type
-    override val items = fuelTypes
+    override val items = fuelItems
 
-    override var viewTypeDetector: ViewTypeDetector = ViewTypeDetectors.Category
+    override var viewTypeDetector = ViewTypeDetectors.Category
 
-    override val layoutProvider = { viewType: Int ->
-        when (viewType) {
-            -1 -> R.layout.layout_setting_header
+    override val layoutProvider: ViewLayoutProvider = {
+        when (it) {
+            VIEW_TYPE_CATEGORY -> R.layout.layout_setting_header
             else -> R.layout.layout_setting_item
         }
     }
 
-    override val binder = { view: View, item: FuelTypes ->
+    override val binder = { view: View, item: Fuel ->
         with(view) {
             when (item) {
-                is FuelTypes.Header -> {
+                is Fuel.Header -> {
                     if (view !is TextView) {
                         return@with
                     }
 
                     view.text = "Atzīmē degvielas veidus, kuru cenas\nTev interesē."
                 }
-                is FuelTypes.FuelType -> {
+                is Fuel.Type -> {
                     settingTitle.text = item.name
                     settingToggle.isChecked = item.isChecked
                     settingsDescription.isGone = true
@@ -55,3 +42,12 @@ class FuelTypeFragment : BaseFragment<FuelTypes>() {
         }
     }
 }
+
+private val fuelItems = listOf(
+    Fuel.Header,
+    Fuel.Type("DD | Dīzeļdegviela"),
+    Fuel.Type("DD | Pro Dīzeļdegviela"),
+    Fuel.Type("95 | Benzīns"),
+    Fuel.Type("98 | Benzīns"),
+    Fuel.Type("Auto gāze")
+)
