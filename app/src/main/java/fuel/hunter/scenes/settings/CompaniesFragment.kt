@@ -6,7 +6,6 @@ import androidx.core.view.isGone
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.ViewTypeDetector
-import fuel.hunter.tools.debug
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
@@ -75,9 +74,5 @@ class CompaniesFragment : BaseFragment<Fuel>() {
                 }
             }
         }
-    }
-
-    override var onClick = { _: Fuel ->
-        debug("clicked")
     }
 }

@@ -5,30 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
+import fuel.hunter.tools.navigateUp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.fragment_base_list.*
+import kotlinx.coroutines.channels.BroadcastChannel
 
 abstract class BaseFragment<T> : Fragment() {
+    private val _channel = BroadcastChannel<T>(1)
 
     abstract val title: Int
-    var navIcon: Int = R.drawable.ic_back_arrow
-
     abstract val items: List<T>
-
-    abstract val binder: ViewHolderBinder<T>
     abstract val layoutProvider: ViewLayoutProvider
+    abstract val binder: ViewHolderBinder<T>
 
+    open var navIcon: Int = R.drawable.ic_back_arrow
     open var viewTypeDetector: ViewTypeDetector = defaultTypeDetector
 
-    abstract val onClick: ItemClickListener<T>
+    val adapter by lazy { BaseListAdapter(items, layoutProvider, binder, viewTypeDetector) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,14 +44,12 @@ abstract class BaseFragment<T> : Fragment() {
     private fun setupToolbar() = toolbar.apply {
         toolbarTitle.text = getString(this@BaseFragment.title)
         setNavigationIcon(navIcon)
-        setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        setNavigationOnClickListener { navigateUp() }
     }
 
     private fun setupList() = listView.apply {
         layoutManager = LinearLayoutManager(context)
-        adapter = BaseListAdapter(items, layoutProvider, binder, viewTypeDetector, onClick)
+        adapter = this@BaseFragment.adapter
 
         addItemDecoration(
             SeparatorItemDecoration(

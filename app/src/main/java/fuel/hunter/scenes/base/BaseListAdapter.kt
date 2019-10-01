@@ -9,6 +9,9 @@ import fuel.hunter.tools.ui.wrapInShadow
 import fuel.hunter.view.shadow.ShadowView
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_SINGLE
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 
 typealias ViewTypeDetector = (index: Int, total: Int) -> Int
 typealias ViewLayoutProvider = (viewType: Int) -> Int
@@ -27,21 +30,17 @@ class BaseViewHolder<T>(
     private val view: View,
     private val binder: ViewHolderBinder<T>
 ) : RecyclerView.ViewHolder(view) {
-    internal fun bind(item: T, onClick: ItemClickListener<T>) {
-        binder(view, item)
-        view.setOnClickListener {
-            onClick(item)
-        }
-    }
+    internal fun bind(item: T): Unit = binder(view, item)
 }
 
 class BaseListAdapter<T>(
     private val items: List<T>,
     private val layoutProvider: ViewLayoutProvider,
     private val binder: ViewHolderBinder<T>,
-    private val viewTypeDetector: ViewTypeDetector = defaultTypeDetector,
-    private val onClick: ItemClickListener<T>
+    private val viewTypeDetector: ViewTypeDetector = defaultTypeDetector
 ) : RecyclerView.Adapter<BaseViewHolder<T>>() {
+    private val _onItemClick = BroadcastChannel<T>(1)
+    val onItemClick: Flow<T> get() = _onItemClick.asFlow()
 
     override fun getItemCount() = items.size
     override fun getItemViewType(position: Int): Int = viewTypeDetector(position, items.size)
@@ -61,6 +60,11 @@ class BaseListAdapter<T>(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
-        holder.bind(items[position], onClick)
+        val item = items[position]
+
+        holder.bind(item)
+        holder.itemView.setOnClickListener {
+            _onItemClick.offer(item)
+        }
     }
 }

@@ -4,7 +4,6 @@ import android.view.View
 import androidx.core.view.isGone
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
-import fuel.hunter.tools.debug
 import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
 typealias LanguageItem = Pair<String, String>
@@ -29,9 +28,5 @@ class LanguageFragment : BaseFragment<LanguageItem>() {
             settingsDescription.text = item.second
             settingToggle.isGone = true
         }
-    }
-
-    override var onClick = { (title, _): LanguageItem ->
-        debug("clicked")
     }
 }
