@@ -16,7 +16,11 @@ fun Fragment.navigateTo(@IdRes destination: Int) {
         }
     }
 
-    findNavController().navigate(destination, null, options)
+    with(findNavController()) {
+        // NOTE: https://stackoverflow.com/a/56410391
+        currentDestination?.getAction(destination) ?: return
+        navigate(destination, null, options)
+    }
 }
 
 fun Fragment.navigateUp() {
