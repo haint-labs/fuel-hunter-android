@@ -19,8 +19,9 @@ class ShadowView @JvmOverloads constructor(
         const val SHADOW_TOP = 1
         const val SHADOW_MIDDLE = 2
         const val SHADOW_BOTTOM = 3
+        const val SHADOW_ALL = 4
 
-        @IntDef(SHADOW_SINGLE, SHADOW_TOP, SHADOW_MIDDLE, SHADOW_BOTTOM)
+        @IntDef(SHADOW_SINGLE, SHADOW_TOP, SHADOW_MIDDLE, SHADOW_BOTTOM, SHADOW_ALL)
         @Retention(AnnotationRetention.SOURCE)
         annotation class ShadowStyle
     }
@@ -32,6 +33,8 @@ class ShadowView @JvmOverloads constructor(
     var shadowColor = Color.GRAY
     var shadowRadius = cornerRadius
     var shadowAlpha = 255
+
+    var fillColor = Color.TRANSPARENT
 
     var offsetTop = dp(0)
     var offsetBottom = dp(0)
@@ -49,6 +52,8 @@ class ShadowView @JvmOverloads constructor(
             shadowRadius = getDimension(R.styleable.ShadowView_shadowRadius, shadowRadius)
             shadowAlpha = getInt(R.styleable.ShadowView_shadowAlpha, shadowAlpha).coerceIn(0, 255)
 
+            fillColor = getColor(R.styleable.ShadowView_fillColor, fillColor)
+
             offsetTop = getDimension(R.styleable.ShadowView_offsetTop, offsetTop)
             offsetBottom = getDimension(R.styleable.ShadowView_offsetBottom, offsetBottom)
 
@@ -61,15 +66,12 @@ class ShadowView @JvmOverloads constructor(
         maskFilter = BlurMaskFilter(shadowRadius, BlurMaskFilter.Blur.OUTER)
     }
 
+    private val fillPaint = Paint()
+
     private val path = Path()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        paint.apply {
-            color = shadowColor
-            alpha = shadowAlpha
-        }
 
         val h = height.toFloat()
         val w = width.toFloat()
@@ -94,9 +96,21 @@ class ShadowView @JvmOverloads constructor(
                 path.addRoundRect(cR, cR, w - cR, h - cR, cR, cR, Path.Direction.CCW)
                 path.addRect(cR, cR, w - 2 * cR, h - 2 * cR, Path.Direction.CCW)
             }
+            SHADOW_ALL -> {
+                path.addRoundRect(cR, offsetTop + cR, w - cR, h, cR, cR, Path.Direction.CCW)
+            }
         }
 
+        paint.apply {
+            color = shadowColor
+            alpha = shadowAlpha
+        }
         canvas.drawPath(path, paint)
+
+        fillPaint.apply {
+            color = fillColor
+        }
+        canvas.drawPath(path, fillPaint)
     }
 }
 
