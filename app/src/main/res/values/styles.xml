@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="dialogTheme">@style/AppDialogTheme</item>
     </style>
 
     <style name="CategoryText">
@@ -31,6 +32,16 @@
     <style name="ItemSwitch">
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="android:colorForeground">@android:color/darker_gray</item>
+    </style>
+
+    <style name="AppDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/dialogBackground</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
 </resources>

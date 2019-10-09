@@ -50,6 +50,10 @@
                 android:id="@+id/settings_to_fuel_types"
                 app:destination="@id/settings_fuel_types" />
 
+        <action
+                android:id="@+id/settings_to_notification"
+                app:destination="@id/settings_notifications" />
+
     </fragment>
 
     <fragment
@@ -65,5 +69,9 @@
     <fragment
             android:id="@+id/settings_fuel_types"
             android:name="fuel.hunter.scenes.settings.FuelTypeFragment" />
+
+    <dialog
+            android:id="@+id/settings_notifications"
+            android:name="fuel.hunter.scenes.settings.NotificationFragment" />
 
 </navigation>

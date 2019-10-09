@@ -9,4 +9,7 @@
 
     <color name="itemSeparator">#D7DDE8</color>
     <color name="itemShadow">@color/colorPrimary</color>
+
+    <color name="dialogBackground">#4D2E3F61</color>
+    <color name="dialogCancel">#C23737</color>
 </resources>

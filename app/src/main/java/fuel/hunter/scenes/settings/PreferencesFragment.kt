@@ -76,7 +76,7 @@ private val preferenceItems = mapOf(
         "Paziņojumi",
         "Saņemt paziņojumu telefonā, kad samazinās degvielas cena par 1 centu",
         true
-    ) to null,
+    ) to R.id.settings_to_notification,
     Preference.Reveal(
         "Aplikācijas valoda",
         "Izmaini aplikācijas valodu"
