@@ -9,6 +9,7 @@ object kt {
 
 object androidx {
     private const val version = "1.1.0"
+    private const val lifecycleVersion = "2.1.0"
 
     const val core = "androidx.core:core-ktx:${version}"
     const val appCompat = "androidx.appcompat:appcompat:${version}"
@@ -18,6 +19,12 @@ object androidx {
     const val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
     const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:2.2.0-alpha02"
     const val navigationUi = "androidx.navigation:navigation-ui-ktx:2.2.0-alpha02"
+
+    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
+    const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
+    const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
+
 
     const val testRunner = "androidx.test:runner:1.2.0"
     const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"

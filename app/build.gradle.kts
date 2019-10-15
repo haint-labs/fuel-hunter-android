@@ -44,6 +44,11 @@ dependencies {
     implementation(androidx.navigationFragment)
     implementation(androidx.navigationUi)
 
+    implementation(androidx.lifecycleViewModel)
+    implementation(androidx.lifecycleLiveData)
+    implementation(androidx.lifecycleExtensions)
+    implementation(androidx.lifecycleRuntime)
+
     testImplementation(junit)
 
     androidTestImplementation(androidx.testRunner)
