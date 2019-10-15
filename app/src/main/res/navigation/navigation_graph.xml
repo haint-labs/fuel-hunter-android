@@ -72,6 +72,6 @@
 
     <dialog
             android:id="@+id/settings_notifications"
-            android:name="fuel.hunter.scenes.settings.NotificationFragment" />
+            android:name="fuel.hunter.scenes.settings.notification.NotificationFragment" />
 
 </navigation>

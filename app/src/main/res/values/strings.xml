@@ -37,4 +37,7 @@
     <string name="precision_source">Zemāko cenu datus patreiz iegūstam no degvielas kompāniju mājaslapām, tādēļ patreiz šiem datiem ir tikai informatīva nozīme. Turklāt mājaslapā tā informācija netiek atjaunota brīvdienās un svētku dienās.</string>
     <string name="precision_motivation">Tomēr, uzskatām, ka jebkurš autobraucējs būs tikai ieguvējs, ja zinās kad kādai degvielas kompānijai krītas degvielas cenas un kur atrast degvielas uzpildes staciju ar lētāko cenu.</string>
     <string name="precision_available_sources">Patreiz iegūstam šādus datus:</string>
+
+    <string name="notification_text">Saņemt paziņojumus kad samazinās degvielas cena par %1$s centiem</string>
+
 </resources>

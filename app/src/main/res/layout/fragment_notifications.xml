@@ -66,7 +66,7 @@
                 app:layout_constraintTop_toBottomOf="@id/notificationHeader" />
 
         <Button
-                android:id="@+id/minus"
+                android:id="@+id/minusBtn"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="54dp"
                 android:layout_height="40dp"
@@ -76,13 +76,13 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/plus"
+                app:layout_constraintEnd_toStartOf="@id/plusBtn"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/notificationDescription" />
 
         <Button
-                android:id="@+id/plus"
+                android:id="@+id/plusBtn"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="54dp"
                 android:layout_height="40dp"
@@ -92,9 +92,9 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/minus"
+                app:layout_constraintStart_toEndOf="@id/minusBtn"
                 app:layout_constraintTop_toBottomOf="@id/notificationDescription"
-                app:layout_constraintTop_toTopOf="@id/minus" />
+                app:layout_constraintTop_toTopOf="@id/minusBtn" />
 
         <Button
                 android:id="@+id/accept"
@@ -110,7 +110,7 @@
                 android:textStyle="normal"
                 app:layout_constraintEnd_toStartOf="@id/cancel"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/minus" />
+                app:layout_constraintTop_toBottomOf="@id/minusBtn" />
 
         <Button
                 android:id="@+id/cancel"
