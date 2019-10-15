@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import fuel.hunter.R
 import fuel.hunter.extensions.onClick
+import fuel.hunter.tools.navigateUp
 import kotlinx.android.synthetic.main.fragment_notifications.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
@@ -33,6 +34,10 @@ class NotificationFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        notificationBackground.onClick
+            .onEach { navigateUp() }
+            .launchIn(lifecycleScope)
+
         setupCentsControls()
     }
 
@@ -43,14 +48,13 @@ class NotificationFragment : AppCompatDialogFragment() {
     }
 
     private fun setupCentsControls() {
-
         viewModel.cents
-            .observe(this) {
+            .observe(viewLifecycleOwner) {
                 notificationDescription.text = getString(R.string.notification_text, it.toSymbol())
             }
 
         viewModel.cents
-            .observe(this) {
+            .observe(viewLifecycleOwner) {
                 plusBtn.isEnabled = it < MAX_VALUE
                 minusBtn.isEnabled = it > MIN_VALUE
             }
