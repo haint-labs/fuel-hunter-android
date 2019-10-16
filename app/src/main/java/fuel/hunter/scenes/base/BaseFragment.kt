@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
+import fuel.hunter.extensions.onScroll
 import fuel.hunter.tools.navigateUp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
 import kotlinx.android.synthetic.main.fragment_base_list.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 abstract class BaseFragment<T> : Fragment() {
     abstract val title: Int
@@ -57,15 +60,15 @@ abstract class BaseFragment<T> : Fragment() {
             )
         )
 
-        addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                toolbarShadow.alpha = with(recyclerView) {
+        onScroll
+            .onEach {
+                toolbarShadow.alpha = with(listView) {
                     val offset = computeVerticalScrollOffset()
                     val max = dp(50)
 
                     offset.coerceIn(0, max.toInt()) / max
                 }
             }
-        })
+            .launchIn(lifecycleScope)
     }
 }

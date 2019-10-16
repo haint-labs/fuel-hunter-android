@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fuel.hunter.R
 import fuel.hunter.data.dummyData
 import fuel.hunter.databinding.FragmentPricesBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
+import fuel.hunter.extensions.onScroll
 import fuel.hunter.tools.navigateTo
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import kotlinx.android.synthetic.main.fragment_prices.*
 import kotlinx.android.synthetic.main.layout_notes.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class PricesFragment : Fragment() {
 
@@ -46,8 +49,8 @@ class PricesFragment : Fragment() {
                 )
             )
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            onScroll
+                .onEach { (recyclerView, _, _) ->
                     val alpha = with(recyclerView) {
                         val offset = computeVerticalScrollOffset()
                         val max = dp(50)
@@ -58,10 +61,10 @@ class PricesFragment : Fragment() {
                     // TODO: that's bad
                     activity?.toolbarShadow?.alpha = alpha
                 }
-            })
+                .launchIn(lifecycleScope)
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            onScroll
+                .onEach { (recyclerView, _, _) ->
                     val alpha = with(recyclerView) {
                         val offset = computeVerticalScrollOffset()
                         val extent = computeVerticalScrollExtent()
@@ -74,7 +77,7 @@ class PricesFragment : Fragment() {
 
                     notesShadow.alpha = alpha
                 }
-            })
+                .launchIn(lifecycleScope)
         }
     }
 
