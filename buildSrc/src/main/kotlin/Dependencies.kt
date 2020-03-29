@@ -25,21 +25,28 @@ object androidx {
     const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
 
-
     const val testRunner = "androidx.test:runner:1.2.0"
     const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
+}
+
+object firebase {
+    const val crashlytics = "com.google.firebase:firebase-crashlytics:17.0.0-beta02"
 }
 
 object Build {
     object Plugins {
         const val android = "com.android.tools.build:gradle:3.5.3"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
+        const val googleServices = "com.google.gms:google-services:4.3.3"
+        const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta03"
 
         object ID {
             const val androidApp = "com.android.application"
             const val ktAndroid = "kotlin-android"
             const val ktAndroidExt = "kotlin-android-extensions"
             const val kapt = "kotlin-kapt"
+            const val googleServices = "com.google.gms.google-services"
+            const val crashlytics = "com.google.firebase.crashlytics"
         }
     }
 }

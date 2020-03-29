@@ -3,6 +3,8 @@ plugins {
     id(Build.Plugins.ID.ktAndroid)
     id(Build.Plugins.ID.ktAndroidExt)
     id(Build.Plugins.ID.kapt)
+    id(Build.Plugins.ID.googleServices)
+    id(Build.Plugins.ID.crashlytics)
 }
 
 android {
@@ -36,6 +38,7 @@ android {
 
 dependencies {
     implementation(kt.stdlib)
+
     implementation(androidx.core)
     implementation(androidx.appCompat)
     implementation(androidx.constraintLayout)
@@ -48,6 +51,8 @@ dependencies {
     implementation(androidx.lifecycleLiveData)
     implementation(androidx.lifecycleExtensions)
     implementation(androidx.lifecycleRuntime)
+
+    implementation(firebase.crashlytics)
 
     testImplementation(junit)
 
