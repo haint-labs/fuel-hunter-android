@@ -39,6 +39,7 @@ object Build {
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"
+        const val protobuf = "com.google.protobuf:protobuf-gradle-plugin:0.8.13"
 
         object ID {
             const val androidApp = "com.android.application"
@@ -47,6 +48,7 @@ object Build {
             const val kapt = "kotlin-kapt"
             const val googleServices = "com.google.gms.google-services"
             const val crashlytics = "com.google.firebase.crashlytics"
+            const val protobuf = "com.google.protobuf"
         }
     }
 }

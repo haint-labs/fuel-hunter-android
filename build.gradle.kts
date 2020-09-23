@@ -11,6 +11,7 @@ buildscript {
         classpath(Build.Plugins.kotlin)
         classpath(Build.Plugins.googleServices)
         classpath(Build.Plugins.crashlytics)
+        classpath(Build.Plugins.protobuf)
     }
 }
 
@@ -18,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven(url = "https://jitpack.io")
     }
 
     tasks.withType<KotlinCompile> {

@@ -34,10 +34,16 @@ android {
             )
         }
     }
+
+    packagingOptions {
+        pickFirst("google/protobuf/*.proto")
+    }
 }
 
 dependencies {
     implementation(kt.stdlib)
+
+    implementation(project(":fh-client"))
 
     implementation(androidx.core)
     implementation(androidx.appCompat)
