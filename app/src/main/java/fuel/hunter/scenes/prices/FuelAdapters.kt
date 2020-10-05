@@ -3,7 +3,10 @@ package fuel.hunter.scenes.prices
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import fuel.hunter.R
 import fuel.hunter.data.Fuel
 import fuel.hunter.extensions.TypedItem
@@ -22,7 +25,7 @@ internal val separableItemTypes = listOf(SHADOW_TOP, SHADOW_MIDDLE)
 
 private val wrappables = arrayOf(SHADOW_TOP, SHADOW_MIDDLE, SHADOW_BOTTOM, SHADOW_SINGLE)
 
-internal fun flattenFuelTypes(
+fun flattenFuelTypes(
     data: Map<Fuel.Category, List<Fuel.Price>>
 ): List<FuelTypedItem> {
     return data.entries.flatMap { (category, prices) ->
@@ -46,11 +49,19 @@ internal fun flattenFuelTypes(
     }
 }
 
-class PricesAdapter(
-    private val items: List<FuelTypedItem>
-) : RecyclerView.Adapter<PricesViewHolder>() {
-    override fun getItemCount() = items.size
-    override fun getItemViewType(position: Int) = items[position].type
+internal val fuelTypedItemDiff = object : DiffUtil.ItemCallback<FuelTypedItem>() {
+    override fun areItemsTheSame(oldItem: FuelTypedItem, newItem: FuelTypedItem): Boolean {
+        return oldItem.type == newItem.type && oldItem.item == newItem.item
+    }
+
+    override fun areContentsTheSame(oldItem: FuelTypedItem, newItem: FuelTypedItem): Boolean {
+        return oldItem.type == newItem.type
+                && oldItem.item == newItem.item
+    }
+}
+
+class PricesAdapter : ListAdapter<FuelTypedItem, PricesViewHolder>(fuelTypedItemDiff) {
+    override fun getItemViewType(position: Int) = currentList[position].type
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PricesViewHolder {
         val isItem = viewType in wrappables
@@ -71,7 +82,7 @@ class PricesAdapter(
     }
 
     override fun onBindViewHolder(holder: PricesViewHolder, position: Int) {
-        holder.bind(items[position].item)
+        holder.bind(currentList[position].item)
     }
 }
 
@@ -82,7 +93,10 @@ class PricesViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
                 view.title.text = item.title
                 view.text.text = item.address
                 view.accent.text = item.price.toString()
-                view.icon.setImageResource(item.logo)
+                when (item.logo) {
+                    is Fuel.Logo.Url -> view.icon.load(item.logo.url)
+                    is Fuel.Logo.Drawable -> view.icon.load(item.logo.id)
+                }
             }
             is Fuel.Category -> {
                 view.header.text = item.name

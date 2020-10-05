@@ -5,11 +5,20 @@ const val junit = "junit:junit:4.12"
 object kt {
     const val version = "1.4.0"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
+
+    object coroutines {
+        private const val version = "1.3.9"
+
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+    }
+
 }
 
 object androidx {
     private const val version = "1.3.1"
     private const val lifecycleVersion = "2.2.0"
+    private const val fragmentVersion = "1.2.5"
 
     const val core = "androidx.core:core-ktx:${version}"
     const val appCompat = "androidx.appcompat:appcompat:1.2.0"
@@ -23,7 +32,10 @@ object androidx {
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
     const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
+    const val lifecycleLiveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
+
+    const val fragmentKtx = "androidx.fragment:fragment-ktx:${fragmentVersion}"
 
     const val testRunner = "androidx.test:runner:1.2.0"
     const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
@@ -31,6 +43,10 @@ object androidx {
 
 object firebase {
     const val crashlytics = "com.google.firebase:firebase-crashlytics:17.2.1"
+}
+
+object coil {
+    const val kt = "io.coil-kt:coil:1.0.0-rc3"
 }
 
 object Build {

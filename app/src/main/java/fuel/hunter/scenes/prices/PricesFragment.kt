@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import fuel.hunter.MainViewModel
 import fuel.hunter.R
-import fuel.hunter.data.dummyData
 import fuel.hunter.databinding.FragmentPricesBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
@@ -22,6 +23,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class PricesFragment : Fragment() {
+    private val viewModel by activityViewModels<MainViewModel>()
+
+    private val adapter by lazy { PricesAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,14 +35,16 @@ class PricesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupPriceList()
-
         handleSavingsTap()
+
+        viewModel.prices
+            .observe(viewLifecycleOwner, adapter::submitList)
     }
 
     private fun setupPriceList() {
         priceList.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = PricesAdapter(flattenFuelTypes(dummyData))
+            adapter = this@PricesFragment.adapter
 
             addItemDecoration(
                 SeparatorItemDecoration(

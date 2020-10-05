@@ -42,6 +42,10 @@ android {
 
 dependencies {
     implementation(kt.stdlib)
+    implementation(kt.coroutines.core)
+    implementation(kt.coroutines.android)
+
+    implementation(coil.kt)
 
     implementation(project(":fh-client"))
 
@@ -55,8 +59,11 @@ dependencies {
 
     implementation(androidx.lifecycleViewModel)
     implementation(androidx.lifecycleLiveData)
+    implementation(androidx.lifecycleLiveDataKtx)
     implementation(androidx.lifecycleExtensions)
     implementation(androidx.lifecycleRuntime)
+
+    implementation(androidx.fragmentKtx)
 
     implementation(firebase.crashlytics)
 
