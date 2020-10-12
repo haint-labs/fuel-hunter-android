@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import fuel.hunter.R
 import fuel.hunter.extensions.color
@@ -21,14 +22,14 @@ import kotlinx.coroutines.flow.onEach
 
 abstract class BaseFragment<T> : Fragment() {
     abstract val title: Int
-    abstract val items: List<T>
+    abstract val itemDiff: DiffUtil.ItemCallback<T>
     abstract val layoutProvider: ViewLayoutProvider
     abstract val binder: ViewHolderBinder<T>
 
     open var navIcon: Int = R.drawable.ic_back_arrow
     open var viewTypeDetector = ViewTypeDetectors.Default
 
-    val adapter by lazy { BaseListAdapter(items, layoutProvider, binder, viewTypeDetector) }
+    val adapter by lazy { BaseListAdapter(itemDiff, layoutProvider, binder, viewTypeDetector) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

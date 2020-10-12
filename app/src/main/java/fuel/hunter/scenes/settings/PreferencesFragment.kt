@@ -3,6 +3,7 @@ package fuel.hunter.scenes.settings
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.ViewLayoutProvider
@@ -30,7 +31,11 @@ sealed class Preference(
 
 class PreferencesFragment : BaseFragment<Preference>() {
     override val title = R.string.title_settings
-    override val items = preferenceItems.keys.toList()
+
+    override val itemDiff = object: DiffUtil.ItemCallback<Preference>() {
+        override fun areItemsTheSame(oldItem: Preference, newItem: Preference) = oldItem.name == newItem.name
+        override fun areContentsTheSame(oldItem: Preference, newItem: Preference) = oldItem == newItem
+    }
 
     override val layoutProvider: ViewLayoutProvider = {
         R.layout.layout_setting_item
@@ -51,10 +56,14 @@ class PreferencesFragment : BaseFragment<Preference>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter.onItemClick
-            .mapNotNull { preferenceItems[it] }
-            .onEach { navigateTo(it) }
-            .launchIn(lifecycleScope)
+        with(adapter) {
+            submitList(preferenceItems.keys.toList())
+
+            onItemClick
+                .mapNotNull { preferenceItems[it] }
+                .onEach { navigateTo(it) }
+                .launchIn(lifecycleScope)
+        }
     }
 }
 

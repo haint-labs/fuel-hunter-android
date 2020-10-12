@@ -3,6 +3,7 @@ package fuel.hunter.scenes.settings
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.isGone
+import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
@@ -12,7 +13,11 @@ import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
 class CompaniesFragment : BaseFragment<Fuel>() {
     override val title = R.string.title_companies
-    override val items = fuelItems
+
+    override val itemDiff = object: DiffUtil.ItemCallback<Fuel>() {
+        override fun areItemsTheSame(oldItem: Fuel, newItem: Fuel) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Fuel, newItem: Fuel) = oldItem == newItem
+    }
 
     override var viewTypeDetector = ViewTypeDetectors.Category
 

@@ -1,6 +1,7 @@
 package fuel.hunter.scenes.disclaimer
 
 import androidx.core.view.isGone
+import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
 import fuel.hunter.scenes.base.*
 import kotlinx.android.synthetic.main.layout_price_item.view.*
@@ -17,7 +18,11 @@ internal sealed class Disclaimer {
 
 internal class DisclaimerFragment : BaseFragment<Disclaimer>() {
     override val title = R.string.title_precision
-    override val items = precisionItems
+
+    override val itemDiff = object: DiffUtil.ItemCallback<Disclaimer>() {
+        override fun areItemsTheSame(oldItem: Disclaimer, newItem: Disclaimer) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Disclaimer, newItem: Disclaimer) = oldItem == newItem
+    }
 
     override var viewTypeDetector = ViewTypeDetectors.Category
 
