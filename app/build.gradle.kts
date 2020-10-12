@@ -1,3 +1,5 @@
+import com.google.protobuf.gradle.*
+
 plugins {
     id(Build.Plugins.ID.androidApp)
     id(Build.Plugins.ID.ktAndroid)
@@ -5,6 +7,7 @@ plugins {
     id(Build.Plugins.ID.kapt)
     id(Build.Plugins.ID.googleServices)
     id(Build.Plugins.ID.crashlytics)
+    id(Build.Plugins.ID.protobuf)
 }
 
 android {
@@ -38,6 +41,11 @@ android {
     packagingOptions {
         pickFirst("google/protobuf/*.proto")
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -63,6 +71,9 @@ dependencies {
     implementation(androidx.lifecycleExtensions)
     implementation(androidx.lifecycleRuntime)
 
+    implementation(androidx.dataStore)
+    implementation("com.google.protobuf:protobuf-javalite:3.12.0")
+
     implementation(androidx.fragmentKtx)
 
     implementation(firebase.crashlytics)
@@ -71,4 +82,20 @@ dependencies {
 
     androidTestImplementation(androidx.testRunner)
     androidTestImplementation(androidx.espressoCore)
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.13.0"
+    }
+
+    generateProtoTasks {
+        all().forEach {
+            it.builtins {
+                id("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

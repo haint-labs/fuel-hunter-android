@@ -37,6 +37,8 @@ object androidx {
 
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${fragmentVersion}"
 
+    const val dataStore = "androidx.datastore:datastore-core:1.0.0-alpha01"
+
     const val testRunner = "androidx.test:runner:1.2.0"
     const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
 }
@@ -51,7 +53,7 @@ object coil {
 
 object Build {
     object Plugins {
-        const val android = "com.android.tools.build:gradle:4.0.1"
+        const val android = "com.android.tools.build:gradle:4.0.2"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"

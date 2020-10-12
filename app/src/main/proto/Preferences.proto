@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "fuel.hunter.data.preferences";
+option java_multiple_files = true;
+
+message Preferences {
+  map<string, bool> fuel_types = 1;
+}

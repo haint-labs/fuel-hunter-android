@@ -1,6 +1,7 @@
 package fuel.hunter
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fuel.hunter.FuelHunterServiceGrpcKt.FuelHunterServiceCoroutineStub
@@ -9,15 +10,14 @@ import fuel.hunter.models.Company
 import fuel.hunter.models.Price
 import fuel.hunter.models.Station
 import fuel.hunter.scenes.prices.flattenFuelTypes
+import fuel.hunter.tools.dataStore
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val client by lazy {
         val executor = Dispatchers.IO.asExecutor()
 
@@ -29,18 +29,26 @@ class MainViewModel : ViewModel() {
         FuelHunterServiceCoroutineStub(channel)
     }
 
+    private val preferences by dataStore()
+
     private val _companies = MutableStateFlow(emptyList<Company>())
     private val _stations = MutableStateFlow(emptyList<Station>())
     private val _prices = MutableStateFlow(emptyList<Price.Response.Item>())
 
-    val prices = combine(_prices, _companies, _stations, ::transformToFuelPrices)
-        .map(::flattenFuelTypes)
+    val prices = combine(_prices, _companies, _stations) { prices, companies, stations ->
+        transformToFuelPrices(
+            prices,
+            companies,
+            stations
+        )
+    }
+        .map { flattenFuelTypes(it) }
         .asLiveData()
 
     init {
         updateCompanies()
         updateStations()
-        updatePrices()
+        handlePricesUpdates()
     }
 
     private fun updateCompanies() {
@@ -59,18 +67,22 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun updatePrices() {
-        viewModelScope.launch {
-            val query = Price.Query.newBuilder()
-                .addCity("Jelgava")
-                .addType(Price.FuelType.E95.toString())
-                .addType(Price.FuelType.DD.toString())
-                .build()
+    private fun handlePricesUpdates() {
+        preferences.data
+            .map { preferences ->
+                val builder = Price.Query.newBuilder()
+                    .addCity("Jelgava")
 
-            _prices.value = client
-                .getPrices(query)
-                .itemsList
-        }
+                preferences.fuelTypesMap
+                    .mapNotNull { (key, value) -> if (value) key else null }
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { builder.addAllType(it) }
+
+                builder.build()
+            }
+            .map { client.getPrices(it).itemsList }
+            .onEach { _prices.value = it }
+            .launchIn(viewModelScope)
     }
 
     private fun transformToFuelPrices(

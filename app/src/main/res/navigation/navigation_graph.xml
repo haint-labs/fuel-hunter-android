@@ -68,7 +68,7 @@
 
     <fragment
             android:id="@+id/settings_fuel_types"
-            android:name="fuel.hunter.scenes.settings.FuelTypeFragment" />
+            android:name="fuel.hunter.scenes.settings.types.FuelTypeFragment" />
 
     <dialog
             android:id="@+id/settings_notifications"
