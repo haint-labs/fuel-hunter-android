@@ -2,6 +2,7 @@ package fuel.hunter.extensions
 
 import android.os.Build
 import android.view.View
+import android.widget.CompoundButton
 import androidx.annotation.ColorRes
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,12 @@ val View.onClick: Flow<Unit>
     get() = channelFlow {
         setOnClickListener { offer(Unit) }
         awaitClose { setOnClickListener(null) }
+    }
+
+val CompoundButton.onChecked: Flow<Boolean>
+    get() = channelFlow {
+        setOnCheckedChangeListener { _, isChecked -> offer(isChecked) }
+        awaitClose { setOnCheckedChangeListener(null) }
     }
 
 // endregion
