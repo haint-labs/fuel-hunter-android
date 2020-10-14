@@ -7,7 +7,7 @@ object kt {
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
     object coroutines {
-        private const val version = "1.3.9"
+        private const val version = "1.4.0-M1"
 
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
@@ -53,7 +53,7 @@ object coil {
 
 object Build {
     object Plugins {
-        const val android = "com.android.tools.build:gradle:4.0.2"
+        const val android = "com.android.tools.build:gradle:4.1.0"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"

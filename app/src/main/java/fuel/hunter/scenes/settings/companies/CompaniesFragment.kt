@@ -1,17 +1,28 @@
-package fuel.hunter.scenes.settings
+package fuel.hunter.scenes.settings.companies
 
+import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.isGone
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
+import coil.load
 import fuel.hunter.R
+import fuel.hunter.extensions.onChecked
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
 import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.scenes.base.ViewTypeDetectors
+import fuel.hunter.scenes.settings.Fuel
 import kotlinx.android.synthetic.main.layout_setting_item.view.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class CompaniesFragment : BaseFragment<Fuel>() {
+    private val viewModel by viewModels<CompaniesViewModel>()
+
     override val title = R.string.title_companies
 
     override val itemDiff = object: DiffUtil.ItemCallback<Fuel>() {
@@ -46,26 +57,37 @@ class CompaniesFragment : BaseFragment<Fuel>() {
                 }
                 is Fuel.Company -> {
                     settingTitle.text = item.name
-                    settingToggle.isChecked = item.isChecked
                     settingsDescription.isGone = true
-                    settingsIcon.isGone = false
-                    settingsIcon.setImageDrawable(resources.getDrawable(item.logo, context.theme))
+
+                    with(settingsIcon) {
+                        isGone = false
+
+                        when (val it = item.logo) {
+                            is Fuel.Logo.Url -> load(it.url)
+                            is Fuel.Logo.Drawable -> setImageDrawable(
+                                resources.getDrawable(it.id, context.theme)
+                            )
+                        }
+                    }
+
+                    with(settingToggle) {
+                        isChecked = item.isChecked
+
+                        onChecked
+                            .map { item.copy(isChecked = it) }
+                            .onEach { viewModel.updateCompaniesPreference(it) }
+                            .launchIn(lifecycleScope)
+                    }
                 }
             }
         }
     }
-}
 
-private val fuelItems = listOf(
-    Fuel.Header,
-    Fuel.Cheapest(false),
-    Fuel.Company(R.drawable.logo_neste, "NESTE", true),
-    Fuel.Company(R.drawable.logo_circlek, "Circle K", true),
-    Fuel.Company(R.drawable.logo_kool, "Kool", false),
-    Fuel.Company(R.drawable.logo_ln, "Latvijas Nafta", false),
-    Fuel.Company(R.drawable.logo_viada, "Viada", false),
-    Fuel.Company(R.drawable.logo_virshi, "Virši", false),
-    Fuel.Company(R.drawable.logo_gotika, "Gotika Auto", false),
-    Fuel.Company(R.drawable.logo_astarte, "ASTARTE", false),
-    Fuel.Company(R.drawable.logo_dinaz, "DINAZ", false)
-)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.companiesUiMap
+            .onEach { adapter.submitList(it) }
+            .launchIn(lifecycleScope)
+    }
+}

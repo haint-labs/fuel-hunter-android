@@ -63,7 +63,7 @@
 
     <fragment
             android:id="@+id/settings_companies"
-            android:name="fuel.hunter.scenes.settings.CompaniesFragment" />
+            android:name="fuel.hunter.scenes.settings.companies.CompaniesFragment" />
 
 
     <fragment
