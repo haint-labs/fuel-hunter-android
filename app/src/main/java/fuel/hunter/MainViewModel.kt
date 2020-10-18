@@ -35,13 +35,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _stations = MutableStateFlow(emptyList<Station>())
     private val _prices = MutableStateFlow(emptyList<Price.Response.Item>())
 
-    val prices = combine(_prices, _companies, _stations) { prices, companies, stations ->
-        transformToFuelPrices(
-            prices,
-            companies,
-            stations
-        )
-    }
+    val prices = combine(_prices, _companies, _stations, ::transformToFuelPrices)
         .map { flattenFuelTypes(it) }
         .asLiveData()
 
@@ -86,32 +80,34 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun transformToFuelPrices(
-        prices: List<Price.Response.Item>,
+        items: List<Price.Response.Item>,
         companies: List<Company>,
         stations: List<Station>
-    ): Map<Fuel.Category, List<Fuel.Price>> =
-        prices
-            .flatMap { responseItem ->
-                responseItem
-                    .pricesList
-                    .mapNotNull {
-                        val station = stations
-                            .find { station -> station.id == responseItem.stationId }
-                            ?: return@mapNotNull null
+    ): Map<Fuel.Category, List<Fuel.Price>> {
+        return items
+            .map { item ->
+                Fuel.Category(item.type.toString()) to item.pricesList.mapNotNull {
+                    val logoUrl = companies
+                        .find { company -> company.name == it.company }
+                        ?.logo?.x2
+                        ?: return@mapNotNull null
 
-                        val company = companies
-                            .find { company -> company.name == station.company }
-                            ?: return@mapNotNull null
+                    val mergedAddress = stations
+                        .filter { station -> it.stationsList.contains(station.id) }
+                        .fold("") { acc, station ->
+                            "${ if (acc.isEmpty()) "" else "${acc}\n" }${station.address}"
+                        }
 
-                        Fuel.Price(
-                            title = station.name,
-                            address = station.address,
-                            type = it.type.toString(),
-                            price = it.price,
-                            logo = Fuel.Logo.Url(company.logo.x2)
-                        )
-                    }
+                    Fuel.Price(
+                        title = it.company,
+                        address = mergedAddress,
+                        type = item.type.toString(),
+                        price = it.price,
+                        logo = Fuel.Logo.Url(logoUrl),
+                    )
+                }
             }
-            .groupBy { it.type }
-            .mapKeys { Fuel.Category(it.key) }
+            .toMap()
+    }
+
 }

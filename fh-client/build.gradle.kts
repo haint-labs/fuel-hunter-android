@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    protobuf("com.github.haint-labs:fuel-hunter-proto:17d21ee2")
+    protobuf("com.github.haint-labs:fuel-hunter-proto:5aabe769")
 
     api("io.grpc:grpc-okhttp:1.32.1")
     api("io.grpc:grpc-protobuf-lite:1.32.1")
