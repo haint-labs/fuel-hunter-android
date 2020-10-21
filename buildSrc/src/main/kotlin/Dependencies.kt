@@ -53,7 +53,7 @@ object coil {
 
 object Build {
     object Plugins {
-        const val android = "com.android.tools.build:gradle:4.1.0"
+        const val android = "com.android.tools.build:gradle:4.1.1"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"

@@ -1,16 +1,17 @@
 package fuel.hunter.scenes.settings.types
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.datastore.DataStore
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Price
 import fuel.hunter.scenes.settings.Fuel
-import fuel.hunter.tools.dataStore
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
-class FuelTypeViewModel(app: Application) : AndroidViewModel(app) {
-    private val preferences by dataStore()
+class FuelTypeViewModel(
+    private val preferences: DataStore<Preferences>
+) : ViewModel() {
 
     private val update = Channel<Fuel>()
 

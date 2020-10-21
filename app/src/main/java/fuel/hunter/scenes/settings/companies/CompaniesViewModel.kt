@@ -1,32 +1,22 @@
 package fuel.hunter.scenes.settings.companies
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
+import androidx.datastore.DataStore
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fuel.hunter.FuelHunterServiceGrpcKt
+import fuel.hunter.FuelHunterServiceGrpcKt.FuelHunterServiceCoroutineStub
+import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Company
 import fuel.hunter.scenes.settings.Fuel
-import fuel.hunter.tools.dataStore
-import io.grpc.ManagedChannelBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
-@Suppress("EXPERIMENTAL_API_USAGE")
-class CompaniesViewModel(app: Application) : AndroidViewModel(app) {
-    private val client by lazy {
-        val executor = Dispatchers.IO.asExecutor()
-
-        val channel = ManagedChannelBuilder.forAddress("162.243.16.251", 50051)
-            .usePlaintext()
-            .executor(executor)
-            .build()
-
-        FuelHunterServiceGrpcKt.FuelHunterServiceCoroutineStub(channel)
-    }
-    private val preferences by dataStore()
-
+@OptIn(ExperimentalCoroutinesApi::class)
+class CompaniesViewModel(
+    private val client: FuelHunterServiceCoroutineStub,
+    private val preferences: DataStore<Preferences>
+) : ViewModel() {
     private val update = Channel<Fuel>()
 
     private val companies = flow {

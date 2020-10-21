@@ -1,35 +1,58 @@
-package fuel.hunter
+package fuel.hunter.scenes.prices
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.annotation.SuppressLint
+import android.location.Location
+import android.location.LocationManager.GPS_PROVIDER
+import android.util.Log
+import androidx.datastore.DataStore
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fuel.hunter.FuelHunterServiceGrpcKt.FuelHunterServiceCoroutineStub
 import fuel.hunter.data.Fuel
+import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Company
 import fuel.hunter.models.Price
 import fuel.hunter.models.Station
-import fuel.hunter.scenes.prices.flattenFuelTypes
-import fuel.hunter.tools.dataStore
-import io.grpc.ManagedChannelBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class MainViewModel(app: Application) : AndroidViewModel(app) {
-    private val client by lazy {
-        val executor = Dispatchers.IO.asExecutor()
-
-        val channel = ManagedChannelBuilder.forAddress("162.243.16.251", 50051)
-            .usePlaintext()
-            .executor(executor)
-            .build()
-
-        FuelHunterServiceCoroutineStub(channel)
+class PricesViewModel(
+    private val client: FuelHunterServiceCoroutineStub,
+    private val preferences: DataStore<Preferences>
+) : ViewModel() {
+    @SuppressLint("MissingPermission")
+    private val location: Flow<Location> = callbackFlow {
+//        val manager = getSystemService(app, LocationManager::class.java)
+//            ?: return@callbackFlow
+//
+//        val listener = object : LocationListener {
+//            override fun onStatusChanged(
+//                provider: String?,
+//                status: Int,
+//                extras: Bundle?
+//            ) {}
+//
+//            override fun onProviderEnabled(provider: String?) {}
+//            override fun onProviderDisabled(provider: String?) {}
+//
+//            override fun onLocationChanged(location: Location?) {
+//                location?.let { offer(it) }
+//            }
+//        }
+//
+//        manager.requestLocationUpdates(
+//            GPS_PROVIDER,
+//            1 * 60 * 1000,
+//            0f,
+//            listener
+//        )
+//
+//        offer(manager.getLastKnownLocation(GPS_PROVIDER))
+//
+//        awaitClose { manager.removeUpdates(listener) }
+        offer(Location(GPS_PROVIDER))
     }
-
-    private val preferences by dataStore()
 
     private val _companies = MutableStateFlow(emptyList<Company>())
     private val _stations = MutableStateFlow(emptyList<Station>())
@@ -62,18 +85,27 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun handlePricesUpdates() {
-        preferences.data
-            .map { preferences ->
-                val builder = Price.Query.newBuilder()
-                    .addCity("Jelgava")
+        val priceQuery = combine(preferences.data) { (preferences) ->
+            val builder = Price.Query.newBuilder()
+                .addCity("Jelgava")
+//                .setLocation(
+//                    Price.Location.newBuilder()
+//                        .setLongitude(location.latitude.toFloat())
+//                        .setLatitude(location.longitude.toFloat())
+//                        .build()
+//                )
+//                .setDistance(2000f)
 
-                preferences.fuelTypesMap
-                    .mapNotNull { (key, value) -> if (value) key else null }
-                    .takeIf { it.isNotEmpty() }
-                    ?.let { builder.addAllType(it) }
+            preferences.fuelTypesMap
+                .mapNotNull { (key, value) -> if (value) key else null }
+                .takeIf { it.isNotEmpty() }
+                ?.let { builder.addAllType(it) }
 
-                builder.build()
-            }
+            builder.build()
+        }
+
+        priceQuery
+            .onEach { Log.d("MOX", it.toString()) }
             .map { client.getPrices(it).itemsList }
             .onEach { _prices.value = it }
             .launchIn(viewModelScope)
@@ -95,7 +127,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     val mergedAddress = stations
                         .filter { station -> it.stationsList.contains(station.id) }
                         .fold("") { acc, station ->
-                            "${ if (acc.isEmpty()) "" else "${acc}\n" }${station.address}"
+                            "${if (acc.isEmpty()) "" else "${acc}\n"}${station.address}"
                         }
 
                     Fuel.Price(

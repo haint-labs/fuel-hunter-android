@@ -3,7 +3,6 @@ package fuel.hunter.scenes.settings.types
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isGone
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
@@ -15,12 +14,13 @@ import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
 import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.scenes.base.ViewTypeDetectors
 import fuel.hunter.scenes.settings.Fuel
+import fuel.hunter.tools.di.viewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class FuelTypeFragment : BaseFragment<Fuel>() {
-    private val viewModel by viewModels<FuelTypeViewModel>()
+    private val viewModel by viewModel<FuelTypeViewModel>()
 
     override val title = R.string.title_fuel_type
 

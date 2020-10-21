@@ -3,7 +3,6 @@ package fuel.hunter.scenes.settings.companies
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isGone
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import coil.load
@@ -16,12 +15,13 @@ import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
 import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.scenes.base.ViewTypeDetectors
 import fuel.hunter.scenes.settings.Fuel
+import fuel.hunter.tools.di.viewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class CompaniesFragment : BaseFragment<Fuel>() {
-    private val viewModel by viewModels<CompaniesViewModel>()
+    private val viewModel by viewModel<CompaniesViewModel>()
 
     override val title = R.string.title_companies
 

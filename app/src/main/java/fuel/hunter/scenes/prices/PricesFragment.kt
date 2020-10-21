@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import fuel.hunter.MainViewModel
 import fuel.hunter.R
 import fuel.hunter.databinding.FragmentPricesBinding
 import fuel.hunter.databinding.LayoutNotesBinding
@@ -17,6 +15,7 @@ import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
 import fuel.hunter.extensions.onScroll
 import fuel.hunter.extensions.viewBinding
+import fuel.hunter.tools.di.viewModel
 import fuel.hunter.tools.navigateTo
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import kotlinx.coroutines.flow.launchIn
@@ -27,7 +26,7 @@ class PricesFragment : Fragment() {
     private val notesBinding by viewBinding(LayoutNotesBinding::bind)
     private val binding by viewBinding(FragmentPricesBinding::bind)
 
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by viewModel<PricesViewModel>()
 
     private val adapter by lazy { PricesAdapter() }
 
