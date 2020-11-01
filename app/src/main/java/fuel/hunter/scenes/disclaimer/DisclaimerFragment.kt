@@ -3,8 +3,8 @@ package fuel.hunter.scenes.disclaimer
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
+import fuel.hunter.databinding.LayoutPriceItemBinding
 import fuel.hunter.scenes.base.*
-import kotlinx.android.synthetic.main.layout_price_item.view.*
 
 internal sealed class Disclaimer {
     object Summary : Disclaimer()
@@ -35,7 +35,7 @@ internal class DisclaimerFragment : BaseFragment<Disclaimer>() {
 
     override val binder: ViewHolderBinder<Disclaimer> = { view, item ->
         when (item) {
-            is Disclaimer.Provider -> {
+            is Disclaimer.Provider -> with(LayoutPriceItemBinding.bind(view)) {
                 view.apply {
                     icon.setImageResource(item.logo)
                     title.text = item.name

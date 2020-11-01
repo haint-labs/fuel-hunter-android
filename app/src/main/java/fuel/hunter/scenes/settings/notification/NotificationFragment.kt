@@ -8,11 +8,11 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import fuel.hunter.R
+import fuel.hunter.databinding.FragmentNotificationsBinding
 import fuel.hunter.extensions.onClick
+import fuel.hunter.extensions.viewBinding
 import fuel.hunter.tools.navigateUp
-import kotlinx.android.synthetic.main.fragment_notifications.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -21,6 +21,7 @@ private const val MIN_VALUE = 0
 private const val MAX_VALUE = 10
 
 class NotificationFragment : AppCompatDialogFragment() {
+    private val binding by viewBinding(FragmentNotificationsBinding::bind)
     private val viewModel by viewModels<NotificationViewModel>()
 
     override fun onCreateView(
@@ -34,7 +35,7 @@ class NotificationFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        notificationBackground.onClick
+        binding.notificationBackground.onClick
             .onEach { navigateUp() }
             .launchIn(lifecycleScope)
 
@@ -47,7 +48,7 @@ class NotificationFragment : AppCompatDialogFragment() {
         dialog?.window?.setLayout(MATCH_PARENT, MATCH_PARENT)
     }
 
-    private fun setupCentsControls() {
+    private fun setupCentsControls() = with(binding) {
         viewModel.cents
             .observe(viewLifecycleOwner) {
                 notificationDescription.text = getString(R.string.notification_text, it.toSymbol())

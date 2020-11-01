@@ -5,10 +5,10 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
+import fuel.hunter.databinding.LayoutSettingItemBinding
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.tools.navigateTo
-import kotlinx.android.synthetic.main.layout_setting_item.view.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -42,7 +42,7 @@ class PreferencesFragment : BaseFragment<Preference>() {
     }
 
     override val binder = { view: View, item: Preference ->
-        with(view) {
+        with(LayoutSettingItemBinding.bind(view)) {
             settingTitle.text = item.name
             settingsDescription.text = item.description
 

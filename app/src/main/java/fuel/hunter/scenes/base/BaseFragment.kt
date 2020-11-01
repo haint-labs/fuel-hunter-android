@@ -9,14 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import fuel.hunter.R
-import fuel.hunter.extensions.color
-import fuel.hunter.extensions.dp
-import fuel.hunter.extensions.onScroll
+import fuel.hunter.databinding.FragmentBaseListBinding
+import fuel.hunter.extensions.*
 import fuel.hunter.tools.navigateUp
 import fuel.hunter.view.decorations.SeparatorItemDecoration
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
-import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -30,6 +28,13 @@ abstract class BaseFragment<T> : Fragment() {
     open var viewTypeDetector = ViewTypeDetectors.Default
 
     val adapter by lazy { BaseListAdapter(itemDiff, layoutProvider, binder, viewTypeDetector) }
+
+    private val binding by viewBinding(FragmentBaseListBinding::bind)
+
+    private val toolbar get() = binding.toolbar
+    private val toolbarTitle get() = binding.toolbarTitle
+    private val toolbarShadow get() = binding.toolbarShadow
+    private val listView get() = binding.listView
 
     override fun onCreateView(
         inflater: LayoutInflater,

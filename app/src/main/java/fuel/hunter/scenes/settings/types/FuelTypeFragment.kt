@@ -2,19 +2,19 @@ package fuel.hunter.scenes.settings.types
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
+import fuel.hunter.databinding.LayoutSettingHeaderBinding
+import fuel.hunter.databinding.LayoutSettingItemBinding
 import fuel.hunter.extensions.onChecked
 import fuel.hunter.scenes.base.BaseFragment
 import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
 import fuel.hunter.scenes.base.ViewLayoutProvider
 import fuel.hunter.scenes.base.ViewTypeDetectors
 import fuel.hunter.scenes.settings.Fuel
-import kotlinx.android.synthetic.main.layout_setting_item.view.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -48,30 +48,25 @@ class FuelTypeFragment : BaseFragment<Fuel>() {
     }
 
     override val binder = { view: View, item: Fuel ->
-        with(view) {
-            when (item) {
-                is Fuel.Header -> {
-                    if (view !is TextView) {
-                        return@with
-                    }
+        when (item) {
+            is Fuel.Header -> with(LayoutSettingHeaderBinding.bind(view)) {
+                settingHeader.text = "Atzīmē degvielas veidus, kuru cenas\nTev interesē."
+            }
+            is Fuel.Type -> with(LayoutSettingItemBinding.bind(view)) {
+                settingTitle.text = item.name
+                settingsDescription.isGone = true
 
-                    view.text = "Atzīmē degvielas veidus, kuru cenas\nTev interesē."
-                }
-                is Fuel.Type -> {
-                    settingTitle.text = item.name
-                    settingsDescription.isGone = true
+                with(settingToggle) {
+                    isChecked = item.isChecked
 
-                    with(settingToggle) {
-                        isChecked = item.isChecked
-
-                        onChecked
-                            .map { item.copy(isChecked = it) }
-                            .onEach { viewModel.updateFuelTypePreference(it) }
-                            .launchIn(lifecycleScope)
-                    }
+                    onChecked
+                        .map { item.copy(isChecked = it) }
+                        .onEach { viewModel.updateFuelTypePreference(it) }
+                        .launchIn(lifecycleScope)
                 }
             }
         }
+        Unit
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

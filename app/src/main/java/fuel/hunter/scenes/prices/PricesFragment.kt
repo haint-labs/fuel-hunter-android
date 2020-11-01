@@ -11,18 +11,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fuel.hunter.MainViewModel
 import fuel.hunter.R
 import fuel.hunter.databinding.FragmentPricesBinding
+import fuel.hunter.databinding.LayoutNotesBinding
+import fuel.hunter.databinding.LayoutToolbarBinding
 import fuel.hunter.extensions.color
 import fuel.hunter.extensions.dp
 import fuel.hunter.extensions.onScroll
+import fuel.hunter.extensions.viewBinding
 import fuel.hunter.tools.navigateTo
 import fuel.hunter.view.decorations.SeparatorItemDecoration
-import kotlinx.android.synthetic.main.fragment_prices.*
-import kotlinx.android.synthetic.main.layout_notes.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class PricesFragment : Fragment() {
+    private val toolbarBinding by viewBinding(LayoutToolbarBinding::bind)
+    private val notesBinding by viewBinding(LayoutNotesBinding::bind)
+    private val binding by viewBinding(FragmentPricesBinding::bind)
+
     private val viewModel by activityViewModels<MainViewModel>()
 
     private val adapter by lazy { PricesAdapter() }
@@ -31,9 +35,10 @@ class PricesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentPricesBinding.inflate(inflater, container, false).root
+    ): View = FragmentPricesBinding.inflate(inflater, container, false).root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupToolbar()
         setupPriceList()
         handleSavingsTap()
 
@@ -41,7 +46,16 @@ class PricesFragment : Fragment() {
             .observe(viewLifecycleOwner, adapter::submitList)
     }
 
-    private fun setupPriceList() {
+    private fun setupToolbar() {
+        with(toolbarBinding) {
+            toolbarTitle.setText(R.string.fuel_hunter)
+
+            toolbar.setNavigationIcon(R.drawable.ic_settings)
+            toolbar.setNavigationOnClickListener { navigateTo(R.id.main_to_settings) }
+        }
+    }
+
+    private fun setupPriceList(): Unit = with (binding) {
         priceList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = this@PricesFragment.adapter
@@ -65,7 +79,7 @@ class PricesFragment : Fragment() {
                     }
 
                     // TODO: that's bad
-                    activity?.toolbarShadow?.alpha = alpha
+                    toolbarBinding.toolbarShadow.alpha = alpha
                 }
                 .launchIn(lifecycleScope)
 
@@ -81,15 +95,14 @@ class PricesFragment : Fragment() {
                         (range - extent - offset).coerceIn(0, max.toInt()) / max
                     }
 
-                    notesShadow.alpha = alpha
+                    notesBinding.notesShadow.alpha = alpha
                 }
                 .launchIn(lifecycleScope)
         }
     }
 
     private fun handleSavingsTap() {
-        goToSavings.setOnClickListener { navigateTo(R.id.main_to_savings) }
-        goToPrecision.setOnClickListener { navigateTo(R.id.main_to_precision) }
-        toolbar.setNavigationOnClickListener { navigateTo(R.id.main_to_settings) }
+        notesBinding.goToSavings.setOnClickListener { navigateTo(R.id.main_to_savings) }
+        notesBinding.goToPrecision.setOnClickListener { navigateTo(R.id.main_to_precision) }
     }
 }

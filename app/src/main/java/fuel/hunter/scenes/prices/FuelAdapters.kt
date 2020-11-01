@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import fuel.hunter.R
 import fuel.hunter.data.Fuel
+import fuel.hunter.databinding.LayoutPriceCategoryBinding
+import fuel.hunter.databinding.LayoutPriceItemBinding
 import fuel.hunter.extensions.TypedItem
 import fuel.hunter.tools.ui.wrapInShadow
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_BOTTOM
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_MIDDLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_SINGLE
 import fuel.hunter.view.shadow.ShadowView.Companion.SHADOW_TOP
-import kotlinx.android.synthetic.main.layout_price_category.view.*
-import kotlinx.android.synthetic.main.layout_price_item.view.*
 
 internal typealias FuelTypedItem = TypedItem<Int, Fuel>
 
@@ -89,17 +89,17 @@ class PricesAdapter : ListAdapter<FuelTypedItem, PricesViewHolder>(fuelTypedItem
 class PricesViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
     fun bind(item: Fuel) {
         when (item) {
-            is Fuel.Price -> {
-                view.title.text = item.title
-                view.text.text = item.address
-                view.accent.text = item.price.toString()
+            is Fuel.Price -> with(LayoutPriceItemBinding.bind(view)) {
+                title.text = item.title
+                text.text = item.address
+                accent.text = item.price.toString()
                 when (item.logo) {
-                    is Fuel.Logo.Url -> view.icon.load(item.logo.url)
-                    is Fuel.Logo.Drawable -> view.icon.load(item.logo.id)
+                    is Fuel.Logo.Url -> icon.load(item.logo.url)
+                    is Fuel.Logo.Drawable -> icon.load(item.logo.id)
                 }
             }
-            is Fuel.Category -> {
-                view.header.text = item.name
+            is Fuel.Category -> with(LayoutPriceCategoryBinding.bind(view)) {
+                header.text = item.name
             }
         }
     }

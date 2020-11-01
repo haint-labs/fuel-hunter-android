@@ -4,8 +4,8 @@ import android.view.View
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.DiffUtil
 import fuel.hunter.R
+import fuel.hunter.databinding.LayoutSettingItemBinding
 import fuel.hunter.scenes.base.BaseFragment
-import kotlinx.android.synthetic.main.layout_setting_item.view.*
 
 typealias LanguageItem = Pair<String, String>
 
@@ -22,7 +22,7 @@ class LanguageFragment : BaseFragment<LanguageItem>() {
     }
 
     override val binder = { view: View, item: LanguageItem ->
-        with(view) {
+        with(LayoutSettingItemBinding.bind(view)) {
             settingTitle.text = item.first
             settingsDescription.text = item.second
             settingToggle.isGone = true

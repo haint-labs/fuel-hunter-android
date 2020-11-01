@@ -3,7 +3,6 @@ import com.google.protobuf.gradle.*
 plugins {
     id(Build.Plugins.ID.androidApp)
     id(Build.Plugins.ID.ktAndroid)
-    id(Build.Plugins.ID.ktAndroidExt)
     id(Build.Plugins.ID.kapt)
     id(Build.Plugins.ID.googleServices)
     id(Build.Plugins.ID.crashlytics)
@@ -24,8 +23,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {

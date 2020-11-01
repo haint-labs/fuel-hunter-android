@@ -5,20 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import fuel.hunter.R
 import fuel.hunter.databinding.FragmentSavingsBinding
+import fuel.hunter.databinding.LayoutToolbarBinding
 import fuel.hunter.extensions.init
-import kotlinx.android.synthetic.main.fragment_savings.view.*
-import kotlinx.android.synthetic.main.layout_toolbar.view.*
+import fuel.hunter.extensions.viewBinding
 
 class SavingsFragment : Fragment() {
+    private val binding by viewBinding(FragmentSavingsBinding::bind)
+    private val toolbarBinding by viewBinding(LayoutToolbarBinding::bind)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = FragmentSavingsBinding.inflate(inflater, container, false).root
+    ): View = FragmentSavingsBinding.inflate(inflater, container, false).root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(view) {
-        init(toolbar, toolbarShadow, scrollView)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        with(toolbarBinding) {
+            toolbarTitle.setText(R.string.title_savings)
+            toolbar.setNavigationIcon(R.drawable.ic_back_arrow)
+
+            init(toolbar, toolbarShadow, binding.scrollView)
+        }
     }
 }
