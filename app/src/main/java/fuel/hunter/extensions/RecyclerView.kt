@@ -12,7 +12,11 @@ class TypedItem<T, I>(
 )
 
 fun RecyclerView.getItemViewType(view: View): Int {
-    val index = getChildViewHolder(view).adapterPosition
+    val index = getChildViewHolder(view)
+        .adapterPosition
+        .takeUnless { it == RecyclerView.NO_POSITION }
+        ?: return 0
+
     return adapter?.getItemViewType(index) ?: 0
 }
 
