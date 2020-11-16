@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import fuel.hunter.R
 import fuel.hunter.databinding.FragmentPricesBinding
 import fuel.hunter.databinding.LayoutNotesBinding
@@ -41,8 +42,14 @@ class PricesFragment : Fragment() {
         setupPriceList()
         handleSavingsTap()
 
-        viewModel.prices
-            .observe(viewLifecycleOwner, adapter::submitList)
+        viewModel.prices.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                Snackbar
+                    .make(view, "No prices for your location", Snackbar.LENGTH_SHORT)
+                    .show()
+            }
+            adapter.submitList(it)
+        }
     }
 
     private fun setupToolbar() {
