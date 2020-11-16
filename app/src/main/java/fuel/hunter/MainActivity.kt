@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), ContainerHolder {
         )
 
         // Prices
-        factory { PricesViewModel(get(), get(key = "preferences")) }
+        factory { PricesViewModel(get(), get(), get(key = "preferences")) }
 
         // Settings
         factory { FuelTypeViewModel(get(key = "preferences")) }

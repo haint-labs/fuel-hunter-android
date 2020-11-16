@@ -1,9 +1,14 @@
 package fuel.hunter.scenes.prices
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
+import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.datastore.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -14,44 +19,45 @@ import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Company
 import fuel.hunter.models.Price
 import fuel.hunter.models.Station
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PricesViewModel(
+    private val context: Context,
     private val client: FuelHunterServiceCoroutineStub,
     private val preferences: DataStore<Preferences>
 ) : ViewModel() {
     @SuppressLint("MissingPermission")
     private val location: Flow<Location> = callbackFlow {
-//        val manager = getSystemService(app, LocationManager::class.java)
-//            ?: return@callbackFlow
-//
-//        val listener = object : LocationListener {
-//            override fun onStatusChanged(
-//                provider: String?,
-//                status: Int,
-//                extras: Bundle?
-//            ) {}
-//
-//            override fun onProviderEnabled(provider: String?) {}
-//            override fun onProviderDisabled(provider: String?) {}
-//
-//            override fun onLocationChanged(location: Location?) {
-//                location?.let { offer(it) }
-//            }
-//        }
-//
-//        manager.requestLocationUpdates(
-//            GPS_PROVIDER,
-//            1 * 60 * 1000,
-//            0f,
-//            listener
-//        )
-//
-//        offer(manager.getLastKnownLocation(GPS_PROVIDER))
-//
-//        awaitClose { manager.removeUpdates(listener) }
-        offer(Location(GPS_PROVIDER))
+        val manager = getSystemService(context, LocationManager::class.java)
+            ?: return@callbackFlow
+
+        val listener = object : LocationListener {
+            override fun onStatusChanged(
+                provider: String?,
+                status: Int,
+                extras: Bundle?
+            ) {}
+
+            override fun onProviderEnabled(provider: String?) {}
+            override fun onProviderDisabled(provider: String?) {}
+
+            override fun onLocationChanged(location: Location?) {
+                location?.let { offer(it) }
+            }
+        }
+
+        manager.requestLocationUpdates(
+            GPS_PROVIDER,
+            1 * 60 * 1000,
+            0f,
+            listener
+        )
+
+        offer(manager.getLastKnownLocation(GPS_PROVIDER))
+
+        awaitClose { manager.removeUpdates(listener) }
     }
 
     private val _companies = MutableStateFlow(emptyList<Company>())
@@ -85,16 +91,15 @@ class PricesViewModel(
     }
 
     private fun handlePricesUpdates() {
-        val priceQuery = combine(preferences.data) { (preferences) ->
+        val priceQuery = combine(location, preferences.data) { location, preferences ->
             val builder = Price.Query.newBuilder()
-                .addCity("Jelgava")
-//                .setLocation(
-//                    Price.Location.newBuilder()
-//                        .setLongitude(location.latitude.toFloat())
-//                        .setLatitude(location.longitude.toFloat())
-//                        .build()
-//                )
-//                .setDistance(2000f)
+                .setLocation(
+                    Price.Location.newBuilder()
+                        .setLongitude(location.latitude.toFloat())
+                        .setLatitude(location.longitude.toFloat())
+                        .build()
+                )
+                .setDistance(2000f)
 
             preferences.fuelTypesMap
                 .mapNotNull { (key, value) -> if (value) key else null }
