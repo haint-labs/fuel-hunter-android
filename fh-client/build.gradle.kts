@@ -8,15 +8,12 @@ plugins {
 }
 
 dependencies {
-    protobuf("com.github.haint-labs:fuel-hunter-proto:5aabe769")
+    protobuf("com.github.haint-labs:fuel-hunter-proto:51fca59")
 
-    api("javax.annotation:javax.annotation-api:1.3.2")
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    api("com.google.protobuf:protobuf-javalite:3.12.0")
+    api("io.grpc:grpc-kotlin-stub-lite:0.2.1")
     api("io.grpc:grpc-okhttp:1.32.1")
-    api("io.grpc:grpc-protobuf-lite:1.32.1")
-    api("io.grpc:grpc-stub:1.32.1")
-    api("io.grpc:grpc-kotlin-stub:0.2.0") {
-        exclude("io.grpc", "grpc-protobuf")
-    }
 }
 
 protobuf {
