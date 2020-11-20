@@ -64,7 +64,9 @@ class PricesViewModel(
     private val _stations = MutableStateFlow(emptyList<Station>())
     private val _prices = MutableStateFlow(emptyList<Price.Response.Item>())
 
-    val prices = combine(_prices, _companies, _stations, ::transformToFuelPrices)
+    val prices = combine(_prices, _companies, _stations) { prices, companies, stations ->
+        transformToFuelPrices(prices, companies, stations)
+    }
         .map { flattenFuelTypes(it) }
         .asLiveData()
 
