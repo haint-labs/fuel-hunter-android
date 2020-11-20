@@ -12,8 +12,6 @@ plugins {
 android {
     compileSdkVersion(29)
 
-    buildToolsVersion = "29.0.3"
-
     defaultConfig {
         applicationId = "fuel.hunter"
         minSdkVersion(21)
@@ -25,6 +23,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 
     buildTypes {
@@ -44,6 +43,16 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        useIR = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = compose.version
+        kotlinCompilerVersion = kt.version
     }
 }
 
@@ -69,6 +78,11 @@ dependencies {
     implementation(androidx.lifecycleLiveDataKtx)
     implementation(androidx.lifecycleExtensions)
     implementation(androidx.lifecycleRuntime)
+
+    implementation(compose.ui)
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.uiTooling)
 
     implementation(androidx.dataStore)
     implementation("com.google.protobuf:protobuf-javalite:3.12.0")

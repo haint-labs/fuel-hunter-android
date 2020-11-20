@@ -3,7 +3,7 @@
 const val junit = "junit:junit:4.12"
 
 object kt {
-    const val version = "1.4.0"
+    const val version = "1.4.10"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
     object coroutines {
@@ -43,6 +43,15 @@ object androidx {
     const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
 }
 
+object compose {
+    const val version = "1.0.0-alpha07"
+
+    const val ui = "androidx.compose.ui:ui:$version"
+    const val foundation = "androidx.compose.foundation:foundation:$version"
+    const val material = "androidx.compose.material:material:$version"
+    const val uiTooling = "androidx.ui:ui-tooling:$version"
+}
+
 object firebase {
     const val crashlytics = "com.google.firebase:firebase-crashlytics:17.2.1"
 }
@@ -53,7 +62,7 @@ object coil {
 
 object Build {
     object Plugins {
-        const val android = "com.android.tools.build:gradle:4.1.1"
+        const val android = "com.android.tools.build:gradle:4.2.0-alpha16"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"
@@ -62,7 +71,6 @@ object Build {
         object ID {
             const val androidApp = "com.android.application"
             const val ktAndroid = "kotlin-android"
-            const val ktAndroidExt = "kotlin-android-extensions"
             const val kapt = "kotlin-kapt"
             const val googleServices = "com.google.gms.google-services"
             const val crashlytics = "com.google.firebase.crashlytics"
