@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.ui.tooling.preview.Preview
 import fuel.hunter.R
-import fuel.hunter.databinding.FragmentSavingsBinding
+import fuel.hunter.databinding.FragmentComposeBinding
 import fuel.hunter.scenes.base.BaseLayout
 import fuel.hunter.scenes.base.GlowingToolbar
 import fuel.hunter.scenes.base.rememberToolbarState
@@ -34,7 +34,7 @@ class SavingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = FragmentSavingsBinding.inflate(inflater, container, false)
+        val view = FragmentComposeBinding.inflate(inflater, container, false)
         val navController = findNavController()
 
         view.composeView.setContent {

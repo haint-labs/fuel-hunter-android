@@ -27,7 +27,7 @@
     <fragment
             android:id="@+id/savings"
             android:name="fuel.hunter.scenes.savings.SavingsFragment"
-            tools:layout="@layout/fragment_savings" />
+            tools:layout="@layout/fragment_compose" />
 
     <fragment
             android:id="@+id/precision"
