@@ -6,51 +6,59 @@ import androidx.lifecycle.viewModelScope
 import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Price
 import fuel.hunter.scenes.settings.Fuel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class FuelTypeViewModel(
     private val preferences: DataStore<Preferences>
 ) : ViewModel() {
+    private val fuelTypesMap = MutableStateFlow<Map<String, Boolean>>(mapOf())
+    private val update = Channel<Fuel.Type>()
 
-    private val update = Channel<Fuel>()
-
-    private val fuelTypeMap = preferences.data
-        .map { preferences ->
-            preferences.fuelTypesMap.takeIf { it.isNotEmpty() }
-                ?: Price.FuelType.values()
-                    .filterNot { it == Price.FuelType.UNRECOGNIZED }
-                    .map { it.toString() to false }
-                    .toMap()
-        }
-        .map { it.toMutableMap() }
-        .buffer(Channel.CONFLATED)
-        .broadcastIn(viewModelScope)
-        .asFlow()
-
-    val fuelTypeUiMap = fuelTypeMap
+    val fuelTypes = fuelTypesMap
         .map {
-            listOf<Fuel>(Fuel.Header) + it.map { (name, isChecked) ->
-                Fuel.Type(name, isChecked)
-            }
+            it.map { (name, isChecked) -> Fuel.Type(name, isChecked) }
         }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     init {
+        wireFromStore()
+        handleUpdates()
+    }
+
+    fun updatePreference(item: Fuel.Type) = update.offer(item)
+
+    private fun wireFromStore() {
+        preferences.data
+            .map { preferences ->
+                preferences.fuelTypesMap.takeIf { it.isNotEmpty() }
+                    ?: Price.FuelType.values()
+                        .filterNot { it == Price.FuelType.UNRECOGNIZED }
+                        .map { it.toString() to false }
+                        .toMap()
+            }
+            .onEach { fuelTypesMap.emit(it) }
+            .launchIn(viewModelScope)
+    }
+
+    private fun handleUpdates() {
         update
             .consumeAsFlow()
-            .mapNotNull { it as? Fuel.Type }
-            .combine(fuelTypeMap) { item, typeMap ->
-                typeMap.also { it[item.name] = item.isChecked }
+            .map { item ->
+                fuelTypesMap.value
+                    .toMutableMap()
+                    .also { it[item.name] = item.isChecked }
             }
-            .onEach {
+            .onEach { fuelTypesMap.emit(it) }
+            .onCompletion {
                 preferences.updateData { p ->
                     p.toBuilder()
-                        .putAllFuelTypes(it)
+                        .putAllFuelTypes(fuelTypesMap.value)
                         .build()
                 }
             }
             .launchIn(viewModelScope)
     }
-
-    fun updateFuelTypePreference(item: Fuel.Type) = update.offer(item)
 }
