@@ -18,7 +18,7 @@ object kt {
 object androidx {
     private const val version = "1.3.1"
     private const val lifecycleVersion = "2.2.0"
-    private const val fragmentVersion = "1.2.5"
+    private const val fragmentVersion = "1.3.0-beta01"
 
     const val core = "androidx.core:core-ktx:${version}"
     const val appCompat = "androidx.appcompat:appcompat:1.2.0"
