@@ -37,15 +37,7 @@ fun ListItem(
             modifier = Modifier
                 .padding(listItemType.padding)
         ) {
-            if (icon != null) {
-                Box(
-                    modifier = Modifier
-                        .width(33.dp)
-                        .height(33.dp)
-                ) {
-                    icon()
-                }
-            }
+            icon?.invoke()
 
             Column(
                 modifier = Modifier
@@ -60,9 +52,9 @@ fun ListItem(
                     style = ListItemTitleTextStyle,
                 )
 
-                if (subtitle != null) {
+                subtitle?.let {
                     Text(
-                        text = subtitle,
+                        text = it,
                         color = Color.Gray,
                         modifier = Modifier.fillMaxWidth()
                     )
