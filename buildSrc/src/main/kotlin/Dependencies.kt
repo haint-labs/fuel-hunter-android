@@ -58,6 +58,7 @@ object firebase {
 
 object coil {
     const val kt = "io.coil-kt:coil:1.0.0-rc3"
+    const val compose = "dev.chrisbanes.accompanist:accompanist-coil:0.3.3.1"
 }
 
 object Build {

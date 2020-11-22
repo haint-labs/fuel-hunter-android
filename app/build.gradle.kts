@@ -62,6 +62,7 @@ dependencies {
     implementation(kt.coroutines.android)
 
     implementation(coil.kt)
+    implementation(coil.compose)
 
     implementation(project(":fh-client"))
 
