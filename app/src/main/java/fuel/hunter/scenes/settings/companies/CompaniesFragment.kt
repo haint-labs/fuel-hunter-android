@@ -1,88 +1,143 @@
 package fuel.hunter.scenes.settings.companies
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.view.isGone
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DiffUtil
-import coil.load
+import android.view.ViewGroup
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchConstants
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import dev.chrisbanes.accompanist.coil.CoilImage
 import fuel.hunter.R
-import fuel.hunter.databinding.LayoutSettingHeaderBinding
-import fuel.hunter.databinding.LayoutSettingItemBinding
-import fuel.hunter.extensions.onChecked
-import fuel.hunter.scenes.base.BaseFragment
-import fuel.hunter.scenes.base.VIEW_TYPE_CATEGORY
-import fuel.hunter.scenes.base.ViewLayoutProvider
-import fuel.hunter.scenes.base.ViewTypeDetectors
+import fuel.hunter.databinding.FragmentComposeBinding
+import fuel.hunter.scenes.base.BaseLayout
+import fuel.hunter.scenes.base.GlowingToolbar
+import fuel.hunter.scenes.base.list.IndexListItemTypeDetector
+import fuel.hunter.scenes.base.list.ListItem
+import fuel.hunter.scenes.base.rememberToolbarState
 import fuel.hunter.scenes.settings.Fuel
 import fuel.hunter.tools.di.viewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import fuel.hunter.ui.ColorPrimary
+import fuel.hunter.ui.ColorSwitchUnchecked
+import fuel.hunter.ui.ItemTextStyle
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-class CompaniesFragment : BaseFragment<Fuel>() {
+class CompaniesFragment : Fragment() {
     private val viewModel by viewModel<CompaniesViewModel>()
 
-    override val title = R.string.title_companies
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = FragmentComposeBinding.inflate(inflater, container, false)
+        val navController = findNavController()
 
-    override val itemDiff = object : DiffUtil.ItemCallback<Fuel>() {
-        override fun areItemsTheSame(oldItem: Fuel, newItem: Fuel) = oldItem == newItem
-        override fun areContentsTheSame(oldItem: Fuel, newItem: Fuel) = oldItem == newItem
-    }
-
-    override var viewTypeDetector = ViewTypeDetectors.Category
-
-    override val layoutProvider: ViewLayoutProvider = {
-        when (it) {
-            VIEW_TYPE_CATEGORY -> R.layout.layout_setting_header
-            else -> R.layout.layout_setting_item
+        view.composeView.setContent {
+            CompaniesSettingScene(viewModel, navController::navigateUp)
         }
+
+        return view.root
     }
+}
 
-    override val binder = { view: View, item: Fuel ->
-        when (item) {
-            is Fuel.Header -> with(LayoutSettingHeaderBinding.bind(view)) {
-                settingHeader.text = "Atzīmē kuras uzpildes kompānijas\nvēlies redzēt sarakstā."
-            }
-            is Fuel.Cheapest -> with(LayoutSettingItemBinding.bind(view)) {
-                settingTitle.text = "Lētākā"
-                settingsDescription.text =
-                    "Ieslēdzot šo - vienmēr tiks rādīta arī tā kompānija, kurai Latvijā ir lētākā degviela attiecīgajā brīdī"
-                settingToggle.isChecked = item.isChecked
-            }
-            is Fuel.Company -> with(LayoutSettingItemBinding.bind(view)) {
-                settingTitle.text = item.name
-                settingsDescription.isGone = true
+@OptIn(ExperimentalCoroutinesApi::class)
+@Composable
+fun CompaniesSettingScene(
+    viewModel: CompaniesViewModel,
+    onNavigationClick: () -> Unit = {},
+) {
+    val items by viewModel.companies.collectAsState()
+    val itemTypeDetector = IndexListItemTypeDetector(items.size)
 
-                with(settingsIcon) {
-                    isGone = false
+    val scrollState = rememberScrollState(0f)
+    val toolbarState = rememberToolbarState(
+        color = colorResource(id = R.color.colorPrimary),
+        maxAlpha = with(DensityAmbient.current) { 50.dp.toPx() }
+    )
 
-                    when (val it = item.logo) {
-                        is Fuel.Logo.Url -> load(it.url)
-                        is Fuel.Logo.Drawable -> setImageDrawable(
-                            resources.getDrawable(it.id, context.theme)
+    toolbarState.alpha = scrollState.value
+
+    BaseLayout(
+        toolbar = {
+            GlowingToolbar(
+                toolbarState = toolbarState,
+                screenTitle = stringResource(id = R.string.title_companies),
+                navigationIcon = vectorResource(id = R.drawable.ic_back_arrow),
+                onNavClick = onNavigationClick,
+            )
+        }
+    ) {
+        ScrollableColumn(
+            scrollState = scrollState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 11.dp, end = 11.dp, bottom = 11.dp)
+        ) {
+            Text(
+                text = "Atzīmē kuras uzpildes kompānijas\nvēlies redzēt sarakstā.",
+                style = ItemTextStyle,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 16.dp)
+            )
+
+            val iconModifier = Modifier
+                .size(24.dp, 24.dp)
+                .padding(end = 6.dp)
+
+            items.forEachIndexed { index, item ->
+                ListItem(
+                    listItemType = itemTypeDetector.getType(index),
+                    title = item.name,
+                    subtitle = item.description,
+                    icon = {
+                        when (item.logo) {
+                            is Fuel.Logo.Drawable -> Image(
+                                asset = imageResource(id = item.logo.id),
+                                modifier = iconModifier
+                            )
+                            is Fuel.Logo.Url -> CoilImage(
+                                data = item.logo.url,
+                                modifier = iconModifier
+                            )
+                        }
+                    },
+                    action = {
+                        Switch(
+                            checked = item.isChecked,
+                            colors = SwitchConstants.defaultColors(
+                                checkedThumbColor = ColorPrimary,
+                                uncheckedTrackColor = ColorSwitchUnchecked,
+                            ),
+                            onCheckedChange = {
+                                viewModel.updateCompaniesPreference(
+                                    item.copy(isChecked = it)
+                                )
+                            }
                         )
                     }
-                }
-
-                with(settingToggle) {
-                    isChecked = item.isChecked
-
-                    onChecked
-                        .map { item.copy(isChecked = it) }
-                        .onEach { viewModel.updateCompaniesPreference(it) }
-                        .launchIn(lifecycleScope)
-                }
+                )
             }
         }
-        Unit
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.companiesUiMap
-            .onEach { adapter.submitList(it) }
-            .launchIn(lifecycleScope)
     }
 }

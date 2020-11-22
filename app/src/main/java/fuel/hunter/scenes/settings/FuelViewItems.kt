@@ -3,19 +3,16 @@ package fuel.hunter.scenes.settings
 import androidx.annotation.DrawableRes
 
 sealed class Fuel {
-    object Header : Fuel()
-
-    data class Cheapest(val isChecked: Boolean) : Fuel()
-
     sealed class Logo {
         class Drawable(@DrawableRes val id: Int): Logo()
         class Url(val url: String): Logo()
     }
 
     data class Company(
-        val logo: Logo,
         val name: String,
-        val isChecked: Boolean
+        val isChecked: Boolean,
+        val logo: Logo? = null,
+        val description: String? = null,
     ) : Fuel()
 
     data class Type(
