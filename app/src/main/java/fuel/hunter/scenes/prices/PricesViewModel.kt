@@ -19,10 +19,12 @@ import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Company
 import fuel.hunter.models.Price
 import fuel.hunter.models.Station
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PricesViewModel(
     private val context: Context,
     private val client: FuelHunterServiceCoroutineStub,
@@ -68,7 +70,7 @@ class PricesViewModel(
         transformToFuelPrices(prices, companies, stations)
     }
         .map { flattenFuelTypes(it) }
-        .asLiveData()
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     init {
         updateCompanies()

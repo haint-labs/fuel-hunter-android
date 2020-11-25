@@ -18,7 +18,10 @@ fun BaseLayout(
         ) {
             Column {
                 toolbar()
-                Box(children = children)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    children = children
+                )
             }
         }
     }

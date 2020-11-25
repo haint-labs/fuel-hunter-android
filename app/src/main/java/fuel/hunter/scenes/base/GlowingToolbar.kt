@@ -1,6 +1,5 @@
 package fuel.hunter.scenes.base
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -17,14 +16,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.vector.VectorAsset
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
-import fuel.hunter.R
+import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.view.decorations.glow
 import fuel.hunter.view.decorations.roundIndication
 
@@ -67,11 +62,46 @@ fun rememberToolbarState(
 }
 
 @Composable
+fun Title(
+    text: String = "",
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        color = ColorPrimary,
+        fontSize = 20.sp,
+        modifier = modifier
+            .wrapContentSize()
+    )
+}
+
+@Composable
 fun GlowingToolbar(
-    screenTitle: String = "Toolbar",
-    navigationIcon: VectorAsset = vectorResource(id = R.drawable.ic_launcher_foreground),
+    text: String = "Toolbar",
+    navigationIcon: @Composable (() -> Unit)? = null,
+    onNavigationClick: () -> Unit = {},
     toolbarState: GlowingToolbarState = rememberToolbarState(),
-    onNavClick: () -> Unit = {},
+) {
+    GlowingToolbar(
+        title = {
+            Title(
+                text = text,
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        },
+        navigationIcon = navigationIcon,
+        onNavigationClick = onNavigationClick,
+        toolbarState = toolbarState,
+    )
+}
+
+@Composable
+fun GlowingToolbar(
+    title: @Composable BoxScope.() -> Unit,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    onNavigationClick: () -> Unit = {},
+    toolbarState: GlowingToolbarState = rememberToolbarState(),
 ) {
     ConstraintLayout(
         modifier = Modifier.wrapContentSize()
@@ -88,45 +118,26 @@ fun GlowingToolbar(
                     top.linkTo(parent.top)
                 }
         ) {
-            ConstraintLayout(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                val (icon, title) = createRefs()
-
-                Box(
-                    modifier = Modifier
-                        .constrainAs(icon) {
-                            centerVerticallyTo(parent)
-                            start.linkTo(parent.start)
-                        }
-                        .padding(4.dp)
-                        .clickable(
-                            onClick = onNavClick,
-                            indication = roundIndication(
-                                colorResource(id = R.color.colorPrimary).copy(alpha = 0.3f)
-                            )
-                        )
-                        .padding(4.dp),
-                    alignment = Alignment.Center,
-                ) {
-                    Image(
-                        asset = navigationIcon,
+                navigationIcon?.let {
+                    Box(
                         modifier = Modifier
-                            .preferredSize(24.dp)
+                            .padding(8.dp)
+                            .preferredSize(32.dp)
+                            .align(Alignment.CenterStart)
+                            .clickable(
+                                onClick = onNavigationClick,
+                                indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
+                            ),
+                        alignment = Alignment.Center,
+                        children = { it.invoke() },
                     )
                 }
 
-                Text(
-                    text = screenTitle,
-                    color = colorResource(id = R.color.colorPrimary),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .constrainAs(title) {
-                            centerTo(parent)
-                        }
-                )
+                title()
             }
         }
 
@@ -141,6 +152,8 @@ fun GlowingToolbar(
                 }
                 .glow(
                     color = toolbarState.color,
+                    strokeWidth = 1.dp,
+                    radius = 2.dp,
                     path = {
                         Path().apply {
                             addRect(Rect(Offset.Zero, size))

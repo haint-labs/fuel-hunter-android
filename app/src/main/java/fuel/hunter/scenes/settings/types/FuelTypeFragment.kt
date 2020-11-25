@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -65,12 +66,14 @@ fun FuelTypeSettingScene(
     BaseLayout(
         toolbar = {
             GlowingToolbar(
-                screenTitle = stringResource(id = R.string.title_fuel_type),
-                navigationIcon = vectorResource(id = R.drawable.ic_back_arrow),
+                text = stringResource(id = R.string.title_fuel_type),
+                navigationIcon = {
+                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                },
                 toolbarState = rememberToolbarState(
                     color = colorResource(id = R.color.colorPrimary).copy(alpha = 0f)
                 ),
-                onNavClick = onNavigationClick,
+                onNavigationClick = onNavigationClick,
             )
         }
     ) {

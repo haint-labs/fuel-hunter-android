@@ -69,10 +69,12 @@ fun SavingsScene(
     BaseLayout(
         toolbar = {
             GlowingToolbar(
-                screenTitle = stringResource(id = R.string.title_savings),
-                navigationIcon = vectorResource(id = R.drawable.ic_back_arrow),
+                text = stringResource(id = R.string.title_savings),
+                navigationIcon = {
+                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                },
                 toolbarState = toolbarState,
-                onNavClick = onNavigationClick,
+                onNavigationClick = onNavigationClick,
             )
         },
     ) {

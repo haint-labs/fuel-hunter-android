@@ -6,7 +6,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 
-class TypedItem<T, I>(
+data class TypedItem<T, I>(
     val type: T,
     val item: I
 )

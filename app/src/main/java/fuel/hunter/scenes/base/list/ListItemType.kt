@@ -16,7 +16,7 @@ interface ListItemType {
 }
 
 object Single : ListItemType {
-    override val separator: @Composable () -> Unit = { Separator() }
+    override val separator: @Composable () -> Unit = {}
 
     override val padding = PaddingValues(
         top = 6.dp,

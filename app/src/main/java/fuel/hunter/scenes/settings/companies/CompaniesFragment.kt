@@ -81,9 +81,11 @@ fun CompaniesSettingScene(
         toolbar = {
             GlowingToolbar(
                 toolbarState = toolbarState,
-                screenTitle = stringResource(id = R.string.title_companies),
-                navigationIcon = vectorResource(id = R.drawable.ic_back_arrow),
-                onNavClick = onNavigationClick,
+                text = stringResource(id = R.string.title_companies),
+                navigationIcon = {
+                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                },
+                onNavigationClick = onNavigationClick,
             )
         }
     ) {
