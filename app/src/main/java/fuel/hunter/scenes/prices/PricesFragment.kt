@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnForIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -38,6 +39,7 @@ import fuel.hunter.tools.di.viewModel
 import fuel.hunter.ui.CategoryTextStyle
 import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.ui.PriceTextStyle
+import fuel.hunter.view.decorations.roundIndication
 
 class PricesFragment : Fragment() {
     private val viewModel by viewModel<PricesViewModel>()
@@ -61,6 +63,7 @@ class PricesFragment : Fragment() {
 @Composable
 fun PricesScene(
     viewModel: PricesViewModel,
+    goToSettings: () -> Unit = {},
 ) {
     val scrollState = rememberLazyListState()
     val firstItemIndex = scrollState.firstVisibleItemIndex
@@ -111,6 +114,10 @@ fun PricesScene(
         Image(
             asset = vectorResource(id = R.drawable.ic_settings),
             modifier = Modifier
+                .clickable(
+                    onClick = goToSettings,
+                    indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
+                )
                 .padding(16.dp)
                 .size(24.dp)
                 .align(Alignment.BottomStart)

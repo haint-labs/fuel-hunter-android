@@ -83,6 +83,7 @@ dependencies {
     implementation(compose.ui)
     implementation(compose.foundation)
     implementation(compose.material)
+    implementation(compose.navigation)
     implementation(compose.uiTooling)
 
     implementation(androidx.dataStore)
