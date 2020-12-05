@@ -1,6 +1,7 @@
 package fuel.hunter.scenes.prices
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.globalBounds
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -165,7 +168,7 @@ fun PricesScene(
                 .padding(bottom = 56.dp),
             contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
             state = scrollState,
-        ) { _, (legacyType, item) ->
+        ) { index, (legacyType, item) ->
             when (item) {
                 is Fuel.Category -> Text(
                     text = item.name,
@@ -177,31 +180,40 @@ fun PricesScene(
                             start = 8.dp,
                         )
                 )
-                is Fuel.Price -> ListItem(
-                    title = item.title.toUpperCase(),
-                    subtitle = item.address,
-                    listItemType = typeDetector.getType(legacyType),
-                    icon = {
-                        when (item.logo) {
-                            is Fuel.Logo.Drawable -> Image(
-                                asset = imageResource(id = item.logo.id),
-                                modifier = iconModifier,
-                            )
-                            is Fuel.Logo.Url -> CoilImage(
-                                data = item.logo.url,
-                                modifier = iconModifier,
-                            )
+                is Fuel.Price -> {
+                    val modifier = Modifier.takeIf { index < items.lastIndex }
+                        ?: Modifier.onGloballyPositioned {
+                            Log.d("MOX", "last item ${it.globalBounds}")
+                            Log.d("MOX", "last item ${it.size}")
                         }
-                    },
-                    action = {
-                        Text(
-                            text = item.price.toString(),
-                            style = PriceTextStyle,
-                            modifier = Modifier
-                                .padding(start = 8.dp)
-                        )
-                    },
-                )
+
+                    ListItem(
+                        title = item.title.toUpperCase(),
+                        subtitle = item.address,
+                        listItemType = typeDetector.getType(legacyType),
+                        icon = {
+                            when (item.logo) {
+                                is Fuel.Logo.Drawable -> Image(
+                                    asset = imageResource(id = item.logo.id),
+                                    modifier = iconModifier,
+                                )
+                                is Fuel.Logo.Url -> CoilImage(
+                                    data = item.logo.url,
+                                    modifier = iconModifier,
+                                )
+                            }
+                        },
+                        action = {
+                            Text(
+                                text = item.price.toString(),
+                                style = PriceTextStyle,
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                            )
+                        },
+                        modifier = modifier,
+                    )
+                }
             }
         }
     }

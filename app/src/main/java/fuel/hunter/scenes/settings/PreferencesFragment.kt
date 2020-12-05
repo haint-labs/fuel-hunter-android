@@ -79,9 +79,28 @@ class PreferencesFragment : BaseFragment<Preference>() {
 //    }
 }
 
+interface NavActions {
+    fun back()
+    fun toFuelTypes()
+    fun toNotifications()
+    fun toLanguage()
+}
+
+fun noopNavActions(): NavActions {
+    return object : NavActions {
+        override fun back() {}
+        override fun toFuelTypes() {}
+        override fun toNotifications() {}
+        override fun toLanguage() {}
+    }
+}
+
 @Preview
 @Composable
-fun SettingsScene() {
+fun SettingsScene(
+    navActions: NavActions = noopNavActions(),
+    onNavigationClick: () -> Unit = {},
+) {
     val toolbarState = rememberToolbarState(
         color = ColorPrimary,
     )
@@ -97,6 +116,7 @@ fun SettingsScene() {
                 navigationIcon = {
                     Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
                 },
+                onNavigationClick = onNavigationClick,
             )
         }
     ) {
@@ -105,7 +125,7 @@ fun SettingsScene() {
                 .fillMaxWidth()
                 .padding(11.dp)
         ) {
-            preferenceItems.forEachIndexed { index, (it, _) ->
+            preferenceItems.forEachIndexed { index, (it, destination) ->
                 ListItem(
                     listItemType = itemTypeDetector.getType(index),
                     title = it.name,
@@ -125,6 +145,13 @@ fun SettingsScene() {
                             is Preference.Reveal -> {
                             }
                         }
+                    },
+                    onClick = {
+                        when (destination) {
+                            R.id.settings_to_fuel_types -> navActions.toFuelTypes()
+                            R.id.settings_to_notification -> navActions.toNotifications()
+                            R.id.settings_to_language -> navActions.toLanguage()
+                        }
                     }
                 )
             }
@@ -133,10 +160,6 @@ fun SettingsScene() {
 }
 
 private val preferenceItems = listOf(
-    Preference.Reveal(
-        "NESTE",
-        "Atzīmē, kuras uzpildes kompānijas vēlies redzēt sarakstā"
-    ) to R.id.settings_to_companies,
     Preference.Reveal(
         "DD",
         "Aktuālais degvielas veids"

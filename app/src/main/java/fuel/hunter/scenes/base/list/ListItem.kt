@@ -1,6 +1,7 @@
 package fuel.hunter.scenes.base.list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,8 @@ fun ListItem(
     icon: @Composable (() -> Unit)? = null,
     action: @Composable (() -> Unit)? = null,
     listItemType: ListItemType = Single,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = Modifier
@@ -35,11 +38,13 @@ fun ListItem(
             ) {
                 listItemType.glow(size, 4.dp.toPx(), 8.dp.toPx())
             }
+            .then(modifier)
     ) {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
+                .clickable(onClick = onClick)
                 .padding(listItemType.padding)
         ) {
             icon?.invoke()

@@ -1,19 +1,19 @@
 package fuel.hunter.scenes.settings.types
 
 import androidx.datastore.DataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Price
 import fuel.hunter.scenes.settings.Fuel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FuelTypeViewModel(
+    private val scope: CoroutineScope,
     private val preferences: DataStore<Preferences>
-) : ViewModel() {
+) {
     private val fuelTypesMap = MutableStateFlow<Map<String, Boolean>>(mapOf())
     private val update = Channel<Fuel.Type>()
 
@@ -21,7 +21,7 @@ class FuelTypeViewModel(
         .map {
             it.map { (name, isChecked) -> Fuel.Type(name, isChecked) }
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        .stateIn(scope, SharingStarted.Lazily, emptyList())
 
     init {
         wireFromStore()
@@ -40,7 +40,7 @@ class FuelTypeViewModel(
                         .toMap()
             }
             .onEach { fuelTypesMap.emit(it) }
-            .launchIn(viewModelScope)
+            .launchIn(scope)
     }
 
     private fun handleUpdates() {
@@ -59,6 +59,6 @@ class FuelTypeViewModel(
                         .build()
                 }
             }
-            .launchIn(viewModelScope)
+            .launchIn(scope)
     }
 }
