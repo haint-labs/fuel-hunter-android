@@ -14,13 +14,13 @@ fun BaseLayout(
     MaterialTheme {
         Box(
             modifier = Modifier.fillMaxSize(),
-            alignment = Alignment.TopStart,
+            contentAlignment = Alignment.TopStart,
         ) {
             Column {
                 toolbar()
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    children = children
+                    content = children
                 )
             }
         }

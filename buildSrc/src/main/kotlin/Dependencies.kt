@@ -3,7 +3,7 @@
 const val junit = "junit:junit:4.12"
 
 object kt {
-    const val version = "1.4.10"
+    const val version = "1.4.20"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
     object coroutines {
@@ -44,13 +44,13 @@ object androidx {
 }
 
 object compose {
-    const val version = "1.0.0-alpha07"
+    const val version = "1.0.0-alpha08"
 
     const val ui = "androidx.compose.ui:ui:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
     const val material = "androidx.compose.material:material:$version"
-    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha02"
-    const val uiTooling = "androidx.ui:ui-tooling:$version"
+    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha03"
+    const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
 }
 
 object firebase {
@@ -59,7 +59,7 @@ object firebase {
 
 object coil {
     const val kt = "io.coil-kt:coil:1.0.0-rc3"
-    const val compose = "dev.chrisbanes.accompanist:accompanist-coil:0.3.3.1"
+    const val compose = "dev.chrisbanes.accompanist:accompanist-coil:0.4.0"
 }
 
 object Build {

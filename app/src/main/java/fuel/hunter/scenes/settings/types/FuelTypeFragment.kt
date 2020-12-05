@@ -68,7 +68,7 @@ fun FuelTypeSettingScene(
             GlowingToolbar(
                 text = stringResource(id = R.string.title_fuel_type),
                 navigationIcon = {
-                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
                 },
                 toolbarState = rememberToolbarState(
                     color = colorResource(id = R.color.colorPrimary).copy(alpha = 0f)

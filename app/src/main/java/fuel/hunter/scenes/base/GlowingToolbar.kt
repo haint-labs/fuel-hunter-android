@@ -16,9 +16,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.ui.tooling.preview.Preview
 import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.view.decorations.glow
 import fuel.hunter.view.decorations.roundIndication
@@ -63,8 +63,8 @@ fun rememberToolbarState(
 
 @Composable
 fun Title(
-    text: String = "",
     modifier: Modifier = Modifier,
+    text: String = "",
 ) {
     Text(
         text = text,
@@ -132,8 +132,8 @@ fun GlowingToolbar(
                                 onClick = onNavigationClick,
                                 indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
                             ),
-                        alignment = Alignment.Center,
-                        children = { it.invoke() },
+                        contentAlignment = Alignment.Center,
+                        content = { it.invoke() },
                     )
                 }
 

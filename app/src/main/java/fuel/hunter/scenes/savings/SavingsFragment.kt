@@ -13,15 +13,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.ui.tooling.preview.Preview
 import fuel.hunter.R
 import fuel.hunter.databinding.FragmentComposeBinding
 import fuel.hunter.scenes.base.BaseLayout
@@ -61,7 +61,7 @@ fun SavingsScene(
     val scrollState = rememberScrollState(0f)
     val toolbarState = rememberToolbarState(
         color = colorResource(id = R.color.colorPrimary),
-        maxAlpha = with(DensityAmbient.current) { 50.dp.toPx() }
+        maxAlpha = with(AmbientDensity.current) { 50.dp.toPx() }
     )
 
     toolbarState.alpha = scrollState.value
@@ -71,7 +71,7 @@ fun SavingsScene(
             GlowingToolbar(
                 text = stringResource(id = R.string.title_savings),
                 navigationIcon = {
-                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
                 },
                 toolbarState = toolbarState,
                 onNavigationClick = onNavigationClick,
@@ -90,7 +90,7 @@ fun SavingsScene(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
-                            asset = vectorResource(id = iconId),
+                            imageVector = vectorResource(id = iconId),
                             modifier = Modifier
                                 .padding(end = 17.dp)
                         )

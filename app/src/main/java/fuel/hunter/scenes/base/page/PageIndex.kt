@@ -7,20 +7,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import fuel.hunter.ui.ColorPrimary
 
 @Composable
 fun PageIndex(
+    modifier: Modifier = Modifier,
     index: Int = 0,
     amount: Int = 5,
     selectedColor: Color = ColorPrimary,
     color: Color = ColorPrimary.copy(alpha = 0.33f),
     iconSize: Dp = 10.dp,
     iconSpace: Dp = iconSize,
-    modifier: Modifier = Modifier,
     onDrawPageIndex: DrawScope.(Int, Color) -> Unit = { idx, c ->
         if (idx == 0) drawLocation(c) else drawCircle(c, radius = (iconSize.toPx() / 2) * 0.7f)
     }

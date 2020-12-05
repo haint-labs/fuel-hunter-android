@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.DiffUtil
-import androidx.ui.tooling.preview.Preview
 import fuel.hunter.R
 import fuel.hunter.databinding.LayoutSettingItemBinding
 import fuel.hunter.scenes.base.*
@@ -114,7 +114,7 @@ fun SettingsScene(
                 toolbarState = toolbarState,
                 text = stringResource(id = R.string.title_settings),
                 navigationIcon = {
-                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
                 },
                 onNavigationClick = onNavigationClick,
             )

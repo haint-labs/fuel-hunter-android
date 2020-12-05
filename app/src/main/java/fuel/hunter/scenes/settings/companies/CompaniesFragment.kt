@@ -18,7 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -72,7 +72,7 @@ fun CompaniesSettingScene(
     val scrollState = rememberScrollState(0f)
     val toolbarState = rememberToolbarState(
         color = colorResource(id = R.color.colorPrimary),
-        maxAlpha = with(DensityAmbient.current) { 50.dp.toPx() }
+        maxAlpha = with(AmbientDensity.current) { 50.dp.toPx() }
     )
 
     toolbarState.alpha = scrollState.value
@@ -83,7 +83,7 @@ fun CompaniesSettingScene(
                 toolbarState = toolbarState,
                 text = stringResource(id = R.string.title_companies),
                 navigationIcon = {
-                    Image(asset = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
                 },
                 onNavigationClick = onNavigationClick,
             )
@@ -115,7 +115,7 @@ fun CompaniesSettingScene(
                     icon = {
                         when (item.logo) {
                             is Fuel.Logo.Drawable -> Image(
-                                asset = imageResource(id = item.logo.id),
+                                bitmap = imageResource(id = item.logo.id),
                                 modifier = iconModifier
                             )
                             is Fuel.Logo.Url -> CoilImage(

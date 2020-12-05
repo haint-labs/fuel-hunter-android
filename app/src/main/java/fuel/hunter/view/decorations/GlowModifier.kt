@@ -4,7 +4,7 @@ import android.graphics.BlurMaskFilter
 import android.graphics.Paint
 import android.graphics.Region
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.drawBehind
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas

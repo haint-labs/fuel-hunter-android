@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.globalBounds
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -72,7 +72,7 @@ fun PricesScene(
     val firstItemIndex = scrollState.firstVisibleItemIndex
     val firstItemOffset = scrollState.firstVisibleItemScrollOffset.toFloat()
 
-    val maxAlpha = with(DensityAmbient.current) { 50.dp.toPx() }
+    val maxAlpha = with(AmbientDensity.current) { 50.dp.toPx() }
     val toolbarState = rememberToolbarState(
         color = ColorPrimary,
         maxAlpha = maxAlpha
@@ -115,7 +115,7 @@ fun PricesScene(
         }
     ) {
         Image(
-            asset = vectorResource(id = R.drawable.ic_settings),
+            imageVector = vectorResource(id = R.drawable.ic_settings),
             modifier = Modifier
                 .clickable(
                     onClick = goToSettings,
@@ -194,7 +194,7 @@ fun PricesScene(
                         icon = {
                             when (item.logo) {
                                 is Fuel.Logo.Drawable -> Image(
-                                    asset = imageResource(id = item.logo.id),
+                                    bitmap = imageResource(id = item.logo.id),
                                     modifier = iconModifier,
                                 )
                                 is Fuel.Logo.Url -> CoilImage(

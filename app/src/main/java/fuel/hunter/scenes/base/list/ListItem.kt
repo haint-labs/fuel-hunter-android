@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import fuel.hunter.R
 import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.ui.ListItemTitleTextStyle
@@ -92,7 +92,7 @@ fun ListItemPreview() {
             subtitle = "I am your subtitle",
             icon = {
                 Image(
-                    asset = vectorResource(id = R.drawable.ic_launcher_foreground),
+                    imageVector = vectorResource(id = R.drawable.ic_launcher_foreground),
                     modifier = Modifier
                         .padding(8.dp)
                         .size(33.dp)

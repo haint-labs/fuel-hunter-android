@@ -9,14 +9,14 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import fuel.hunter.ui.ColorPrimary
 
 @Composable
 fun LocationIcon(
-    color: Color = ColorPrimary,
     modifier: Modifier = Modifier,
+    color: Color = ColorPrimary,
 ) {
     Canvas(modifier = modifier) {
         drawLocation(color)
