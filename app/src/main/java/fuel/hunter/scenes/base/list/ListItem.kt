@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,13 +21,13 @@ import fuel.hunter.view.decorations.glow
 
 @Composable
 fun ListItem(
+    modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null,
     icon: @Composable (() -> Unit)? = null,
     action: @Composable (() -> Unit)? = null,
     listItemType: ListItemType = Single,
     onClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = Modifier
@@ -92,7 +93,8 @@ fun ListItemPreview() {
             subtitle = "I am your subtitle",
             icon = {
                 Image(
-                    imageVector = vectorResource(id = R.drawable.ic_launcher_foreground),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = null,
                     modifier = Modifier
                         .padding(8.dp)
                         .size(33.dp)

@@ -11,7 +11,6 @@ import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.datastore.DataStore
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import fuel.hunter.FuelHunterServiceGrpcKt.FuelHunterServiceCoroutineStub
 import fuel.hunter.data.Fuel
@@ -37,16 +36,16 @@ class PricesViewModel(
 
         val listener = object : LocationListener {
             override fun onStatusChanged(
-                provider: String?,
+                provider: String,
                 status: Int,
-                extras: Bundle?
+                extras: Bundle
             ) {}
 
-            override fun onProviderEnabled(provider: String?) {}
-            override fun onProviderDisabled(provider: String?) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
 
-            override fun onLocationChanged(location: Location?) {
-                location?.let { offer(it) }
+            override fun onLocationChanged(location: Location) {
+                offer(location)
             }
         }
 
@@ -57,7 +56,7 @@ class PricesViewModel(
             listener
         )
 
-        offer(manager.getLastKnownLocation(GPS_PROVIDER))
+        manager.getLastKnownLocation(GPS_PROVIDER)?.let(::offer)
 
         awaitClose { manager.removeUpdates(listener) }
     }

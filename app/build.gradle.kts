@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         applicationId = "fuel.hunter"
         minSdkVersion(21)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -48,7 +48,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = compose.version
-        kotlinCompilerVersion = kt.version
     }
 }
 
@@ -76,11 +75,14 @@ dependencies {
     implementation(androidx.lifecycleExtensions)
     implementation(androidx.lifecycleRuntime)
 
-    implementation(compose.ui)
+    implementation(openStreet.map)
+
     implementation(compose.foundation)
+    implementation(compose.constraintLayout)
+    implementation(compose.runtime)
+    implementation(compose.tooling)
     implementation(compose.material)
     implementation(compose.navigation)
-    implementation(compose.uiTooling)
 
     implementation(androidx.dataStore)
     implementation("com.google.protobuf:protobuf-javalite:3.12.0")

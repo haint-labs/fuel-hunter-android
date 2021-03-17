@@ -2,23 +2,33 @@ package fuel.hunter.view.decorations
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.IndicationInstance
-import androidx.compose.foundation.Interaction
-import androidx.compose.foundation.InteractionState
-import androidx.compose.ui.ContentDrawScope
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 
 fun roundIndication(color: Color): Indication {
     return object : Indication {
-        override fun createInstance(): IndicationInstance {
-            return RoundIndicationInstance(color = color)
+        @Composable
+        override fun rememberUpdatedInstance(interactionSource: InteractionSource): IndicationInstance {
+            val isPressed = interactionSource.collectIsPressedAsState()
+            return remember(interactionSource) {
+                RoundIndication(isPressed = isPressed, color = color)
+            }
         }
     }
 }
 
-internal class RoundIndicationInstance(val color: Color) : IndicationInstance {
-    override fun ContentDrawScope.drawIndication(interactionState: InteractionState) {
+class RoundIndication(
+    private val isPressed: State<Boolean>,
+    private val color: Color,
+) : IndicationInstance {
+    override fun ContentDrawScope.drawIndication() {
         drawContent()
-        if (interactionState.contains(Interaction.Pressed)) {
+        if (isPressed.value) {
             drawCircle(color = color)
         }
     }

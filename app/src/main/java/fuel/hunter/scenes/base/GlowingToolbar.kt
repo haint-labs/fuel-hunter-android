@@ -1,14 +1,15 @@
 package fuel.hunter.scenes.base
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.savedinstancestate.Saver
-import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.view.decorations.glow
 import fuel.hunter.view.decorations.roundIndication
@@ -49,7 +51,7 @@ fun rememberToolbarState(
     color: Color = Color.Black,
     maxAlpha: Float = 200f,
 ): GlowingToolbarState {
-    return rememberSavedInstanceState(
+    return rememberSaveable(
         color,
         saver = Saver(
             save = { color.value to maxAlpha },
@@ -126,11 +128,12 @@ fun GlowingToolbar(
                     Box(
                         modifier = Modifier
                             .padding(8.dp)
-                            .preferredSize(32.dp)
+                            .requiredSize(32.dp)
                             .align(Alignment.CenterStart)
                             .clickable(
-                                onClick = onNavigationClick,
+                                interactionSource = MutableInteractionSource(),
                                 indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
+                                onClick = onNavigationClick,
                             ),
                         contentAlignment = Alignment.Center,
                         content = { it.invoke() },

@@ -2,13 +2,16 @@ package fuel.hunter.scenes.settings
 
 import android.view.View
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Switch
-import androidx.compose.material.SwitchConstants
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -114,14 +117,18 @@ fun SettingsScene(
                 toolbarState = toolbarState,
                 text = stringResource(id = R.string.title_settings),
                 navigationIcon = {
-                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = null,
+                    )
                 },
                 onNavigationClick = onNavigationClick,
             )
         }
     ) {
-        ScrollableColumn(
+        Column(
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
                 .padding(11.dp)
         ) {
@@ -135,7 +142,7 @@ fun SettingsScene(
                             is Preference.Checkbox -> {
                                 Switch(
                                     checked = it.isChecked,
-                                    colors = SwitchConstants.defaultColors(
+                                    colors = SwitchDefaults.colors(
                                         checkedThumbColor = ColorPrimary,
                                         uncheckedTrackColor = ColorSwitchUnchecked,
                                     ),

@@ -5,22 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnForIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.layout.globalBounds
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.AmbientDensity
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -42,7 +42,6 @@ import fuel.hunter.tools.di.viewModel
 import fuel.hunter.ui.CategoryTextStyle
 import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.ui.PriceTextStyle
-import fuel.hunter.view.decorations.roundIndication
 
 class PricesFragment : Fragment() {
     private val viewModel by viewModel<PricesViewModel>()
@@ -67,12 +66,13 @@ class PricesFragment : Fragment() {
 fun PricesScene(
     viewModel: PricesViewModel,
     goToSettings: () -> Unit = {},
+    goToDetails: () -> Unit = {},
 ) {
     val scrollState = rememberLazyListState()
     val firstItemIndex = scrollState.firstVisibleItemIndex
     val firstItemOffset = scrollState.firstVisibleItemScrollOffset.toFloat()
 
-    val maxAlpha = with(AmbientDensity.current) { 50.dp.toPx() }
+    val maxAlpha = with(LocalDensity.current) { 50.dp.toPx() }
     val toolbarState = rememberToolbarState(
         color = ColorPrimary,
         maxAlpha = maxAlpha
@@ -114,13 +114,14 @@ fun PricesScene(
             )
         }
     ) {
+        val interactionSource = remember { MutableInteractionSource() }
+
         Image(
-            imageVector = vectorResource(id = R.drawable.ic_settings),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_settings),
+            contentDescription = null,
             modifier = Modifier
-                .clickable(
-                    onClick = goToSettings,
-                    indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
-                )
+                .clickable(onClick = goToSettings)
+                .indication(interactionSource, LocalIndication.current)
                 .padding(16.dp)
                 .size(24.dp)
                 .align(Alignment.BottomStart)
@@ -161,58 +162,62 @@ fun PricesScene(
             .padding(end = 8.dp)
             .size(33.dp)
 
-        LazyColumnForIndexed(
-            items = items,
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 56.dp),
             contentPadding = PaddingValues(start = 8.dp, end = 8.dp),
             state = scrollState,
-        ) { index, (legacyType, item) ->
-            when (item) {
-                is Fuel.Category -> Text(
-                    text = item.name,
-                    style = CategoryTextStyle,
-                    modifier = Modifier
-                        .padding(
-                            top = 28.dp,
-                            bottom = 4.dp,
-                            start = 8.dp,
-                        )
-                )
-                is Fuel.Price -> {
-                    val modifier = Modifier.takeIf { index < items.lastIndex }
-                        ?: Modifier.onGloballyPositioned {
-                            Log.d("MOX", "last item ${it.globalBounds}")
-                            Log.d("MOX", "last item ${it.size}")
-                        }
-
-                    ListItem(
-                        title = item.title.toUpperCase(),
-                        subtitle = item.address,
-                        listItemType = typeDetector.getType(legacyType),
-                        icon = {
-                            when (item.logo) {
-                                is Fuel.Logo.Drawable -> Image(
-                                    bitmap = imageResource(id = item.logo.id),
-                                    modifier = iconModifier,
-                                )
-                                is Fuel.Logo.Url -> CoilImage(
-                                    data = item.logo.url,
-                                    modifier = iconModifier,
-                                )
-                            }
-                        },
-                        action = {
-                            Text(
-                                text = item.price.toString(),
-                                style = PriceTextStyle,
-                                modifier = Modifier
-                                    .padding(start = 8.dp)
+        ) {
+            itemsIndexed(items) { index, (legacyType, item) ->
+                when (item) {
+                    is Fuel.Category -> Text(
+                        text = item.name,
+                        style = CategoryTextStyle,
+                        modifier = Modifier
+                            .padding(
+                                top = 28.dp,
+                                bottom = 4.dp,
+                                start = 8.dp,
                             )
-                        },
-                        modifier = modifier,
                     )
+                    is Fuel.Price -> {
+                        val modifier = Modifier.takeIf { index < items.lastIndex }
+                            ?: Modifier.onGloballyPositioned {
+                                Log.d("MOX", "last item $it")
+                                Log.d("MOX", "last item ${it.size}")
+                            }
+
+                        ListItem(
+                            title = item.title.toUpperCase(),
+                            subtitle = item.address,
+                            listItemType = typeDetector.getType(legacyType),
+                            icon = {
+                                when (item.logo) {
+                                    is Fuel.Logo.Drawable -> Image(
+                                        bitmap = ImageBitmap.imageResource(id = item.logo.id),
+                                        contentDescription = null,
+                                        modifier = iconModifier,
+                                    )
+                                    is Fuel.Logo.Url -> CoilImage(
+                                        data = item.logo.url,
+                                        contentDescription = null,
+                                        modifier = iconModifier,
+                                    )
+                                }
+                            },
+                            action = {
+                                Text(
+                                    text = item.price.toString(),
+                                    style = PriceTextStyle,
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                )
+                            },
+                            modifier = modifier,
+                            onClick = goToDetails,
+                        )
+                    }
                 }
             }
         }

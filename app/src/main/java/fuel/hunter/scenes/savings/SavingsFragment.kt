@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientDensity
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -58,29 +59,29 @@ private val items = listOf(
 fun SavingsScene(
     onNavigationClick: () -> Unit = {},
 ) {
-    val scrollState = rememberScrollState(0f)
+    val scrollState = rememberScrollState(0)
     val toolbarState = rememberToolbarState(
         color = colorResource(id = R.color.colorPrimary),
-        maxAlpha = with(AmbientDensity.current) { 50.dp.toPx() }
+        maxAlpha = with(LocalDensity.current) { 50.dp.toPx() }
     )
 
-    toolbarState.alpha = scrollState.value
+    toolbarState.alpha = scrollState.value.toFloat()
 
     BaseLayout(
         toolbar = {
             GlowingToolbar(
                 text = stringResource(id = R.string.title_savings),
                 navigationIcon = {
-                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(imageVector = ImageVector.vectorResource(id = R.drawable.ic_back_arrow), null)
                 },
                 toolbarState = toolbarState,
                 onNavigationClick = onNavigationClick,
             )
         },
     ) {
-        ScrollableColumn(
-            scrollState = scrollState,
+        Column(
             modifier = Modifier
+                .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(horizontal = 17.dp)
         ) {
@@ -90,7 +91,8 @@ fun SavingsScene(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
-                            imageVector = vectorResource(id = iconId),
+                            imageVector = ImageVector.vectorResource(id = iconId),
+                            contentDescription = null,
                             modifier = Modifier
                                 .padding(end = 17.dp)
                         )

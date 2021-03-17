@@ -5,24 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Switch
-import androidx.compose.material.SwitchConstants
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientDensity
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -69,13 +67,13 @@ fun CompaniesSettingScene(
     val items by viewModel.companies.collectAsState()
     val itemTypeDetector = IndexListItemTypeDetector(items.size)
 
-    val scrollState = rememberScrollState(0f)
+    val scrollState = rememberScrollState(0)
     val toolbarState = rememberToolbarState(
         color = colorResource(id = R.color.colorPrimary),
-        maxAlpha = with(AmbientDensity.current) { 50.dp.toPx() }
+        maxAlpha = with(LocalDensity.current) { 50.dp.toPx() }
     )
 
-    toolbarState.alpha = scrollState.value
+    toolbarState.alpha = scrollState.value.toFloat()
 
     BaseLayout(
         toolbar = {
@@ -83,15 +81,18 @@ fun CompaniesSettingScene(
                 toolbarState = toolbarState,
                 text = stringResource(id = R.string.title_companies),
                 navigationIcon = {
-                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = null,
+                    )
                 },
                 onNavigationClick = onNavigationClick,
             )
         }
     ) {
-        ScrollableColumn(
-            scrollState = scrollState,
+        Column(
             modifier = Modifier
+                .verticalScroll(scrollState)
                 .fillMaxWidth()
                 .padding(start = 11.dp, end = 11.dp, bottom = 11.dp)
         ) {
@@ -115,11 +116,13 @@ fun CompaniesSettingScene(
                     icon = {
                         when (item.logo) {
                             is Fuel.Logo.Drawable -> Image(
-                                bitmap = imageResource(id = item.logo.id),
+                                painter = painterResource(id = item.logo.id),
+                                contentDescription = null,
                                 modifier = iconModifier
                             )
                             is Fuel.Logo.Url -> CoilImage(
                                 data = item.logo.url,
+                                contentDescription = null,
                                 modifier = iconModifier
                             )
                         }
@@ -127,7 +130,7 @@ fun CompaniesSettingScene(
                     action = {
                         Switch(
                             checked = item.isChecked,
-                            colors = SwitchConstants.defaultColors(
+                            colors = SwitchDefaults.colors(
                                 checkedThumbColor = ColorPrimary,
                                 uncheckedTrackColor = ColorSwitchUnchecked,
                             ),

@@ -3,7 +3,7 @@
 const val junit = "junit:junit:4.12"
 
 object kt {
-    const val version = "1.4.20"
+    const val version = "1.4.31"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
     object coroutines {
@@ -43,14 +43,20 @@ object androidx {
     const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
 }
 
-object compose {
-    const val version = "1.0.0-alpha08"
+object openStreet {
+    const val map = "org.osmdroid:osmdroid-android:6.1.8"
+}
 
-    const val ui = "androidx.compose.ui:ui:$version"
+object compose {
+    const val version = "1.0.0-beta02"
+
     const val foundation = "androidx.compose.foundation:foundation:$version"
+    const val runtime = "androidx.compose.runtime:runtime:$version"
+    const val layout = "androidx.compose.foundation:foundation-layout:$version"
     const val material = "androidx.compose.material:material:$version"
-    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha03"
-    const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
+    const val tooling = "androidx.compose.ui:ui-tooling:$version"
+    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
 }
 
 object firebase {
@@ -58,13 +64,13 @@ object firebase {
 }
 
 object coil {
-    const val kt = "io.coil-kt:coil:1.0.0-rc3"
-    const val compose = "dev.chrisbanes.accompanist:accompanist-coil:0.4.0"
+    const val kt = "io.coil-kt:coil:1.1.1"
+    const val compose = "dev.chrisbanes.accompanist:accompanist-coil:0.6.2"
 }
 
 object Build {
     object Plugins {
-        const val android = "com.android.tools.build:gradle:7.0.0-alpha02"
+        const val android = "com.android.tools.build:gradle:7.0.0-alpha09"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"

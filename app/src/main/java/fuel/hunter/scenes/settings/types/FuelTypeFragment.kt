@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Switch
-import androidx.compose.material.SwitchConstants.defaultColors
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -68,7 +69,10 @@ fun FuelTypeSettingScene(
             GlowingToolbar(
                 text = stringResource(id = R.string.title_fuel_type),
                 navigationIcon = {
-                    Image(imageVector = vectorResource(id = R.drawable.ic_back_arrow))
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = null,
+                    )
                 },
                 toolbarState = rememberToolbarState(
                     color = colorResource(id = R.color.colorPrimary).copy(alpha = 0f)
@@ -97,7 +101,7 @@ fun FuelTypeSettingScene(
                     action = {
                         Switch(
                             checked = item.isChecked,
-                            colors = defaultColors(
+                            colors = SwitchDefaults.colors(
                                 checkedThumbColor = ColorPrimary,
                                 uncheckedTrackColor = ColorSwitchUnchecked,
                             ),
