@@ -3,7 +3,7 @@
 const val junit = "junit:junit:4.12"
 
 object kt {
-    const val version = "1.4.31"
+    const val version = "1.4.32"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
 
     object coroutines {
@@ -48,14 +48,14 @@ object openStreet {
 }
 
 object compose {
-    const val version = "1.0.0-beta02"
+    const val version = "1.0.0-beta05"
 
     const val foundation = "androidx.compose.foundation:foundation:$version"
     const val runtime = "androidx.compose.runtime:runtime:$version"
     const val layout = "androidx.compose.foundation:foundation-layout:$version"
     const val material = "androidx.compose.material:material:$version"
     const val tooling = "androidx.compose.ui:ui-tooling:$version"
-    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha10"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
 }
 
