@@ -1,122 +1,85 @@
 package fuel.hunter.scenes.prices
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
-import android.location.LocationManager.GPS_PROVIDER
-import android.os.Bundle
 import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.datastore.DataStore
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import fuel.hunter.FuelHunterServiceGrpcKt.FuelHunterServiceCoroutineStub
 import fuel.hunter.data.Fuel
-import fuel.hunter.data.preferences.Preferences
 import fuel.hunter.models.Company
 import fuel.hunter.models.Price
 import fuel.hunter.models.Station
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class PricesViewModel(
-    private val context: Context,
+interface PricesSceneVM {
+    val locations: Flow<List<Location>>
+    fun getPrices(location: Location): Flow<List<FuelTypedItem>>
+}
+
+class OnlinePricesSceneVM(
+    private val scope: CoroutineScope,
     private val client: FuelHunterServiceCoroutineStub,
-    private val preferences: DataStore<Preferences>
-) : ViewModel() {
-    @SuppressLint("MissingPermission")
-    private val location: Flow<Location> = callbackFlow {
-        val manager = getSystemService(context, LocationManager::class.java)
-            ?: return@callbackFlow
+) : PricesSceneVM {
+    private val companies = flow {
+        val items = client
+            .getCompanies(Company.Query.getDefaultInstance())
+            .companiesList
 
-        val listener = object : LocationListener {
-            override fun onStatusChanged(
-                provider: String,
-                status: Int,
-                extras: Bundle
-            ) {}
+        emit(items)
+    }
+        .shareIn(scope, SharingStarted.WhileSubscribed())
 
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
+    private val stations = flow {
+        val items = client
+            .getStations(Station.Query.getDefaultInstance())
+            .stationsList
 
-            override fun onLocationChanged(location: Location) {
-                offer(location)
-            }
+        emit(items)
+    }
+        .shareIn(scope, SharingStarted.WhileSubscribed())
+
+    override val locations: Flow<List<Location>> = flow {
+        val riga = Location(LocationManager.GPS_PROVIDER).apply {
+            latitude = 56.9713962
+            longitude = 23.9890821
         }
 
-        manager.requestLocationUpdates(
-            GPS_PROVIDER,
-            1 * 60 * 1000,
-            0f,
-            listener
-        )
-
-        manager.getLastKnownLocation(GPS_PROVIDER)?.let(::offer)
-
-        awaitClose { manager.removeUpdates(listener) }
-    }
-
-    private val _companies = MutableStateFlow(emptyList<Company>())
-    private val _stations = MutableStateFlow(emptyList<Station>())
-    private val _prices = MutableStateFlow(emptyList<Price.Response.Item>())
-
-    val prices = combine(_prices, _companies, _stations) { prices, companies, stations ->
-        transformToFuelPrices(prices, companies, stations)
-    }
-        .map { flattenFuelTypes(it) }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-    init {
-        updateCompanies()
-        updateStations()
-        handlePricesUpdates()
-    }
-
-    private fun updateCompanies() {
-        viewModelScope.launch {
-            _companies.value = client
-                .getCompanies(Company.Query.getDefaultInstance())
-                .companiesList
-        }
-    }
-
-    private fun updateStations() {
-        viewModelScope.launch {
-            _stations.value = client
-                .getStations(Station.Query.getDefaultInstance())
-                .stationsList
-        }
-    }
-
-    private fun handlePricesUpdates() {
-        val priceQuery = combine(location, preferences.data) { location, preferences ->
-            val builder = Price.Query.newBuilder()
-                .setLocation(
-                    Price.Location.newBuilder()
-                        .setLongitude(location.latitude.toFloat())
-                        .setLatitude(location.longitude.toFloat())
-                        .build()
-                )
-                .setDistance(2000f)
-
-            preferences.fuelTypesMap
-                .mapNotNull { (key, value) -> if (value) key else null }
-                .takeIf { it.isNotEmpty() }
-                ?.let { builder.addAllType(it) }
-
-            builder.build()
+        val ogre = Location(LocationManager.GPS_PROVIDER).apply {
+            latitude = 56.8104753
+            longitude = 24.5707587
         }
 
-        priceQuery
-            .onEach { Log.d("MOX", it.toString()) }
-            .map { client.getPrices(it).itemsList }
-            .onEach { _prices.value = it }
-            .launchIn(viewModelScope)
+        val jurmala = Location(LocationManager.GPS_PROVIDER).apply {
+            latitude = 56.9653867
+            longitude = 23.5810785
+        }
+
+        emit(listOf(riga, ogre, jurmala))
+    }
+
+    override fun getPrices(location: Location): Flow<List<FuelTypedItem>> {
+        val request = Price.Query.newBuilder()
+            .setLocation(
+                Price.Location.newBuilder()
+                    .setLongitude(location.latitude.toFloat())
+                    .setLatitude(location.longitude.toFloat())
+                    .build()
+            )
+            .setDistance(2000f)
+            .build()
+
+        Log.d("MOX", request.toString())
+
+        val prices = flow {
+            val items = client
+                .getPrices(request)
+                .itemsList
+
+            emit(items)
+        }
+
+        return combine(prices, companies, stations, ::transformToFuelPrices)
+            .map(::flattenFuelTypes)
     }
 
     private fun transformToFuelPrices(
@@ -149,5 +112,4 @@ class PricesViewModel(
             }
             .toMap()
     }
-
 }

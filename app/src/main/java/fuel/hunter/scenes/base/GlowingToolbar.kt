@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,14 +12,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
+import androidx.compose.ui.graphics.addOutline
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
+import fuel.hunter.scenes.base.page.LocationIcon
 import fuel.hunter.ui.ColorPrimary
 import fuel.hunter.view.decorations.glow
 import fuel.hunter.view.decorations.roundIndication
@@ -80,7 +83,7 @@ fun Title(
 @Composable
 fun GlowingToolbar(
     text: String = "Toolbar",
-    navigationIcon: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable (BoxScope.() -> Unit)? = null,
     onNavigationClick: () -> Unit = {},
     toolbarState: GlowingToolbarState = rememberToolbarState(),
 ) {
@@ -89,7 +92,7 @@ fun GlowingToolbar(
             Title(
                 text = text,
                 modifier = Modifier
-                    .align(Alignment.Center)
+                    .align(Alignment.CenterVertically)
             )
         },
         navigationIcon = navigationIcon,
@@ -100,66 +103,44 @@ fun GlowingToolbar(
 
 @Composable
 fun GlowingToolbar(
-    title: @Composable BoxScope.() -> Unit,
-    navigationIcon: @Composable (() -> Unit)? = null,
+    title: @Composable RowScope.() -> Unit,
+    navigationIcon: @Composable (BoxScope.() -> Unit)? = null,
     onNavigationClick: () -> Unit = {},
     toolbarState: GlowingToolbarState = rememberToolbarState(),
 ) {
-    ConstraintLayout(
-        modifier = Modifier.wrapContentSize()
-    ) {
-        val (toolbar, glow) = createRefs()
-
-        TopAppBar(
-            backgroundColor = Color.Transparent,
-            elevation = 0.dp,
-            modifier = Modifier
-                .constrainAs(toolbar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                }
+    Box {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.align(Alignment.Center)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                navigationIcon?.let {
-                    Box(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .requiredSize(32.dp)
-                            .align(Alignment.CenterStart)
-                            .clickable(
-                                interactionSource = MutableInteractionSource(),
-                                indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
-                                onClick = onNavigationClick,
-                            ),
-                        contentAlignment = Alignment.Center,
-                        content = { it.invoke() },
-                    )
-                }
-
-                title()
+            navigationIcon?.let {
+                Box(
+                    content = { it() },
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clickable(
+                            interactionSource = MutableInteractionSource(),
+                            indication = roundIndication(ColorPrimary.copy(alpha = 0.3f)),
+                            onClick = onNavigationClick,
+                        ),
+                )
             }
+
+            title()
         }
 
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
-                .constrainAs(glow) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                }
                 .glow(
                     color = toolbarState.color,
                     strokeWidth = 1.dp,
                     radius = 2.dp,
                     path = {
                         Path().apply {
-                            addRect(Rect(Offset.Zero, size))
+                            addRect(Rect(Offset(-1f, 0f), Offset(size.width, size.height)))
                         }
                     },
                 )

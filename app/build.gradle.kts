@@ -56,8 +56,9 @@ dependencies {
     implementation(kt.coroutines.core)
     implementation(kt.coroutines.android)
 
-    implementation(coil.kt)
-    implementation(coil.compose)
+    implementation(accompanist.coil)
+    implementation(accompanist.pager)
+    implementation(accompanist.insets)
 
     implementation(project(":fh-client"))
 

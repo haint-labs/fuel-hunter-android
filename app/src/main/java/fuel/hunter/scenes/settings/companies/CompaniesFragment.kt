@@ -24,7 +24,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.google.accompanist.coil.CoilImage
 import fuel.hunter.R
 import fuel.hunter.databinding.FragmentComposeBinding
 import fuel.hunter.scenes.base.BaseLayout

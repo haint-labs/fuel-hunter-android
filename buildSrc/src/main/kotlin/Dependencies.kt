@@ -56,21 +56,24 @@ object compose {
     const val material = "androidx.compose.material:material:$version"
     const val tooling = "androidx.compose.ui:ui-tooling:$version"
     const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha09"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
 }
 
 object firebase {
     const val crashlytics = "com.google.firebase:firebase-crashlytics:17.2.1"
 }
 
-object coil {
-    const val kt = "io.coil-kt:coil:1.1.1"
-    const val compose = "dev.chrisbanes.accompanist:accompanist-coil:0.6.2"
+object accompanist {
+    private const val version = "0.7.1"
+
+    const val coil = "com.google.accompanist:accompanist-coil:$version"
+    const val pager = "com.google.accompanist:accompanist-pager:$version"
+    const val insets = "com.google.accompanist:accompanist-insets:$version"
 }
 
 object Build {
     object Plugins {
-        const val android = "com.android.tools.build:gradle:7.0.0-alpha09"
+        const val android = "com.android.tools.build:gradle:7.0.0-alpha12"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kt.version}"
         const val googleServices = "com.google.gms:google-services:4.3.3"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.2.1"
